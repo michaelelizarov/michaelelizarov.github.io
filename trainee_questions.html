@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_questions_page_title">שאלות מנחות - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general"> <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="guiding_questions_header" class="text-3xl font-bold text-header">שאלות מנחות</h2>
+            <p data-lang-key="guiding_questions_subtitle" class="text-subtitle mt-1 text-base">ענה על השאלות הבאות כדי להתקדם בתרחיש ולבחון את הבנתך.</p>
+        </header>
+        <section class="card p-6 rounded-xl shadow-lg max-w-2xl mx-auto">
+            <div id="question-area">
+                <div id="question-text" class="text-lg font-medium text-text-color mb-6 min-h-[60px]" data-lang-key-placeholder="question_text_placeholder">טוען שאלה...</div>
+                <div id="answers-container" class="space-y-3 mb-6">
+                    <p class="text-subtitle text-sm" data-lang-key="answers_container_placeholder">טוען אפשרויות תשובה...</p>
+                </div>
+                <div id="feedback-message" class="p-4 rounded-md text-sm mb-6 hidden">
+                    </div>
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="text-sm">
+                        <span data-lang-key="current_score_label" class="text-subtitle">ניקוד נוכחי בתרחיש:</span>
+                        <span id="current-score-value" class="font-bold text-primary">0</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="submit-answer-btn" type="button" class="btn btn-primary">
+                            <span data-lang-key="submit_answer_button">הגש תשובה</span>
+                        </button>
+                        <button id="next-action-button-questions" type="button" class="btn btn-secondary hidden">
+                        </button>
+                    </div>
+                </div>
+            </div>
+             <p id="no-questions-message" class="text-center text-subtitle hidden py-8" data-lang-key="no_questions_available">לא נמצאו שאלות עבור תרחיש זה כעת.</p>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_cti_feed">חזור למאגר מודיעין (CTI)</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_communication_from_questions">המשך לתקשורת צוותית</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_questions_translations.js" defer></script>
+    <script src="trainee_questions.js" defer></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_cti.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_communication.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

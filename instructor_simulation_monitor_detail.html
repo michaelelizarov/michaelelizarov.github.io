@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_sim_monitor_detail_page_title">פרטי סימולציה - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-6">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+                <div>
+                    <a href="instructor_monitor_simulations.html" class="text-sm text-primary hover:underline mb-1 inline-block" data-lang-key="back_to_sim_list_link">&larr; חזור לרשימת הסימולציות</a>
+                    <h2 class="text-2xl md:text-3xl font-bold text-header">
+                        <span data-lang-key="sim_detail_header_prefix">ניטור סימולציה:</span>
+                        <span id="simulation-scenario-name" class="text-primary">טוען שם תרחיש...</span>
+                    </h2>
+                    <p id="simulation-team-user" class="text-subtitle mt-1 text-base">
+                        <span data-lang-key="sim_detail_team_user_prefix">צוות/משתמש:</span>
+                        <span class="font-medium">טוען שם צוות/משתמש...</span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="simulation-status-badge" class="status-badge status-active" data-lang-key="sim_status_running">רצה</span>
+                    <button id="pause-simulation-btn" class="btn btn-neutral btn-sm">
+                        <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span data-lang-key="pause_simulation_button">השהה</span>
+                    </button>
+                    <button id="stop-simulation-btn" class="btn btn-danger btn-sm">
+                         <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0zM10 10l4 4m0-4l-4 4"></path></svg>
+                        <span data-lang-key="stop_simulation_button">עצור</span>
+                    </button>
+                     <button id="send-message-btn" class="btn btn-neutral btn-sm"> <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        <span data-lang-key="send_message_hint_button">שלח הודעה/רמז</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div class="lg:col-span-2 space-y-6">
+                <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b border-[var(--card-border-color)]">
+                        <h3 data-lang-key="scenario_progress_timeline_title" class="text-xl font-semibold text-header">ציר זמן התקדמות בתרחיש</h3>
+                    </div>
+                    <div class="p-6">
+                        <div id="scenario-timeline" class="timeline">
+                            <p class="text-subtitle text-center p-4">טוען ציר זמן...</p>
+                        </div>
+                    </div>
+                </section>
+                 <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b border-[var(--card-border-color)]">
+                        <h3 data-lang-key="key_events_log_title" class="text-xl font-semibold text-header">לוג אירועים מרכזיים</h3>
+                    </div>
+                    <div id="event-log-container" class="event-log-container max-h-96 overflow-y-auto p-2">
+                        <p class="text-subtitle text-center p-4">טוען לוג אירועים...</p>
+                    </div>
+                </section>
+            </div>
+            <div class="lg:col-span-1 space-y-6">
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="current_score_and_kpis_title" class="text-xl font-semibold text-header mb-4">ניקוד ו-KPIs</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span data-lang-key="kpi_current_score_label" class="text-subtitle">ניקוד נוכחי:</span>
+                            <span id="current-kpi-score" class="text-lg font-bold text-primary">N/A</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span data-lang-key="kpi_time_elapsed_label" class="text-subtitle">זמן שחלף:</span>
+                            <span id="current-kpi-time" class="text-lg font-medium">N/A</span>
+                        </div>
+                         <div class="flex justify-between items-center">
+                            <span data-lang-key="kpi_alerts_triggered_label" class="text-subtitle">התראות שהופעלו:</span>
+                            <span id="current-kpi-alerts" class="text-lg font-medium">N/A</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span data-lang-key="kpi_hints_used_label" class="text-subtitle">רמזים בשימוש:</span>
+                            <span id="current-kpi-hints" class="text-lg font-medium">N/A</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span data-lang-key="kpi_tasks_completed_label" class="text-subtitle">משימות שהושלמו:</span>
+                            <span id="current-kpi-tasks" class="text-lg font-medium">N/A</span>
+                        </div>
+                    </div>
+                </section>
+                </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_monitor_list">חזור לרשימת הסימולציות</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_reports_analytics_from_detail">המשך לדוחות ואנליטיקה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_simulation_monitor_detail_translations.js" defer></script>
+    <script src="instructor_simulation_monitor_detail.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_monitor_simulations.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_reports_analytics.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

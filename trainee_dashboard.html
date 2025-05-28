@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_dashboard_page_title">לוח מחוונים - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="trainee_dashboard_header" class="text-3xl font-bold text-header">לוח המחוונים שלך</h2>
+            <p data-lang-key="trainee_dashboard_welcome" class="text-subtitle mt-1 text-base">ברוך הבא, {userName}! מוכן לאתגר הבא?</p> 
+            </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 data-lang-key="recent_scenarios_title" class="text-xl font-semibold text-header">תרחישים אחרונים שהתחלת</h3>
+                        <a href="trainee_main.html" class="text-sm text-primary hover:underline" data-lang-key="view_all_scenarios_link">צפה בכל התרחישים &rarr;</a>
+                    </div>
+                    <ul id="recent-scenarios-list" class="space-y-2">
+                        <li id="no-recent-scenarios-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_recent_scenarios">עדיין לא התחלת אף תרחיש.</li>
+                        </ul>
+                </section>
+
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="my_badges_title" class="text-xl font-semibold text-header mb-4">התגים שלי</h3>
+                    <div id="my-badges-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <p id="no-badges-msg" class="text-subtitle text-sm hidden col-span-full text-center py-4" data-lang-key="no_badges_earned">עדיין לא זכית באף תג.</p>
+                        </div>
+                </section>
+
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="course_progress_title" class="text-xl font-semibold text-header mb-3">ההתקדמות שלי בקורסים</h3>
+                    <ul id="course-progress-list" class="space-y-3">
+                        <li id="no-course-progress-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_course_progress">אינך רשום כרגע לאף מסלול התקדמות.</li>
+                        </ul>
+                </section>
+            </div>
+
+            <div class="lg:col-span-1 space-y-6">
+                 <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="cti_feed_snippet_title" class="text-xl font-semibold text-header mb-3">עדכוני מודיעין אחרונים (CTI)</h3>
+                    <div id="cti-feed-snippet-container" class="space-y-1 dashboard-list-scrollable max-h-48 overflow-y-auto">
+                         <p id="no-cti-updates-msg" class="text-subtitle text-sm text-center hidden p-2" data-lang-key="no_cti_updates">אין עדכוני מודיעין חדשים כרגע.</p>
+                        </div>
+                </section>
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="glossary_title" class="text-xl font-semibold text-header mb-3">מילון מונחים מהיר</h3>
+                    <ul id="glossary-terms-list" class="space-y-2 dashboard-list-scrollable max-h-48 overflow-y-auto">
+                         <li id="no-glossary-terms-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_glossary_terms">מילון המונחים יתעדכן בקרוב.</li>
+                        </ul>
+                </section>
+                <section class="card p-6 rounded-xl shadow-lg">
+                    <h3 data-lang-key="recent_achievements_title" class="text-xl font-semibold text-header mb-3">הישגים אחרונים</h3>
+                    <ul id="recent-achievements-list" class="space-y-2 dashboard-list-scrollable max-h-48 overflow-y-auto">
+                        <li id="no-recent-achievements-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_recent_achievements">עדיין אין לך הישגים אחרונים להציג.</li>
+                        </ul>
+                </section>
+            </div>
+        </div>
+        
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_trainee_landing">חזור לעמוד הנחיתה</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_available_scenarios_from_dashboard">עבור לתרחישים זמינים</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_dashboard_translations.js" defer></script>
+    <script src="trainee_dashboard.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'landing_trainee_general.html'; 
+                });
+            }
+
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_main.html'; // This is the "Available Scenarios" page
+                });
+            }
+        });
+    </script>
+</body>
+</html>

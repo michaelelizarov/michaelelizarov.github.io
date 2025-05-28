@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="login_page_title">התחברות - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <style>
+        /* Ensure dark theme for email input */
+        body.dark-theme .form-input {
+            background-color: var(--input-bg-color-dark) !important;
+            color: var(--input-text-color-dark) !important;
+            border-color: var(--input-border-color-dark);
+        }
+        
+        body.dark-theme .form-input:focus {
+            border-color: var(--input-focus-border-color-dark) !important;
+            background-color: var(--input-bg-color-dark) !important;
+            color: var(--input-text-color-dark) !important;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg-color-light);
+            color: var(--text-color-light);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            max-width: 24rem;
+            width: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        body.dark-theme .modal-content {
+            background-color: var(--card-bg-color-dark) !important;
+            color: var(--text-color-dark) !important;
+        }
+        
+        .modal-open {
+            display: flex;
+        }
+        
+        /* Login background image */
+        .login-bg {
+            background-image: url('login_bg.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Simplified theme toggle button */
+        .theme-toggle-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Email input dark theme class */
+        .dark-theme-email {
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        
+        body.dark-theme .dark-theme-email {
+            background-color: var(--input-bg-color-dark) !important;
+            color: var(--input-text-color-dark) !important;
+            border-color: var(--input-border-color-dark);
+        }
+        
+        /* Override any cached styles */
+        body.dark-theme input[type="email"] {
+            background-color: var(--input-bg-color-dark) !important;
+            color: var(--input-text-color-dark) !important;
+            border-color: var(--input-border-color-dark);
+        }
+        
+        /* Custom language button styling */
+        .lang-switch-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: background-color 0.3s ease;
+        }
+        
+        .lang-switch-btn:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        body.dark-theme .lang-switch-btn {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: #e2e8f0;
+            border-color: rgba(51, 65, 85, 0.8);
+        }
+        
+        body.dark-theme .lang-switch-btn:hover {
+            background-color: rgba(30, 41, 59, 0.9);
+        }
+    </style>
+</head>
+<body class="body-login-layout login-bg bg-body-bg text-text-color transition-colors duration-300">
+    <div class="global-toggle-container p-4">
+        <button 
+            type="button" 
+            id="custom-lang-switch-btn"
+            class="lang-switch-btn" 
+            aria-live="polite" 
+            aria-label="Toggle language"
+            data-lang-key-label="lang_toggle_sr">
+            English
+        </button>
+        <button
+            type="button"
+            id="custom-theme-switch-btn"
+            class="theme-switch-btn p-2 rounded-md"
+            aria-label="Toggle theme"
+            data-lang-key-label="theme_toggle_sr"
+            aria-pressed="false">
+            <!-- Simple toggle icon -->
+            <svg class="theme-toggle-icon" viewBox="0 0 24 24">
+                <!-- Sun icon (visible in light mode) -->
+                <path class="sun-icon" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <!-- Moon icon (visible in dark mode) -->
+                <path class="moon-icon" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"></path>
+            </svg>
+        </button>
+    </div>
+    <main class="card p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md m-4 login-card">
+        <div class="text-center mb-8">
+            <svg class="mx-auto h-12 w-auto text-primary dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" role="img" aria-labelledby="loginLogoTitle">
+                <title id="loginLogoTitle" data-lang-key="logo_title">לוגו פלטפורמת סימולציות סייבר</title>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+            <h1 data-lang-key="login_title" class="text-2xl font-bold mt-3 text-header">התחברות למערכת</h1>
+        </div>
+        <div id="error-message" class="mb-4 text-sm text-red-600 dark:text-red-400 hidden bg-red-50 dark:bg-red-900/30 p-3 rounded-md" role="alert"></div>
+        <form id="login-form" class="space-y-6" novalidate>
+            <div>
+                <label for="email" data-lang-key="email_label" class="form-label">כתובת מייל</label>
+                <input type="email" name="email" id="email" required class="form-input dark-theme-email" data-lang-key-placeholder="email_placeholder" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div>
+                <label for="password" data-lang-key="password_label" class="form-label">סיסמה</label>
+                <input type="password" name="password" id="password" required class="form-input" data-lang-key-placeholder="password_placeholder" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <div>
+                <label for="user-type" data-lang-key="user_type_label" class="form-label">סוג משתמש</label>
+                <select id="user-type" name="user-type" class="form-select">
+                    <option value="trainee_general" data-lang-key="user_type_trainee">משתמש רגיל (חניך)</option>
+                    <option value="trainee_workshop" data-lang-key="user_type_trainee_workshop">משתמש סדנא</option>
+                    <option value="instructor" data-lang-key="user_type_instructor">מאמן</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" data-lang-key="login_button" class="btn btn-primary w-full py-3 rounded-xl font-semibold text-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-focus-ring)]">
+                    התחבר
+                </button>
+            </div>
+        </form>
+        <div class="mt-6 text-center">
+            <a href="#" id="forgot-password-link" data-lang-key="forgot_password" class="text-sm text-primary hover:underline">שכחת סיסמה?</a>
+        </div>
+    </main>
+    
+    <!-- Password Reset Modal -->
+    <div id="password-reset-modal" class="modal-overlay hidden" aria-labelledby="passwordResetModalTitle" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="passwordResetModalTitle" class="text-xl font-semibold text-header" data-lang-key="password_reset_title">איפוס סיסמה</h3>
+                <button type="button" id="close-modal-button" class="p-1 rounded-full hover:bg-[var(--sidebar-link-hover-bg)]" aria-label="Close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="password-reset-content">
+                <p class="mb-4" data-lang-key="password_reset_instruction">הזן את כתובת המייל שלך ונשלח לך הוראות לאיפוס הסיסמה</p>
+                <form id="password-reset-form" class="space-y-4">
+                    <div>
+                        <label for="reset-email" data-lang-key="email_label" class="form-label">כתובת מייל</label>
+                        <input type="email" name="reset-email" id="reset-email" required class="form-input dark-theme-email w-full" data-lang-key-placeholder="email_placeholder" placeholder="you@example.com">
+                    </div>
+                    <div id="reset-error-message" class="mb-4 text-sm text-red-600 dark:text-red-400 hidden bg-red-50 dark:bg-red-900/30 p-3 rounded-md" role="alert"></div>
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" id="cancel-reset-button" class="btn btn-neutral" data-lang-key="cancel_button">ביטול</button>
+                        <button type="submit" id="reset-submit-button" class="btn btn-primary" data-lang-key="send_reset_link">שלח קישור</button>
+                    </div>
+                </form>
+            </div>
+            <div id="password-reset-success" class="hidden">
+                <div class="text-center p-4">
+                    <svg class="mx-auto h-12 w-12 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="mt-4 text-lg font-medium text-header" data-lang-key="thank_you">תודה!</h3>
+                    <p class="mt-2" data-lang-key="password_reset_sent">אם המייל קיים במערכת, נשלח אליו קישור לאיפוס הסיסמה.</p>
+                    <div class="mt-6">
+                        <button type="button" id="close-success-button" class="btn btn-primary" data-lang-key="close_button">סגור</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="text-center py-8 text-sm text-subtitle opacity-70">
+        <p>&copy; <span id="currentYear"></span> <span data-lang-key="footer_copyright">Cyber Simulation Platform. All rights reserved.</span></p>
+    </footer>
+    <script>
+    // Prevent duplicate forgot password modal
+    window.disableForgotPasswordModal = true;
+    </script>
+    <script src="app-global.js"></script>
+    <script src="login_translations.js"></script>
+    <script src="login.js"></script>
+    <script>
+        // Execute this script immediately - don't wait for DOMContentLoaded
+        (function() {
+            // Remove any existing event listeners by cloning the buttons
+            function resetButton(buttonId) {
+                const oldButton = document.getElementById(buttonId);
+                if (oldButton) {
+                    const newButton = oldButton.cloneNode(true);
+                    oldButton.parentNode.replaceChild(newButton, oldButton);
+                    return newButton;
+                }
+                return null;
+            }
+            
+            // Function to toggle theme with direct DOM manipulation
+            function toggleTheme() {
+                // Check current theme
+                const isDarkTheme = document.body.classList.contains('dark-theme');
+                
+                // Toggle theme classes
+                if (isDarkTheme) {
+                    // Switch to light
+                    document.body.classList.remove('dark-theme');
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    document.querySelector('.sun-icon').style.display = 'block';
+                    document.querySelector('.moon-icon').style.display = 'none';
+                } else {
+                    // Switch to dark
+                    document.body.classList.add('dark-theme');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    document.querySelector('.sun-icon').style.display = 'none';
+                    document.querySelector('.moon-icon').style.display = 'block';
+                }
+                
+                // Force stylesheet recalculation
+                document.body.offsetHeight;
+                
+                // Update all inputs
+                document.querySelectorAll('input').forEach(input => {
+                    if (document.body.classList.contains('dark-theme')) {
+                        if (input.type === 'email' || input.type === 'password') {
+                            input.style.backgroundColor = 'var(--input-bg-color-dark)';
+                            input.style.color = 'var(--input-text-color-dark)';
+                            input.style.borderColor = 'var(--input-border-color-dark)';
+                        }
+                    } else {
+                        input.style.backgroundColor = '';
+                        input.style.color = '';
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                // Update modal if open
+                const modal = document.querySelector('.modal-content');
+                if (modal && !modal.closest('.hidden')) {
+                    if (document.body.classList.contains('dark-theme')) {
+                        modal.style.backgroundColor = 'var(--card-bg-color-dark)';
+                        modal.style.color = 'var(--text-color-dark)';
+                    } else {
+                        modal.style.backgroundColor = 'var(--card-bg-color-light)';
+                        modal.style.color = 'var(--text-color-light)';
+                    }
+                }
+            }
+            
+            // Function to toggle language
+            function toggleLanguage() {
+                const currentLang = document.documentElement.lang || 'he';
+                const newLang = currentLang === 'he' ? 'en' : 'he';
+                
+                // Update HTML attributes
+                document.documentElement.lang = newLang;
+                document.documentElement.dir = newLang === 'he' ? 'rtl' : 'ltr';
+                
+                // Store in localStorage
+                localStorage.setItem('preferredLang', newLang);
+                
+                // Update button text
+                const langBtn = document.getElementById('custom-lang-switch-btn');
+                if (langBtn) {
+                    langBtn.textContent = newLang === 'he' ? 'עברית' : 'English';
+                }
+                
+                // Reload page to apply translations
+                window.location.reload();
+            }
+            
+            // Apply initial theme
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (savedTheme === null && prefersDarkScheme)) {
+                document.body.classList.add('dark-theme');
+                document.documentElement.classList.add('dark');
+                
+                // Show moon icon for dark theme
+                if (document.querySelector('.sun-icon')) {
+                    document.querySelector('.sun-icon').style.display = 'none';
+                }
+                if (document.querySelector('.moon-icon')) {
+                    document.querySelector('.moon-icon').style.display = 'block';
+                }
+                
+                // Force dark theme on inputs
+                document.querySelectorAll('input[type="email"], input[type="password"]').forEach(input => {
+                    input.style.backgroundColor = 'var(--input-bg-color-dark)';
+                    input.style.color = 'var(--input-text-color-dark)';
+                    input.style.borderColor = 'var(--input-border-color-dark)';
+                });
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.documentElement.classList.remove('dark');
+                
+                // Show sun icon for light theme
+                if (document.querySelector('.sun-icon')) {
+                    document.querySelector('.sun-icon').style.display = 'block';
+                }
+                if (document.querySelector('.moon-icon')) {
+                    document.querySelector('.moon-icon').style.display = 'none';
+                }
+            }
+            
+            // Update language button
+            const currentLang = document.documentElement.lang || localStorage.getItem('preferredLang') || 'he';
+            const langBtn = document.getElementById('custom-lang-switch-btn');
+            if (langBtn) {
+                langBtn.textContent = currentLang === 'he' ? 'עברית' : 'English';
+            }
+            
+            // Set up theme and language toggle with fresh event listeners
+            function setupToggleButtons() {
+                // Reset buttons to remove any existing listeners
+                const themeToggleBtn = resetButton('custom-theme-switch-btn');
+                const langToggleBtn = resetButton('custom-lang-switch-btn');
+                
+                // Add new event handlers
+                if (themeToggleBtn) {
+                    themeToggleBtn.addEventListener('click', toggleTheme);
+                }
+                
+                if (langToggleBtn) {
+                    langToggleBtn.addEventListener('click', toggleLanguage);
+                }
+            }
+            
+            // Set up buttons when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupToggleButtons);
+            } else {
+                setupToggleButtons();
+            }
+            
+            // Year in footer - moved outside of DOMContentLoaded
+            setTimeout(() => {
+                const yearEl = document.getElementById('currentYear');
+                if(yearEl) yearEl.textContent = new Date().getFullYear();
+            }, 100);
+            
+            // Password reset modal functionality
+            document.addEventListener('DOMContentLoaded', () => {
+                const forgotPasswordLink = document.getElementById('forgot-password-link');
+                const passwordResetModal = document.getElementById('password-reset-modal');
+                const closeModalButton = document.getElementById('close-modal-button');
+                const cancelResetButton = document.getElementById('cancel-reset-button');
+                const closeSuccessButton = document.getElementById('close-success-button');
+                const passwordResetForm = document.getElementById('password-reset-form');
+                const passwordResetContent = document.getElementById('password-reset-content');
+                const passwordResetSuccess = document.getElementById('password-reset-success');
+                
+                function openModal() {
+                    passwordResetModal.classList.remove('hidden');
+                    passwordResetModal.classList.add('modal-open');
+                    
+                    const resetEmail = document.getElementById('reset-email');
+                    if (resetEmail) {
+                        resetEmail.focus();
+                        
+                        // Apply dark theme styling to reset email input if needed
+                        if (document.body.classList.contains('dark-theme')) {
+                            resetEmail.classList.add('dark-theme-email');
+                            resetEmail.style.backgroundColor = 'var(--input-bg-color-dark)';
+                            resetEmail.style.color = 'var(--input-text-color-dark)';
+                            resetEmail.style.borderColor = 'var(--input-border-color-dark)';
+                        }
+                    }
+                    
+                    // Update modal content based on current theme
+                    const modalContent = document.querySelector('.modal-content');
+                    if (document.body.classList.contains('dark-theme') && modalContent) {
+                        modalContent.style.backgroundColor = 'var(--card-bg-color-dark)';
+                        modalContent.style.color = 'var(--text-color-dark)';
+                    }
+                }
+                
+                function closeModal() {
+                    passwordResetModal.classList.add('hidden');
+                    passwordResetModal.classList.remove('modal-open');
+                    // Reset the form view
+                    passwordResetContent.classList.remove('hidden');
+                    passwordResetSuccess.classList.add('hidden');
+                    passwordResetForm.reset();
+                }
+                
+                if (forgotPasswordLink) {
+                    forgotPasswordLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        openModal();
+                    });
+                }
+                
+                if (closeModalButton) closeModalButton.addEventListener('click', closeModal);
+                if (cancelResetButton) cancelResetButton.addEventListener('click', closeModal);
+                if (closeSuccessButton) closeSuccessButton.addEventListener('click', closeModal);
+                
+                if (passwordResetForm) {
+                    passwordResetForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const resetEmail = document.getElementById('reset-email');
+                        const resetErrorMessage = document.getElementById('reset-error-message');
+                        
+                        // Validate email
+                        if (!resetEmail || !resetEmail.value.trim()) {
+                            // Show error for empty email
+                            if (resetErrorMessage) {
+                                const errorText = typeof getTranslatedStringGlobal === 'function' 
+                                    ? getTranslatedStringGlobal('password_reset_error_empty_email') 
+                                    : 'Please enter your email address';
+                                resetErrorMessage.textContent = errorText;
+                                resetErrorMessage.classList.remove('hidden');
+                            }
+                            return;
+                        }
+                        
+                        // Hide any previous error
+                        if (resetErrorMessage) {
+                            resetErrorMessage.classList.add('hidden');
+                        }
+                        
+                        // Show loading state on button
+                        const resetSubmitButton = document.getElementById('reset-submit-button');
+                        if (resetSubmitButton) {
+                            resetSubmitButton.disabled = true;
+                            const originalText = resetSubmitButton.textContent;
+                            const loadingText = typeof getTranslatedStringGlobal === 'function' 
+                                ? getTranslatedStringGlobal('sending') 
+                                : 'Sending...';
+                            resetSubmitButton.textContent = loadingText;
+                            
+                            // Simulate API call
+                            setTimeout(() => {
+                                // Show success message
+                                passwordResetContent.classList.add('hidden');
+                                passwordResetSuccess.classList.remove('hidden');
+                                
+                                // Reset button state
+                                resetSubmitButton.disabled = false;
+                                resetSubmitButton.textContent = originalText;
+                                
+                                // Clear the form
+                                passwordResetForm.reset();
+                            }, 1000);
+                        } else {
+                            // If button reference not found, just show success
+                            passwordResetContent.classList.add('hidden');
+                            passwordResetSuccess.classList.remove('hidden');
+                        }
+                    });
+                }
+                
+                // Close modal when clicking outside
+                if (passwordResetModal) {
+                    passwordResetModal.addEventListener('click', function(e) {
+                        if (e.target === passwordResetModal) {
+                            closeModal();
+                        }
+                    });
+                }
+                
+                // Escape key to close modal
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && passwordResetModal && !passwordResetModal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

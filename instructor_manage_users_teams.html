@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_manage_users_teams_page_title">ניהול משתמשים וצוותים - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+             <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+                 <h2 data-lang-key="manage_users_teams_header" class="text-3xl font-bold text-header">ניהול משתמשים וצוותים</h2>
+                 <div class="flex flex-wrap gap-3">
+                     <button id="add-new-user-btn" class="btn btn-primary grow sm:grow-0">
+                         <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                        <span data-lang-key="add_new_user_button">הוסף משתמש חדש</span>
+                    </button>
+                     <button id="create-new-team-btn" class="btn btn-secondary grow sm:grow-0">
+                        <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                         <span data-lang-key="create_new_team_button">צור צוות חדש</span>
+                    </button>
+                 </div>
+            </div>
+            <p data-lang-key="manage_users_teams_subtitle" class="text-subtitle mt-1 text-base">נהל משתמשים רשומים, צור צוותים והקצה להם משתמשים ותרחישים.</p>
+        </header>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)] flex justify-between items-center">
+                    <h3 data-lang-key="users_list_title" class="text-xl font-semibold text-header">רשימת משתמשים</h3>
+                     <input type="search" id="search-users" class="form-input max-w-xs" data-lang-key-placeholder="search_users_placeholder" placeholder="חפש משתמש...">
+                </div>
+                <div class="table-container max-h-[60vh] overflow-y-auto">
+                    <table class="custom-table">
+                        <thead>
+                             <tr>
+                                <th scope="col" data-lang-key="table_header_user_name">שם מלא</th>
+                                <th scope="col" data-lang-key="table_header_user_email">דוא"ל</th>
+                                 <th scope="col" data-lang-key="table_header_user_role">תפקיד</th>
+                                <th scope="col" data-lang-key="table_header_user_team">צוות</th>
+                                <th scope="col" data-lang-key="table_header_join_date">תאריך הצטרפות</th>
+                                 <th scope="col" data-lang-key="table_header_actions" class="text-center">פעולות</th>
+                            </tr>
+                        </thead>
+                         <tbody id="users-table-body">
+                            <tr id="loading-users-row"><td colspan="6" class="text-center p-4" data-lang-key="loading_users">טוען משתמשים...</td></tr>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)] flex justify-between items-center">
+                    <h3 data-lang-key="teams_list_title" class="text-xl font-semibold text-header">רשימת צוותים</h3>
+                    <input type="search" id="search-teams" class="form-input max-w-xs" data-lang-key-placeholder="search_teams_placeholder" placeholder="חפש צוות...">
+                </div>
+                 <div class="table-container max-h-[60vh] overflow-y-auto">
+                    <table class="custom-table">
+                        <thead>
+                             <tr>
+                                <th scope="col" data-lang-key="table_header_team_name">שם הצוות</th>
+                                <th scope="col" data-lang-key="table_header_team_leader">מוביל צוות</th>
+                                 <th scope="col" data-lang-key="table_header_team_members_count">מס' חברים</th>
+                                <th scope="col" data-lang-key="table_header_team_active_scenario">תרחיש פעיל</th>
+                                <th scope="col" data-lang-key="table_header_actions" class="text-center">פעולות</th>
+                             </tr>
+                        </thead>
+                        <tbody id="teams-table-body">
+                             <tr id="loading-teams-row"><td colspan="5" class="text-center p-4" data-lang-key="loading_teams">טוען צוותים...</td></tr>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div id="user-modal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50 hidden" aria-labelledby="user-modal-title" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
+            <div class="modal-content card max-w-lg w-full p-6 rounded-xl shadow-2xl relative z-10 bg-white dark:bg-gray-800">
+                 <div class="flex justify-between items-center mb-4">
+                    <h3 id="user-modal-title" class="modal-title" data-lang-key="user_modal_add_title">הוספת משתמש חדש</h3>
+                    <button type="button" id="close-user-modal-btn" class="modal-close-button p-1 rounded-full hover:bg-[var(--sidebar-link-hover-bg)]" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="user-form" class="space-y-4">
+                     <input type="hidden" id="user-id" name="userId">
+                    <div>
+                        <label for="user-fullname" class="form-label" data-lang-key="user_fullname_label">שם מלא</label>
+                        <input type="text" id="user-fullname" name="userFullname" class="form-input" required>
+                     </div>
+                    <div>
+                        <label for="user-email" class="form-label" data-lang-key="user_email_label">כתובת דוא"ל</label>
+                        <input type="email" id="user-email" name="userEmail" class="form-input" required>
+                     </div>
+                    <div>
+                        <label for="user-role" class="form-label" data-lang-key="user_role_label_form">תפקיד</label>
+                        <select id="user-role" name="userRole" class="form-select" required>
+                             <option value="role_trainee" data-lang-key="role_trainee">מתלמד</option>
+                            <option value="role_instructor" data-lang-key="role_instructor">מדריך</option>
+                            <option value="role_admin" data-lang-key="role_admin">אדמין</option>
+                         </select>
+                    </div>
+                     <div>
+                        <label for="user-password" class="form-label" data-lang-key="user_password_label">סיסמה</label>
+                        <input type="password" id="user-password" name="userPassword" class="form-input" data-lang-key-placeholder="password_leave_blank_placeholder" placeholder="השאר ריק כדי לא לשנות (בעריכה)">
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button type="button" id="cancel-user-modal-btn" class="btn btn-neutral" data-lang-key="cancel_button_modal">ביטול</button>
+                         <button type="submit" class="btn btn-primary" data-lang-key="save_user_button">שמור משתמש</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="team-modal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50 hidden" aria-labelledby="team-modal-title" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
+            <div class="modal-content card max-w-xl w-full p-6 rounded-xl shadow-2xl relative z-10 bg-white dark:bg-gray-800">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="team-modal-title" class="modal-title" data-lang-key="team_modal_add_title">יצירת צוות חדש</h3>
+                     <button type="button" id="close-team-modal-btn" class="modal-close-button p-1 rounded-full hover:bg-[var(--sidebar-link-hover-bg)]" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="team-form" class="space-y-4">
+                    <input type="hidden" id="team-id" name="teamId">
+                     <div>
+                        <label for="team-name" class="form-label" data-lang-key="team_name_label">שם הצוות</label>
+                        <input type="text" id="team-name" name="teamName" class="form-input" required>
+                    </div>
+                     <div>
+                        <label for="team-leader" class="form-label" data-lang-key="team_leader_label_form">מוביל צוות</label>
+                        <select id="team-leader" name="teamLeader" class="form-select">
+                            <option value="" data-lang-key="select_team_leader_optional">בחר מוביל צוות (אופציונלי)</option>
+                            </select>
+                    </div>
+                    <div>
+                        <label class="form-label" data-lang-key="team_members_label">חברי צוות</label>
+                         <div id="team-members-checkbox-list" class="checkbox-list-container max-h-48 overflow-y-auto border border-[var(--input-border-color)] rounded-md p-2">
+                            <span data-lang-key="loading_users_for_team" class="text-subtitle p-2">טוען רשימת משתמשים...</span>
+                        </div>
+                    </div>
+                     <div class="flex justify-end gap-3 pt-4">
+                         <button type="button" id="cancel-team-modal-btn" class="btn btn-neutral" data-lang-key="cancel_button_modal">ביטול</button>
+                        <button type="submit" class="btn btn-primary" data-lang-key="save_team_button">שמור צוות</button>
+                     </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_cost_resource">חזור לניהול עלויות ומשאבים</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_manage_scenarios">המשך לניהול תרחישים</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_manage_users_teams_translations.js" defer></script>
+    <script src="instructor_manage_users_teams.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+             const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_cost_resource.html';
+                });
+            }
+             const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_manage_scenarios.html';
+                });
+            }
+            // The specific modal close logic for cancel buttons within modals
+            // is now primarily handled in instructor_manage_users_teams.js (openModal/closeModal)
+            // and the generic '.modal-close-button' click is also in that JS file.
+            // This inline script block's previous attempts to wire these up can be simplified
+            // as the main JS file for the page should handle its own modal interactions.
+        });
+    </script>
+</body>
+</html>

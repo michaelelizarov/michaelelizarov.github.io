@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_prep_materials_page_title">חומרי לימוד - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="prep_materials_header" class="text-3xl font-bold text-header">חומרי לימוד והכנה</h2>
+            <p data-lang-key="prep_materials_subtitle" class="text-subtitle mt-1 text-base">הכן את עצמך לתרחישים עם מגוון מאמרים, מדריכים וכלים שימושיים.</p>
+        </header>
+        <div class="filter-section card p-4 rounded-xl shadow-lg mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                <div>
+                    <label for="search-prep-materials" class="form-label">חיפוש</label>
+                    <input type="search" id="search-prep-materials" class="form-input" data-lang-key-placeholder="search_prep_materials_placeholder" placeholder="חפש חומר לימוד...">
+                </div>
+                <div>
+                    <label for="filter-prep-type" class="form-label">סינון לפי סוג:</label>
+                    <select id="filter-prep-type" name="prepMaterialTypeFilter" class="form-select">
+                        <option value="all" data-lang-key="filter_prep_type_all">כל הסוגים</option>
+                        <option value="article" data-lang-key="filter_prep_type_article">מאמרים</option>
+                        <option value="guide" data-lang-key="filter_prep_type_guide">מדריכים</option>
+                        <option value="video" data-lang-key="filter_prep_type_video">סרטונים</option>
+                        <option value="tool" data-lang-key="filter_prep_type_tool">כלים</option>
+                        <option value="cheatsheet" data-lang-key="filter_prep_type_cheatsheet">דפי עזר (Cheatsheets)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <section id="prep-materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <p id="no-prep-materials-found" class="text-center text-subtitle hidden col-span-full py-8" data-lang-key="no_prep_materials_found">לא נמצאו חומרי לימוד התואמים את החיפוש או הסינון שלך.</p>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_my_progress">חזור להתקדמות שלי</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_trainee_dashboard_from_prep">חזור ללוח המחוונים</span>
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h7.5" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_prep_materials_translations.js" defer></script>
+    <script src="trainee_prep_materials.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_my_progress.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_dashboard.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

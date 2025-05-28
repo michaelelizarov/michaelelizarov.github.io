@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_ai_assistant_page_title">עוזר AI - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general"> <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-6">
+            <h2 data-lang-key="ai_assistant_header" class="text-3xl font-bold text-header">עוזר AI לאבטחה <span class="text-sm text-subtitle">(מבוסס Cisco Foundation AI, מומחה באבטחת מידע)</span></h2>
+            <p data-lang-key="ai_assistant_subtitle" class="text-subtitle mt-1 text-base">שאל שאלות, בקש הבהרות או קבל הכוונה מהעוזר הווירטואלי שלך.</p>
+        </header>
+        <div class="ai-chat-container card rounded-xl shadow-lg overflow-hidden flex flex-col max-h-[calc(100vh-250px)]">
+            <div id="ai-chat-messages-container" class="chat-messages-scrollable flex-grow p-4 space-y-4 overflow-y-auto">
+                <p id="no-ai-messages-placeholder" class="text-center text-subtitle py-8" data-lang-key="no_ai_messages_yet">התחל שיחה עם עוזר ה-AI.</p>
+                </div>
+            <div class="chat-input-area p-3 sm:p-4 border-t border-[var(--card-border-color)] bg-[var(--card-bg-color)]">
+                <form id="ai-chat-form" class="flex items-center gap-2">
+                    <input type="text" id="ai-chat-input" class="form-input flex-grow text-sm" data-lang-key-placeholder="ai_chat_input_placeholder" placeholder="שאל את העוזר הווירטואלי..." autocomplete="off">
+                    <button id="send-ai-chat-message-btn" type="submit" class="btn btn-primary btn-icon" data-lang-key-title="send_ai_chat_message_button_tooltip" title="שלח הודעה לעוזר">
+                        <svg class="w-5 h-5 transform rtl:rotate-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 16.571V11a1 1 0 112 0v5.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_communication">חזור לתקשורת צוותית</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_mitre_attack_view_from_ai">המשך לשלבי תקיפה (MITRE)</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_ai_assistant_translations.js" defer></script>
+    <script src="trainee_ai_assistant.js" defer></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_communication.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_mitre.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

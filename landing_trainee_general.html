@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="landing_trainee_general_page_title">ברוכים הבאים! - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-10 text-center">
+            <h2 data-lang-key="landing_trainee_general_header" class="text-4xl font-bold text-header mb-2">ברוכים הבאים לפלטפורמת האימונים!</h2>
+            <p data-lang-key="landing_trainee_general_subtitle" class="text-subtitle text-lg">התכוננו לשפר את כישורי הסייבר שלכם באמצעות תרחישים מציאותיים.</p>
+        </header>
+        
+        <!-- Navigation Icons Section -->
+        <section class="mb-10">
+            <h3 data-lang-key="navigation_quick_access_trainee" class="text-2xl font-semibold text-header mb-6 text-center">גישה מהירה לכלי האימון</h3>
+            <p data-lang-key="navigation_sidebar_explanation" class="text-center text-subtitle mb-4">כלים אלו זמינים גם בסרגל הניווט הצדדי</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Landing Page -->
+                <a href="landing_trainee_general.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_landing_page_title">עמוד הבית</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_landing_page_desc">הדף הראשי שלך</span>
+                </a>
+                
+                <!-- Dashboard -->
+                <a href="trainee_dashboard.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_dashboard_title">לוח בקרה</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_dashboard_desc">מרכז הבקרה שלך</span>
+                </a>
+                
+                <!-- Available Scenarios -->
+                <a href="trainee_main.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_available_scenarios_title">תרחישים</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_available_scenarios_desc">בחר תרחיש להתחיל</span>
+                </a>
+                
+                <!-- Architecture -->
+                <a href="trainee_architecture.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_architecture_title">ארכיטקטורה</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_architecture_desc">מפת המערכות</span>
+                </a>
+                
+                <!-- Email -->
+                <a href="trainee_email.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_email_title">דוא"ל</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_email_desc">בדוק הודעות חשובות</span>
+                </a>
+                
+                <!-- CTI -->
+                <a href="trainee_cti.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_cti">מאגר מודיעין (CTI)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_cti_desc">מידע על איומים</span>
+                </a>
+                
+                <!-- Questions -->
+                <a href="trainee_questions.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_questions">שאלות מנחות</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_questions_desc">בדוק את הידע שלך</span>
+                </a>
+                
+                <!-- Communication -->
+                <a href="trainee_communication.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_communication">תקשורת צוותית</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_communication_desc">שוחח עם הצוות</span>
+                </a>
+                
+                <!-- AI Assistant -->
+                <a href="trainee_ai_assistant.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_ai_assistant">עוזר AI</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_ai_assistant_desc">קבל עזרה חכמה</span>
+                </a>
+                
+                <!-- MITRE -->
+                <a href="trainee_mitre.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_mitre">נתיב תקיפה (MITRE)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_mitre_desc">ניתוח התקיפה</span>
+                </a>
+                
+                <!-- Mitigation -->
+                <a href="trainee_mitigation.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_mitigation">שלבי מיטיגציה</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_mitigation_desc">פתרונות הגנה</span>
+                </a>
+                
+                <!-- My Progress -->
+                <a href="trainee_my_progress.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_my_progress">ההתקדמות שלי</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_my_progress_desc">עקוב אחר ההישגים</span>
+                </a>
+                
+                <!-- Prep Materials -->
+                <a href="trainee_prep_materials.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_prep_materials">חומרי לימוד (מכינה)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_prep_materials_desc">חומרי הכנה</span>
+                </a>
+            </div>
+        </section>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="quick_start_guide_title_trainee" class="text-2xl font-semibold text-header mb-4">מדריך מהיר למערכת (מתלמד כללי)</h3>
+                <p data-lang-key="trainee_general_tutorial_intro" class="text-text-color mb-4">פלטפורמה זו תעזור לכם לתרגל ולהתמקצע בתגובה לאירועי סייבר. הנה מה שחשוב לדעת:</p>
+                <ul class="space-y-3">
+                    <li>
+                        <strong data-lang-key="tutorial_item_navigating_platform" class="text-primary">ניווט בפלטפורמה ובחירת תרחישים:</strong>
+                        <p data-lang-key="tutorial_item_navigating_platform_desc" class="text-sm text-subtitle">הכירו את סרגל הניווט, בחרו תרחישים שמעניינים אתכם והתחילו את האימון.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_using_sim_tools" class="text-primary">שימוש בכלים במהלך סימולציה:</strong>
+                        <p data-lang-key="tutorial_item_using_sim_tools_desc" class="text-sm text-subtitle">בכל תרחיש תקבלו גישה לכלים כמו סקירת ארכיטקטורה, לקוח דוא"ל, מאגר מודיעין (CTI) ועוד.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_answering_questions" class="text-primary">מענה על שאלות מנחות והבנת MITRE ATT&CK:</strong>
+                        <p data-lang-key="tutorial_item_answering_questions_desc" class="text-sm text-subtitle">ענו על שאלות כדי להתקדם, להבין את שלבי התקיפה ולצבור נקודות.</p>
+                    </li>
+                     <li>
+                        <strong data-lang-key="tutorial_item_team_communication_general" class="text-primary">תקשורת (בתרחישים צוותיים):</strong>
+                        <p data-lang-key="tutorial_item_team_communication_general_desc" class="text-sm text-subtitle">בתרחישים צוותיים, השתמשו בכלי התקשורת לשיתוף מידע ועבודה משותפת.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_tracking_progress" class="text-primary">מעקב אחר ההתקדמות האישית:</strong>
+                        <p data-lang-key="tutorial_item_tracking_progress_desc" class="text-sm text-subtitle">בדקו את הציונים, התגים וההתקדמות שלכם באזור "ההתקדמות שלי".</p>
+                    </li>
+                </ul>
+            </section>
+            
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="typical_scenario_flow_title" class="text-2xl font-semibold text-header mb-6 text-center">מהלך תרחיש טיפוסי</h3>
+                <ol class="relative border-gray-200 dark:border-gray-700 space-y-4 list-none p-0 m-0 rtl:border-r rtl:border-l-0 ltr:border-l ltr:border-r-0">
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_briefing">תדריך ומטרות</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_briefing_desc">הבנת הרקע לתרחיש והמשימות שלכם.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_exploration">חקירה ואיסוף מידע</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_exploration_desc">שימוש בכלים לניתוח המצב, כגון סקירת ארכיטקטורה, מיילים ופיד CTI.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_q_and_a">שאלות מנחות</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_q_and_a_desc">מענה על שאלות לבדיקת הבנה והתקדמות, תוך התייחסות למסגרת MITRE ATT&CK.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_decision_points">נקודות החלטה ופעולה</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_decision_points_desc">ביצוע פעולות המשפיעות על התפתחות התרחיש, ותקשורת עם הצוות במידת הצורך.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_feedback_summary">משוב וסיכום</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_feedback_summary_desc">קבלת ניקוד, ניתוח ביצועים, והבנת שלבי המיטיגציה האפשריים.</p>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="what_you_will_learn_title" class="text-2xl font-semibold text-header mb-4">מה תלמדו כאן?</h3>
+                <ul class="list-disc list-inside text-text-color space-y-1 rtl:pr-4 ltr:pl-4">
+                    <li data-lang-key="learn_item_incident_response">תגובה לאירועי סייבר בזמן אמת.</li>
+                    <li data-lang-key="learn_item_threat_identification">זיהוי וניתוח איומים ווקטורי תקיפה.</li>
+                    <li data-lang-key="learn_item_tool_usage">שימוש בכלים אנליטיים ומודיעיניים.</li>
+                    <li data-lang-key="learn_item_mitre_application">יישום עקרונות ממסגרת MITRE ATT&CK.</li>
+                    <li data-lang-key="learn_item_decision_making">קבלת החלטות תחת לחץ ובסביבה דינמית.</li>
+                </ul>
+            </section>
+            
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="tips_for_success_title" class="text-2xl font-semibold text-header mb-4">טיפים להצלחה</h3>
+                <ul class="list-disc list-inside text-text-color space-y-1 rtl:pr-4 ltr:pl-4">
+                    <li data-lang-key="tip_1_read_carefully">קראו בעיון את כל המידע וההנחיות בכל שלב.</li>
+                    <li data-lang-key="tip_2_use_tools">נצלו את כל הכלים העומדים לרשותכם (CTI, דוא"ל, ארכיטקטורה).</li>
+                    <li data-lang-key="tip_3_think_critically">חשבו בצורה ביקורתית ונסו להבין את התמונה המלאה.</li>
+                    <li data-lang-key="tip_4_document_findings">תעדו (לעצמכם) ממצאים חשובים במהלך התרחיש.</li>
+                    <li data-lang-key="tip_5_learn_from_mistakes">אל תחששו לטעות - כל טעות היא הזדמנות ללמידה.</li>
+                </ul>
+            </section>
+        </div>
+        
+        <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <button type="button" id="next-dashboard-button" class="btn btn-primary btn-lg px-8 py-3 text-lg">
+                <span data-lang-key="go_to_trainee_dashboard">המשך ללוח המחוונים</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 rtl:mr-2 ltr:ml-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="landing_trainee_general_translations.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) yearEl.textContent = new Date().getFullYear();
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            } else {
+                 console.error("renderDynamicSidebar function not found on landing_trainee_general.html");
+            }
+            // The translations file landing_trainee_general_translations.js should call applyTranslationsGlobal()
+            // If for some reason it doesn't or if it's not linked, this is a fallback.
+            if (typeof window.applyTranslationsGlobal === 'function' && (!document.querySelector('script[src*="landing_trainee_general_translations.js"]'))) {
+                window.applyTranslationsGlobal();
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_dashboard.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

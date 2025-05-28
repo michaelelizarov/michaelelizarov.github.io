@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_my_progress_page_title">ההתקדמות שלי - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="my_progress_header" class="text-3xl font-bold text-header">ההתקדמות שלי</h2>
+            <p data-lang-key="my_progress_subtitle" class="text-subtitle mt-1 text-base">עקוב אחר הביצועים שלך, התגים שהשגת והישגיך בפלטפורמה.</p>
+        </header>
+        <section class="card p-6 rounded-xl shadow-lg mb-6">
+            <h3 data-lang-key="summary_stats_title" class="text-xl font-semibold text-header mb-4">סיכום ביצועים</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-sm text-subtitle" data-lang-key="total_scenarios_completed_label">סה"כ תרחישים שהושלמו:</p>
+                    <p id="total-scenarios-completed" class="text-3xl font-bold text-primary">0</p>
+                </div>
+                <div>
+                    <p class="text-sm text-subtitle" data-lang-key="average_score_label">ציון ממוצע:</p>
+                    <p id="average-score" class="text-3xl font-bold text-primary">0%</p>
+                </div>
+                <div>
+                    <p class="text-sm text-subtitle" data-lang-key="badges_earned_label">תגים שהושגו:</p>
+                    <p id="badges-earned-stat" class="text-3xl font-bold text-primary">0</p>
+                </div>
+            </div>
+        </section>
+        <section class="card p-0 rounded-xl shadow-lg overflow-hidden mb-6">
+            <div class="p-6 border-b border-[var(--card-border-color)]">
+                <h3 data-lang-key="completed_scenarios_title" class="text-xl font-semibold text-header">תרחישים שהושלמו</h3>
+            </div>
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-lang-key="table_header_scenario_name_myprog">שם תרחיש</th>
+                            <th scope="col" data-lang-key="table_header_score_myprog">ציון</th>
+                            <th scope="col" data-lang-key="table_header_date_completed_myprog">תאריך השלמה</th>
+                            <th scope="col" data-lang-key="table_header_detailed_report_myprog">דוח מפורט</th>
+                        </tr>
+                    </thead>
+                    <tbody id="completed-scenarios-table-body">
+                        <tr id="no-completed-scenarios-msg" class="hidden"><td colspan="4" class="text-center p-4 text-subtitle" data-lang-key="no_completed_scenarios">עדיין לא השלמת אף תרחיש.</td></tr>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="card p-6 rounded-xl shadow-lg mb-6">
+            <h3 data-lang-key="scenario_progress_chart_title" class="text-xl font-semibold text-header mb-4">התקדמות בתרחישים</h3>
+            <div id="scenario-progress-chart-container" class="chart-container h-72">
+                <canvas id="scenarioProgressChart"></canvas>
+                <p id="scenarioProgressChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_progress_chart">אין נתונים להצגת גרף התקדמות.</p>
+            </div>
+        </section>
+        
+        <section class="card p-6 rounded-xl shadow-lg mb-6">
+            <h3 data-lang-key="skills_radar_chart_title" class="text-xl font-semibold text-header mb-4">מיומנויות סייבר</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 skills-chart-grid">
+                <div id="skills-radar-chart-container" class="chart-container radar-chart h-72">
+                    <canvas id="skillsRadarChart"></canvas>
+                    <p id="skillsRadarChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_skills_radar">אין נתונים להצגת מיומנויות סייבר.</p>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <h4 data-lang-key="skills_radar_explanation" class="text-lg font-semibold text-header mb-2">מפת המיומנויות שלך</h4>
+                    <p data-lang-key="skills_radar_description" class="text-subtitle mb-3">גרף זה מציג את רמת המיומנות שלך בתחומי סייבר שונים, בהתבסס על ביצועים בתרחישים.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-blue-400 dark:bg-blue-600 inline-block mr-2"></span>
+                            <span data-lang-key="skill_category_threat_intel">מודיעין איומים</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-green-400 dark:bg-green-600 inline-block mr-2"></span>
+                            <span data-lang-key="skill_category_incident_response">תגובה לאירועים</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 dark:bg-amber-600 inline-block mr-2"></span>
+                            <span data-lang-key="skill_category_threat_hunting">זיהוי איומים</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-purple-400 dark:bg-purple-600 inline-block mr-2"></span>
+                            <span data-lang-key="skill_category_network_security">אבטחת רשת</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-red-400 dark:bg-red-600 inline-block mr-2"></span>
+                            <span data-lang-key="skill_category_malware_analysis">ניתוח נוזקות</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section id="my-badges-section" class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="my_badges_section_title_myprog" class="text-xl font-semibold text-header mb-4">התגים שלי</h3>
+                <div id="my-badges-section-progress" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <p id="no-badges-msg-progress" class="text-subtitle text-sm hidden col-span-full text-center py-4" data-lang-key="no_badges_earned_myprog">עדיין לא השגת תגים.</p>
+                    </div>
+            </section>
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="recent_achievements_section_title_myprog" class="text-xl font-semibold text-header mb-3">הישגים אחרונים</h3>
+                <ul id="recent-achievements-section-progress-list" class="space-y-2 dashboard-list-scrollable max-h-60 overflow-y-auto">
+                     <li id="no-recent-achievements-msg-progress" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_recent_achievements_myprog">אין הישגים אחרונים להציג.</li>
+                    </ul>
+            </section>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_mitigation_steps">חזור לשלבי מיטיגציה</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_prep_materials_from_progress">המשך לחומרי לימוד</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_my_progress_translations.js" defer></script>
+    <script src="trainee_my_progress.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_mitigation.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_prep_materials.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_monitor_simulations_page_title">מעקב וניטור סימולציות - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="monitor_simulations_header" class="text-3xl font-bold text-header">מעקב וניטור סימולציות</h2>
+            <p data-lang-key="monitor_simulations_subtitle" class="text-subtitle mt-1 text-base">עקוב בזמן אמת אחר סימולציות פעילות, נהל אותן וצפה בהיסטוריית סימולציות קודמות.</p>
+        </header>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_active_sim_count_title" class="text-lg font-semibold text-text-color mb-1">סה"כ סימולציות פעילות</h3>
+                <p id="active-simulations-count" class="kpi-value text-3xl font-bold mt-2">0</p>
+                <p data-lang-key="kpi_running_now_subtext" class="kpi-subtext text-xs mt-1">רצות כעת במערכת</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_active_participants_title" class="text-lg font-semibold text-text-color mb-1">סה"כ משתתפים פעילים</h3>
+                <p id="active-participants-count" class="kpi-value text-3xl font-bold mt-2">0</p>
+                <p data-lang-key="kpi_currently_in_sim_subtext" class="kpi-subtext text-xs mt-1">משתתפים בסימולציות פעילות</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_avg_time_in_sim_title" class="text-lg font-semibold text-text-color mb-1">זמן ממוצע בסימולציה</h3>
+                <p id="avg-time-in-simulation" class="kpi-value text-3xl font-bold mt-2">0 <span class="text-lg" data-lang-key="minutes_suffix_short">דק'</span></p>
+                <p data-lang-key="kpi_for_active_sims_subtext" class="kpi-subtext text-xs mt-1">עבור סימולציות פעילות</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_avg_completion_rate_title" class="text-lg font-semibold text-text-color mb-1">אחוז השלמה ממוצע</h3>
+                <p id="avg-completion-rate" class="kpi-value text-3xl font-bold mt-2">0%</p>
+                <p data-lang-key="kpi_for_active_sims_progress_subtext" class="kpi-subtext text-xs mt-1">של התקדמות בסימולציות הפעילות</p>
+            </div>
+        </section>
+        <section class="card p-0 rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="p-6 border-b border-[var(--card-border-color)]">
+                <h3 data-lang-key="active_simulations_list_title" class="text-xl font-semibold text-header">רשימת סימולציות פעילות</h3>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <input type="text" id="search-active-simulations" class="form-input md:col-span-1" data-lang-key-placeholder="search_sim_name_placeholder" placeholder="חפש לפי שם סימולציה/תרחיש...">
+                    <select id="filter-scenario-name" class="form-select md:col-span-1">
+                        <option value="all" data-lang-key="filter_all_scenarios">כל התרחישים</option>
+                    </select>
+                    <select id="filter-team-user" class="form-select md:col-span-1">
+                        <option value="all" data-lang-key="filter_all_teams_users">כל הצוותים/משתמשים</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-lang-key="table_header_sim_name">שם סימולציה</th>
+                            <th scope="col" data-lang-key="table_header_scenario_name_col">תרחיש</th>
+                            <th scope="col" data-lang-key="table_header_team_user_col">צוות/משתמש</th>
+                            <th scope="col" data-lang-key="table_header_progress" class="min-w-[150px]">התקדמות</th>
+                            <th scope="col" data-lang-key="table_header_time_left">זמן שנותר</th>
+                            <th scope="col" data-lang-key="table_header_status_col">סטטוס</th>
+                            <th scope="col" data-lang-key="table_header_actions_col" class="text-center">פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody id="active-simulations-table-body">
+                        <tr id="loading-active-simulations-row"><td colspan="7" class="text-center p-4" data-lang-key="loading_active_simulations">טוען סימולציות פעילות...</td></tr>
+                        <tr>
+                            <td>סימולציית פישינג מורכבת</td>
+                            <td>תרחיש פישינג מתקדם</td>
+                            <td>צוות אלפא</td>
+                            <td>
+                                <div class="progress-bar-container-table">
+                                    <div class="progress-bar-table" style="width: 75%;"></div>
+                                </div>
+                                <span class="text-xs">75%</span>
+                            </td>
+                            <td>30 דק'</td>
+                            <td><span class="status-badge status-active" data-lang-key="status_running">רצה</span></td>
+                            <td class="text-center">
+                                <div class="flex items-center justify-center space-x-1 rtl:space-x-reverse">
+                                     <button class="table-action-button" data-lang-key-title="view_details_tooltip" title="צפה בפרטים">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                    </button>
+                                    <button class="table-action-button" data-lang-key-title="pause_sim_tooltip" title="השהה סימולציה">
+                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </button>
+                                    <button class="table-action-button" data-lang-key-title="stop_sim_tooltip" title="עצור סימולציה">
+                                         <svg class="w-4 h-4 text-danger-color" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a.5.5 0 01.5-.5h5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5h-5a.5.5 0 01-.5-.5v-4z"></path></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                <nav id="active-simulations-pagination" class="flex items-center gap-2" aria-label="Active simulations pagination">
+                </nav>
+            </div>
+        </section>
+        <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-[var(--card-border-color)]">
+                <h3 data-lang-key="past_simulations_list_title" class="text-xl font-semibold text-header">היסטוריית סימולציות</h3>
+                 <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <input type="text" id="search-past-simulations" class="form-input md:col-span-1" data-lang-key-placeholder="search_sim_name_placeholder" placeholder="חפש לפי שם סימולציה/תרחיש...">
+                    <select id="filter-past-scenario-name" class="form-select md:col-span-1">
+                        <option value="all" data-lang-key="filter_all_scenarios">כל התרחישים</option>
+                    </select>
+                    <select id="filter-past-team-user" class="form-select md:col-span-1">
+                        <option value="all" data-lang-key="filter_all_teams_users">כל הצוותים/משתמשים</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-lang-key="table_header_sim_name">שם סימולציה</th>
+                            <th scope="col" data-lang-key="table_header_scenario_name_col">תרחיש</th>
+                            <th scope="col" data-lang-key="table_header_team_user_col">צוות/משתמש</th>
+                            <th scope="col" data-lang-key="table_header_final_score">ציון סופי</th>
+                            <th scope="col" data-lang-key="table_header_completion_date">תאריך סיום</th>
+                            <th scope="col" data-lang-key="table_header_status_col">סטטוס</th>
+                            <th scope="col" data-lang-key="table_header_actions_col" class="text-center">פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody id="past-simulations-table-body">
+                         <tr id="loading-past-simulations-row"><td colspan="7" class="text-center p-4" data-lang-key="loading_past_simulations">טוען היסטוריית סימולציות...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                <nav id="past-simulations-pagination" class="flex items-center gap-2" aria-label="Past simulations pagination">
+                </nav>
+            </div>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_manage_scenarios_short">חזור לניהול תרחישים</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_reports_analytics_short">המשך לדוחות ואנליטיקה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_monitor_simulations_translations.js" defer></script>
+    <script src="instructor_monitor_simulations.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_manage_scenarios.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_reports_analytics.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

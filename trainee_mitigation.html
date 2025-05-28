@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_mitigation_page_title">שלבי מיטיגציה - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general"> <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="mitigation_steps_header" class="text-3xl font-bold text-header">שלבי מיטיגציה מומלצים</h2>
+            <p data-lang-key="mitigation_steps_subtitle" class="text-subtitle mt-1 text-base">להלן המלצות לפעולות מידיות, לטווח קצר ולטווח ארוך להתמודדות עם האיום שזוהה ולמניעת הישנותו.</p>
+        </header>
+        <div class="space-y-8">
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="mitigation_immediate_actions_title" class="text-xl font-semibold text-header mb-4">פעולות מידיות (Containment & Eradication)</h3>
+                <ul id="immediate-actions-list" class="space-y-2 custom-list list-none p-0">
+                    <li id="no-immediate-steps-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_mitigation_steps_in_category">[טוען המלצות...]</li>
+                    </ul>
+            </section>
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="mitigation_short_term_title" class="text-xl font-semibold text-header mb-4">המלצות לטווח קצר (Hardening & Prevention)</h3>
+                <ul id="short-term-recs-list" class="space-y-2 custom-list list-none p-0">
+                     <li id="no-short-term-steps-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_mitigation_steps_in_category">[טוען המלצות...]</li>
+                    </ul>
+            </section>
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="mitigation_long_term_title" class="text-xl font-semibold text-header mb-4">אסטרטגיה לטווח ארוך (Resilience & Improvement)</h3>
+                <ul id="long-term-strategy-list" class="space-y-2 custom-list list-none p-0">
+                     <li id="no-long-term-steps-msg" class="text-subtitle text-sm hidden py-4 text-center" data-lang-key="no_mitigation_steps_in_category">[טוען המלצות...]</li>
+                    </ul>
+            </section>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_mitre_view">חזור לנתיב התקיפה (MITRE)</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_my_progress_from_mitigation">המשך להתקדמות שלי</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_mitigation_translations.js" defer></script>
+    <script src="trainee_mitigation.js" defer></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_mitre.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_my_progress.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_content_management_page_title">ניהול תוכן - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="content_management_header" class="text-3xl font-bold text-header">ניהול תוכן</h2>
+            <p data-lang-key="content_management_subtitle" class="text-subtitle mt-1 text-base">נהל חומרי לימוד, תבניות תרחיש ומאגר ידע מרכזי.</p>
+        </header>
+        <div class="mb-6 border-b border-[var(--card-border-color)]">
+            <div class="-mb-px flex space-x-4 rtl:space-x-reverse" aria-label="Tabs" role="tablist">
+                <button type="button" id="tab-learning-materials" class="tab-button active" role="tab" aria-controls="learning-materials-panel" aria-selected="true">
+                    <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path></svg>
+                    <span data-lang-key="tab_learning_materials">חומרי לימוד</span>
+                </button>
+                <button type="button" id="tab-scenario-templates" class="tab-button" role="tab" aria-controls="scenario-templates-panel" aria-selected="false">
+                    <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H12m2.25 0h-.097M12.75 9.75M12 12.75m0 0H9.75m2.25 0V9.75M14.25 9.75h1.5m0 3.75v.375c0 .621-.504 1.125-1.125 1.125H9.75A1.125 1.125 0 018.625 12V9.75M16.5 9.75H18v12.75H6V9.75h1.5"></path></svg>
+                    <span data-lang-key="tab_scenario_templates">תבניות תרחיש</span>
+                </button>
+                <button type="button" id="tab-knowledge-base" class="tab-button" role="tab" aria-controls="knowledge-base-panel" aria-selected="false">
+                    <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75V6.25"></path></svg>
+                    <span data-lang-key="tab_knowledge_base">מאגר ידע</span>
+                </button>
+            </div>
+        </div>
+        <div id="learning-materials-panel" role="tabpanel" class="tab-panel active">
+            <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)] flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h3 data-lang-key="learning_materials_title" class="text-xl font-semibold text-header">ניהול חומרי לימוד</h3>
+                        <p data-lang-key="learning_materials_subtitle" class="text-sm text-subtitle mt-1">העלה, נהל ושתף קבצים, מסמכים ומדריכים.</p>
+                    </div>
+                    <button id="upload-material-btn" class="btn btn-primary w-full sm:w-auto">
+                        <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        <span data-lang-key="upload_new_material_button">העלה חומר חדש</span>
+                    </button>
+                </div>
+                 <div class="p-4 md:p-6 border-b border-[var(--card-border-color)]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <input type="text" id="search-learning-materials" class="form-input" data-lang-key-placeholder="search_file_name_placeholder" placeholder="חפש לפי שם קובץ...">
+                        <select id="filter-file-type" class="form-select">
+                            <option value="all" data-lang-key="filter_all_file_types">כל סוגי הקבצים</option>
+                            <option value="pdf" data-lang-key="file_type_pdf">PDF</option>
+                            <option value="docx" data-lang-key="file_type_docx">DOCX</option>
+                            <option value="image" data-lang-key="file_type_image">תמונה</option>
+                            <option value="video" data-lang-key="file_type_video">וידאו</option>
+                        </select>
+                        <input type="date" id="filter-upload-date" class="form-input" title="סנן לפי תאריך העלאה">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="custom-table" id="learning-materials-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" data-lang-key="table_header_file_name">שם קובץ</th>
+                                <th scope="col" data-lang-key="table_header_file_type">סוג</th>
+                                <th scope="col" data-lang-key="table_header_file_size">גודל</th>
+                                <th scope="col" data-lang-key="table_header_upload_date">תאריך העלאה</th>
+                                <th scope="col" data-lang-key="table_header_actions" class="text-center">פעולות</th>
+                            </tr>
+                        </thead>
+                        <tbody id="learning-materials-table-body">
+                            <tr id="loading-learning-materials-row"><td colspan="5" class="text-center p-4" data-lang-key="loading_learning_materials">טוען חומרי לימוד...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                    <nav id="learning-materials-pagination" class="flex items-center gap-2" aria-label="Learning materials pagination"></nav>
+                </div>
+            </section>
+        </div>
+        <div id="scenario-templates-panel" role="tabpanel" class="tab-panel hidden">
+             <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)] flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h3 data-lang-key="scenario_templates_title" class="text-xl font-semibold text-header">ניהול תבניות תרחיש</h3>
+                        <p data-lang-key="scenario_templates_subtitle" class="text-sm text-subtitle mt-1">צור ונהל תבניות מוכנות מראש ליצירה מהירה של תרחישים.</p>
+                    </div>
+                    <button id="create-template-btn" class="btn btn-primary w-full sm:w-auto">
+                        <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        <span data-lang-key="create_new_template_button">צור תבנית חדשה</span>
+                    </button>
+                </div>
+                 <div class="p-4 md:p-6 border-b border-[var(--card-border-color)]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <input type="text" id="search-scenario-templates" class="form-input" data-lang-key-placeholder="search_template_name_placeholder" placeholder="חפש לפי שם תבנית...">
+                         <select id="filter-template-difficulty" class="form-select">
+                            <option value="all" data-lang-key="difficulty_all">כל רמות הקושי</option>
+                            <option value="easy" data-lang-key="difficulty_easy_badge">קל</option>
+                            <option value="medium" data-lang-key="difficulty_medium_badge">בינוני</option>
+                            <option value="hard" data-lang-key="difficulty_hard_badge">קשה</option>
+                             <option value="expert" data-lang-key="difficulty_expert_badge">מומחה</option>
+                        </select>
+                        <input type="text" id="filter-template-creator" class="form-input" data-lang-key-placeholder="search_creator_placeholder" placeholder="חפש לפי שם יוצר...">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="custom-table" id="scenario-templates-table">
+                         <thead>
+                            <tr>
+                                <th scope="col" data-lang-key="table_header_template_name">שם תבנית</th>
+                                <th scope="col" data-lang-key="table_header_template_description_short">תיאור קצר</th>
+                                <th scope="col" data-lang-key="table_header_difficulty">רמת קושי</th>
+                                <th scope="col" data-lang-key="table_header_created_by">נוצר ע"י</th>
+                                <th scope="col" data-lang-key="table_header_actions" class="text-center">פעולות</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scenario-templates-table-body">
+                            <tr id="loading-scenario-templates-row"><td colspan="5" class="text-center p-4" data-lang-key="loading_scenario_templates">טוען תבניות תרחיש...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                    <nav id="scenario-templates-pagination" class="flex items-center gap-2" aria-label="Scenario templates pagination"></nav>
+                </div>
+            </section>
+        </div>
+        <div id="knowledge-base-panel" role="tabpanel" class="tab-panel hidden">
+             <section class="rounded-xl">
+                <div class="p-6 bg-[var(--card-bg-color)] border border-[var(--card-border-color)] rounded-t-xl flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                     <div>
+                        <h3 data-lang-key="knowledge_base_title" class="text-xl font-semibold text-header">מאגר ידע</h3>
+                        <p data-lang-key="knowledge_base_subtitle" class="text-sm text-subtitle mt-1">עיין, חפש והוסף מאמרים, מדריכים ומידע שימושי.</p>
+                    </div>
+                    <button id="add-kb-entry-btn" class="btn btn-primary w-full sm:w-auto">
+                        <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <span data-lang-key="add_kb_entry_button">הוסף ערך חדש</span>
+                    </button>
+                </div>
+                <div class="p-4 md:p-6 bg-[var(--card-bg-color)] border-x border-[var(--card-border-color)]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <input type="text" id="search-kb" class="form-input" data-lang-key-placeholder="search_kb_placeholder" placeholder="חפש במאגר הידע...">
+                        <select id="filter-kb-category" class="form-select">
+                            <option value="all" data-lang-key="filter_all_categories">כל הקטגוריות</option>
+                        </select>
+                        <input type="text" id="filter-kb-tags" class="form-input" data-lang-key-placeholder="filter_kb_tags_placeholder" placeholder="סנן לפי תגיות (מופרד בפסיק)...">
+                    </div>
+                </div>
+                <div id="knowledge-base-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 md:p-6 bg-[var(--card-bg-color)] border border-t-0 border-[var(--card-border-color)] rounded-b-xl">
+                    <p id="loading-kb-entries" class="col-span-full text-center p-4 text-subtitle" data-lang-key="loading_kb_entries">טוען ערכים...</p>
+                </div>
+                 <div class="p-4 mt-4 bg-[var(--card-bg-color)] border border-[var(--card-border-color)] rounded-xl flex justify-center">
+                    <nav id="knowledge-base-pagination" class="flex items-center gap-2" aria-label="Knowledge base pagination"></nav>
+                </div>
+            </section>
+        </div>
+        <div id="uploadMaterialModal" class="modal-overlay hidden" aria-labelledby="uploadMaterialModalTitle" role="dialog" aria-modal="true">
+            <div class="modal-content card max-w-lg w-full p-6 rounded-xl shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="uploadMaterialModalTitle" class="modal-title" data-lang-key="upload_material_modal_title">העלאת חומר לימוד חדש</h3>
+                    <button type="button" class="modal-close-button" data-modal-id="uploadMaterialModal" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="uploadMaterialForm" class="space-y-4">
+                    <div>
+                        <label for="material-file" class="form-label" data-lang-key="material_file_label">בחר קובץ</label>
+                        <input type="file" id="material-file" name="materialFile" class="form-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-bg file:text-primary hover:file:bg-primary-hover-bg" required>
+                    </div>
+                    <div>
+                        <label for="material-name" class="form-label" data-lang-key="material_name_label">שם (אופציונלי)</label>
+                        <input type="text" id="material-name" name="materialName" class="form-input" data-lang-key-placeholder="material_name_placeholder" placeholder="ברירת מחדל: שם הקובץ המקורי">
+                    </div>
+                     <div>
+                        <label for="material-description" class="form-label" data-lang-key="material_description_label">תיאור קצר</label>
+                        <textarea id="material-description" name="materialDescription" rows="2" class="form-textarea"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button type="button" class="btn btn-neutral modal-close-button" data-modal-id="uploadMaterialModal" data-lang-key="cancel_button_modal">ביטול</button>
+                        <button type="submit" class="btn btn-primary" data-lang-key="upload_button">העלה</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="templateModal" class="modal-overlay hidden" aria-labelledby="templateModalTitle" role="dialog" aria-modal="true">
+            <div class="modal-content card max-w-xl w-full p-6 rounded-xl shadow-2xl">
+                 <div class="flex justify-between items-center mb-4">
+                    <h3 id="templateModalTitle" class="modal-title" data-lang-key="template_modal_create_title">יצירת תבנית תרחיש חדשה</h3>
+                    <button type="button" class="modal-close-button" data-modal-id="templateModal" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="templateForm" class="space-y-4">
+                    <input type="hidden" id="template-id" name="templateId">
+                    <div>
+                        <label for="template-name" class="form-label" data-lang-key="template_name_label">שם התבנית</label>
+                        <input type="text" id="template-name" name="templateName" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="template-description" class="form-label" data-lang-key="template_description_label">תיאור קצר</label>
+                        <textarea id="template-description" name="templateDescription" rows="3" class="form-textarea" required></textarea>
+                    </div>
+                     <div>
+                        <label for="template-difficulty" data-lang-key="scenario_difficulty_label" class="form-label">רמת קושי</label>
+                        <select id="template-difficulty" name="templateDifficulty" class="form-select">
+                            <option value="easy" data-lang-key="difficulty_easy_badge">קל</option>
+                            <option value="medium" data-lang-key="difficulty_medium_badge" selected>בינוני</option>
+                            <option value="hard" data-lang-key="difficulty_hard_badge">קשה</option>
+                            <option value="expert" data-lang-key="difficulty_expert_badge">מומחה</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button type="button" class="btn btn-neutral modal-close-button" data-modal-id="templateModal" data-lang-key="cancel_button_modal">ביטול</button>
+                        <button type="submit" class="btn btn-primary" data-lang-key="save_template_button">שמור תבנית</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="kbEntryModal" class="modal-overlay hidden" aria-labelledby="kbEntryModalTitle" role="dialog" aria-modal="true">
+            <div class="modal-content card max-w-2xl w-full p-6 rounded-xl shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="kbEntryModalTitle" class="modal-title" data-lang-key="kb_entry_modal_add_title">הוספת ערך חדש למאגר הידע</h3>
+                    <button type="button" class="modal-close-button" data-modal-id="kbEntryModal" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="kbEntryForm" class="space-y-4">
+                    <input type="hidden" id="kb-entry-id" name="kbEntryId">
+                    <div>
+                        <label for="kb-title" class="form-label" data-lang-key="kb_title_label">כותרת</label>
+                        <input type="text" id="kb-title" name="kbTitle" class="form-input" required>
+                    </div>
+                    <div>
+                        <label for="kb-category" class="form-label" data-lang-key="kb_category_label">קטגוריה</label>
+                        <select id="kb-category" name="kbCategory" class="form-select" required>
+                            <option value="general" data-lang-key="kb_category_general">כללי</option>
+                            <option value="technical" data-lang-key="kb_category_technical">טכני</option>
+                            <option value="procedures" data-lang-key="kb_category_procedures">נהלים</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="kb-content" class="form-label" data-lang-key="kb_content_label">תוכן</label>
+                        <textarea id="kb-content" name="kbContent" rows="6" class="form-textarea" data-lang-key-placeholder="kb_content_placeholder" placeholder="הכנס את תוכן המאמר כאן..." required></textarea>
+                    </div>
+                     <div>
+                        <label for="kb-tags" class="form-label" data-lang-key="kb_tags_label">תגיות (מופרד בפסיק)</label>
+                        <input type="text" id="kb-tags" name="kbTags" class="form-input" data-lang-key-placeholder="kb_tags_placeholder" placeholder="לדוגמה: פישינג, חומת אש, Active Directory">
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button type="button" class="btn btn-neutral modal-close-button" data-modal-id="kbEntryModal" data-lang-key="cancel_button_modal">ביטול</button>
+                        <button type="submit" class="btn btn-primary" data-lang-key="save_kb_entry_button">שמור ערך</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_reports_analytics_short">חזור לדוחות ואנליטיקה</span>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_content_management_translations.js" defer></script>
+    <script src="instructor_content_management.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_reports_analytics.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

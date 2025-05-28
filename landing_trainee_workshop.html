@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="landing_trainee_workshop_page_title">ברוכים הבאים לסדנא! - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_workshop">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-10 text-center">
+            <h2 data-lang-key="landing_trainee_workshop_header" class="text-4xl font-bold text-header mb-2">ברוכים הבאים לסדנת הסייבר!</h2>
+            <p data-lang-key="landing_trainee_workshop_subtitle" class="text-subtitle text-lg">התכוננו לעבוד בצוות ולשפר את כישורי הסייבר שלכם באמצעות תרחישים מציאותיים.</p>
+        </header>
+        
+        <!-- Navigation Icons Section -->
+        <section class="mb-10">
+            <h3 data-lang-key="navigation_quick_access_workshop" class="text-2xl font-semibold text-header mb-6 text-center">גישה מהירה לכלי הסדנה</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <!-- Landing Page -->
+                <a href="landing_trainee_workshop.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_landing_page">עמוד נחיתה (חניך)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_landing_page_workshop_desc">דף הסדנה הראשי</span>
+                </a>
+                
+                <!-- Architecture -->
+                <a href="trainee_architecture.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_architecture">סקירת ארכיטקטורה</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_architecture_workshop_desc">התחל מכאן - מפת המערכות</span>
+                </a>
+                
+                <!-- Email -->
+                <a href="trainee_email.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_email">לקוח דוא"ל</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_email_workshop_desc">בדוק הודעות מהצוות</span>
+                </a>
+                
+                <!-- CTI -->
+                <a href="trainee_cti.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_cti">מאגר מודיעין (CTI)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_cti_workshop_desc">מידע מודיעיני לצוות</span>
+                </a>
+                
+                <!-- Questions -->
+                <a href="trainee_questions.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_questions">שאלות מנחות</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_questions_workshop_desc">ענו יחד כצוות</span>
+                </a>
+                
+                <!-- Communication -->
+                <a href="trainee_communication.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_communication">תקשורת צוותית</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_communication_workshop_desc">תקשורת קריטית!</span>
+                </a>
+                
+                <!-- AI Assistant -->
+                <a href="trainee_ai_assistant.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_ai_assistant">עוזר AI</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_ai_assistant_workshop_desc">עזרה לכל הצוות</span>
+                </a>
+                
+                <!-- MITRE -->
+                <a href="trainee_mitre.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_mitre">נתיב תקיפה (MITRE)</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_mitre_workshop_desc">נתחו יחד</span>
+                </a>
+                
+                <!-- Mitigation -->
+                <a href="trainee_mitigation.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="trainee_mitigation">שלבי מיטיגציה</span>
+                    <span class="nav-icon-desc" data-lang-key="trainee_mitigation_workshop_desc">פתרונות צוותיים</span>
+                </a>
+            </div>
+        </section>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="quick_start_guide_title_trainee_ws" class="text-2xl font-semibold text-header mb-4">מדריך מהיר למערכת (סדנת צוות)</h3>
+                <p data-lang-key="trainee_workshop_tutorial_intro" class="text-text-color mb-4">פלטפורמה זו תעזור לכם לתרגל בצוות ולהתמקצע בתגובה לאירועי סייבר. הנה מה שחשוב לדעת:</p>
+                <ul class="space-y-3">
+                    <li>
+                        <strong data-lang-key="tutorial_item_team_coordination" class="text-primary">עבודת צוות ותיאום:</strong>
+                        <p data-lang-key="tutorial_item_team_coordination_desc" class="text-sm text-subtitle">שתפו פעולה עם חברי הצוות שלכם באמצעות כלי התקשורת המובנים.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_using_sim_tools" class="text-primary">שימוש בכלים במהלך סימולציה:</strong>
+                        <p data-lang-key="tutorial_item_using_sim_tools_desc" class="text-sm text-subtitle">בכל תרחיש תקבלו גישה לכלים כמו סקירת ארכיטקטורה, לקוח דוא"ל, מאגר מודיעין (CTI) ועוד.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_answering_questions" class="text-primary">מענה על שאלות מנחות והבנת MITRE ATT&CK:</strong>
+                        <p data-lang-key="tutorial_item_answering_questions_desc" class="text-sm text-subtitle">ענו על שאלות כדי להתקדם, להבין את שלבי התקיפה ולצבור נקודות.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_real_time_feedback" class="text-primary">משוב בזמן אמת:</strong>
+                        <p data-lang-key="tutorial_item_real_time_feedback_desc" class="text-sm text-subtitle">המאמן יכול לספק הנחיות ורמזים במהלך הסימולציה.</p>
+                    </li>
+                    <li>
+                        <strong data-lang-key="tutorial_item_time_management" class="text-primary">ניהול זמן:</strong>
+                        <p data-lang-key="tutorial_item_time_management_desc" class="text-sm text-subtitle">שימו לב למגבלות הזמן ותעדפו משימות בהתאם.</p>
+                    </li>
+                </ul>
+            </section>
+            
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="typical_scenario_flow_title" class="text-2xl font-semibold text-header mb-6 text-center">מהלך תרחיש טיפוסי</h3>
+                <ol class="relative border-gray-200 dark:border-gray-700 space-y-4 list-none p-0 m-0 rtl:border-r rtl:border-l-0 ltr:border-l ltr:border-r-0">
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_team_formation">הקמת צוות ותדריך</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_team_formation_desc">התחברות כל חברי הצוות והבנת המשימה המשותפת.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_exploration">חקירה ואיסוף מידע</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_exploration_desc">שימוש בכלים לניתוח המצב, כגון סקירת ארכיטקטורה, מיילים ופיד CTI.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_team_communication">תקשורת ושיתוף מידע</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_team_communication_desc">שיתוף ממצאים בין חברי הצוות וגיבוש תמונת מצב משותפת.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_decision_points">נקודות החלטה ופעולה</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_decision_points_desc">קבלת החלטות משותפות המשפיעות על התפתחות התרחיש.</p>
+                    </li>
+                    <li class="rtl:mr-6 ltr:ml-6">
+                        <div class="absolute w-3 h-3 bg-gray-300 rounded-full mt-1.5 rtl:-right-1.5 ltr:-left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <h4 class="text-lg font-semibold text-primary" data-lang-key="flow_item_feedback_summary">משוב וסיכום קבוצתי</h4>
+                        <p class="text-sm text-subtitle" data-lang-key="flow_item_feedback_summary_desc">קבלת ניקוד קבוצתי, ניתוח ביצועים, ודיון על שלבי המיטיגציה האפשריים.</p>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="what_you_will_learn_title" class="text-2xl font-semibold text-header mb-4">מה תלמדו כאן?</h3>
+                <ul class="list-disc list-inside text-text-color space-y-1 rtl:pr-4 ltr:pl-4">
+                    <li data-lang-key="learn_item_incident_response">תגובה לאירועי סייבר בזמן אמת.</li>
+                    <li data-lang-key="learn_item_threat_identification">זיהוי וניתוח איומים ווקטורי תקיפה.</li>
+                    <li data-lang-key="learn_item_team_collaboration">עבודת צוות ושיתוף פעולה בתרחישי חירום.</li>
+                    <li data-lang-key="learn_item_mitre_application">יישום עקרונות ממסגרת MITRE ATT&CK.</li>
+                    <li data-lang-key="learn_item_decision_making">קבלת החלטות תחת לחץ ובסביבה דינמית.</li>
+                </ul>
+            </section>
+            
+            <section class="card p-6 rounded-xl shadow-lg">
+                <h3 data-lang-key="tips_for_success_title" class="text-2xl font-semibold text-header mb-4">טיפים להצלחה</h3>
+                <ul class="list-disc list-inside text-text-color space-y-1 rtl:pr-4 ltr:pl-4">
+                    <li data-lang-key="tip_1_communicate">תקשרו באופן ברור ושוטף עם חברי הצוות שלכם.</li>
+                    <li data-lang-key="tip_2_share_findings">שתפו ממצאים חשובים עם כל הצוות.</li>
+                    <li data-lang-key="tip_3_divide_tasks">חלקו משימות באופן יעיל בין חברי הצוות.</li>
+                    <li data-lang-key="tip_4_use_tools">נצלו את כל הכלים העומדים לרשותכם (CTI, דוא"ל, ארכיטקטורה).</li>
+                    <li data-lang-key="tip_5_learn_from_mistakes">אל תחששו לטעות - כל טעות היא הזדמנות ללמידה.</li>
+                </ul>
+            </section>
+        </div>
+        
+        <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <button type="button" id="start-architecture-button" class="btn btn-primary btn-lg px-8 py-3 text-lg">
+                <span data-lang-key="go_to_architecture">המשך לסקירת ארכיטקטורה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 rtl:mr-2 ltr:ml-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="landing_trainee_workshop_translations.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_workshop';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) yearEl.textContent = new Date().getFullYear();
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            } else {
+                 console.error("renderDynamicSidebar function not found on landing_trainee_workshop.html");
+            }
+            // The translations file landing_trainee_workshop_translations.js should call applyTranslationsGlobal()
+            // If for some reason it doesn't or if it's not linked, this is a fallback.
+            if (typeof window.applyTranslationsGlobal === 'function' && (!document.querySelector('script[src*="landing_trainee_workshop_translations.js"]'))) {
+                window.applyTranslationsGlobal();
+            }
+            const nextButton = document.getElementById('start-architecture-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_architecture.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

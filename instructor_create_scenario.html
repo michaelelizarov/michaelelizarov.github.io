@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_create_scenario_page_title">יצירת תרחיש חדש - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <style>
+        .architecture-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr 1fr 1fr 200px; /* Last column for management network */
+            grid-template-rows: auto auto auto auto auto auto; /* Define rows for stacking */
+            grid-template-areas:
+                "internet   internet   internet   management"
+                "perimeter  perimeter  perimeter  management"
+                "dmz        dmz        dmz        management"
+                "intcore    intapps    intdb      management"
+                "intendp    intendp    intendp    management"
+                "cloud      cloud      cloud      management";
+            padding: 1rem;
+            background-color: var(--input-bg-color-light); /* Consistent with form input backgrounds */
+            border: 1px solid var(--card-border-color-light);
+            border-radius: 0.5rem; /* Tailwind: rounded-lg */
+        }
+        body.dark-theme .architecture-grid {
+            background-color: var(--input-bg-color-dark);
+            border-color: var(--card-border-color-dark);
+        }
+        .zone-internet-area         { grid-area: internet; }
+        .zone-perimeter-area        { grid-area: perimeter; }
+        .zone-dmz-area              { grid-area: dmz; }
+        .zone-internal-core-area    { grid-area: intcore; }
+        .zone-internal-apps-area    { grid-area: intapps; }
+        .zone-internal-db-area      { grid-area: intdb; }
+        .zone-internal-endpoints-area { grid-area: intendp; }
+        .zone-management-area       { grid-area: management; }
+        .zone-cloud-area            { grid-area: cloud; }
+        .architecture-zone {
+            border: 1px solid var(--card-border-color-light);
+            background-color: var(--card-bg-color-light);
+            border-radius: 0.375rem; /* Tailwind: rounded-md */
+            padding: 0.75rem; /* Tailwind: p-3 */
+            display: flex;
+            flex-direction: column;
+            min-height: 120px; /* Minimum height for zones */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        body.dark-theme .architecture-zone {
+            border-color: var(--card-border-color-dark);
+            background-color: var(--card-bg-color-dark);
+            box-shadow: 0 1px 3px rgba(255,255,255,0.03);
+        }
+        .architecture-zone .drop-zone-title {
+            font-size: 0.8rem !important; /* Tailwind: text-xs or text-sm */
+            font-weight: 600 !important; /* Tailwind: font-semibold */
+            color: var(--text-subtitle-color-light) !important;
+            margin-bottom: 0.5rem !important; /* Tailwind: mb-2 */
+            padding-bottom: 0.25rem !important; /* Tailwind: pb-1 */
+            border-bottom: 1px solid var(--card-border-color-light) !important;
+            text-align: center !important;
+        }
+        body.dark-theme .architecture-zone .drop-zone-title {
+             color: var(--text-subtitle-color-dark) !important;
+             border-bottom-color: var(--card-border-color-dark) !important;
+        }
+        .drop-zone {
+            flex-grow: 1;
+        }
+        .vendor-item-draggable.img-error span { /* Style for text when image fails */
+            font-weight: 500;
+        }
+        /* Make dropped items display in a single row */
+        .drop-zone {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 0.25rem !important;
+        }
+        .dropped-item {
+            flex: 0 0 auto !important;
+            max-width: 140px !important;
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.75rem !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+        }
+        .dropped-item img {
+            width: 1rem !important;
+            height: 1rem !important;
+            margin-inline-end: 0.25rem !important;
+        }
+        .dropped-item span {
+            text-overflow: ellipsis !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+        }
+        .dropped-item .remove-item-btn {
+            margin-inline-start: 0.25rem !important;
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            font-size: 0.8rem !important;
+            line-height: 1 !important;
+            padding: 0 !important;
+        }
+        
+        /* Multiple select styling */
+        select[multiple] {
+            height: auto !important;
+            min-height: 150px !important;
+            border-radius: 0.375rem !important;
+        }
+        
+        select[multiple] option {
+            padding: 0.5rem !important;
+            border-bottom: 1px solid var(--card-border-color-light) !important;
+            transition: background-color 0.2s ease !important;
+        }
+        
+        body.dark-theme select[multiple] option {
+            border-bottom-color: var(--card-border-color-dark) !important;
+        }
+        
+        select[multiple] option:checked {
+            background-color: var(--primary-color-light) !important;
+            color: white !important;
+        }
+        
+        body.dark-theme select[multiple] option:checked {
+            background-color: var(--primary-color-dark) !important;
+        }
+        
+        select[multiple] option:hover:not(:checked) {
+            background-color: rgba(var(--primary-color-light-rgb), 0.1) !important;
+        }
+        
+        body.dark-theme select[multiple] option:hover:not(:checked) {
+            background-color: rgba(var(--primary-color-dark-rgb), 0.2) !important;
+        }
+        /* Special case for management network - allow vertical stacking */
+        .zone-management-area .drop-zone {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+        .zone-management-area .dropped-item {
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <div class="content-wrapper">
+        <aside class="components-sidebar-container">
+            <div class="p-4 border-b border-[var(--card-border-color)] sticky top-0 bg-[var(--card-bg-color)] z-10">
+                <h3 data-lang-key="available_components_title" class="text-lg font-semibold text-header">רכיבים זמינים</h3>
+            </div>
+            <div class="components-list space-y-3 p-4">
+                <section aria-labelledby="networkDevicesHeading">
+                    <h4 id="networkDevicesHeading" class="text-sm font-semibold mt-1 mb-2 px-1 text-subtitle" data-lang-key="components_network_devices">התקני רשת</h4>
+                    <div data-vendor-name="Palo Alto Firewall" data-type="firewall" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/paloaltonetworks.com" alt="Palo Alto Networks Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Palo Alto Firewall</span>
+                    </div>
+                    <div data-vendor-name="Fortinet FortiGate" data-type="firewall" draggable="true" class="vendor-item-draggable">
+                         <img src="https://logo.clearbit.com/fortinet.com" alt="Fortinet Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Fortinet FortiGate</span>
+                    </div>
+                    <div data-vendor-name="Check Point NGFW" data-type="firewall" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/checkpoint.com" alt="Check Point Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Check Point NGFW</span>
+                    </div>
+                    <div data-vendor-name="Cisco ASA" data-type="firewall" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/cisco.com" alt="Cisco Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Cisco ASA</span>
+                    </div>
+                    <div data-vendor-name="Juniper SRX" data-type="firewall" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/juniper.net" alt="Juniper Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Juniper SRX</span>
+                    </div>
+                    <div data-vendor-name="pfSense" data-type="firewall_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://www.pfsense.org/img/logo_footer.png" alt="pfSense Logo" class="logo-img-dark-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_pfsense_firewall_os">pfSense (קוד פתוח)</span>
+                    </div>
+                     <div data-vendor-name="Cisco Router" data-type="router" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/cisco.com" alt="Cisco Router Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Cisco Router</span>
+                    </div>
+                    <div data-vendor-name="Juniper Switch" data-type="switch" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/juniper.net" alt="Juniper Switch Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Juniper Switch</span>
+                    </div>
+                </section>
+                <section aria-labelledby="securityToolsHeading">
+                    <h4 id="securityToolsHeading" class="text-sm font-semibold mt-3 mb-2 px-1 text-subtitle" data-lang-key="components_security_tools">כלי אבטחה</h4>
+                    <div data-vendor-name="Splunk SIEM" data-type="siem" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/splunk.com" alt="Splunk Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Splunk SIEM</span>
+                    </div>
+                    <div data-vendor-name="IBM QRadar" data-type="siem" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/ibm.com" alt="IBM QRadar Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>IBM QRadar</span>
+                    </div>
+                    <div data-vendor-name="Elastic SIEM" data-type="siem_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/elastic.co" alt="Elastic Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_elastic_siem_os">Elastic SIEM (קוד פתוח)</span>
+                    </div>
+                    <div data-vendor-name="Wazuh" data-type="siem_ids_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://wazuh.com/wp-content/uploads/2021/03/wazuh-logo-500.png" alt="Wazuh Logo" class="logo-img-dark-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_wazuh_siem_ids_os">Wazuh (SIEM/IDS - קוד פתוח)</span>
+                    </div>
+                    <div data-vendor-name="Microsoft Defender EDR" data-type="edr" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft Defender Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Microsoft Defender EDR</span>
+                    </div>
+                    <div data-vendor-name="CrowdStrike Falcon" data-type="edr" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/crowdstrike.com" alt="CrowdStrike Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>CrowdStrike Falcon EDR</span>
+                    </div>
+                    <div data-vendor-name="SentinelOne Singularity" data-type="xdr" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/sentinelone.com" alt="SentinelOne Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>SentinelOne Singularity XDR</span>
+                    </div>
+                    <div data-vendor-name="Cybereason XDR" data-type="xdr" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/cybereason.com" alt="Cybereason Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Cybereason XDR</span>
+                    </div>
+                    <div data-vendor-name="Cloudflare WAF" data-type="waf" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/cloudflare.com" alt="Cloudflare WAF Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Cloudflare WAF</span>
+                    </div>
+                    <div data-vendor-name="AWS WAF" data-type="waf" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/aws.amazon.com" alt="AWS WAF Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>AWS WAF</span>
+                    </div>
+                    <div data-vendor-name="ModSecurity" data-type="waf_os" draggable="true" class="vendor-item-draggable">
+                         <img src="https://www.modsecurity.org/modsecurity-logo.png" alt="ModSecurity Logo" class="logo-img-light-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_modsecurity_waf_os">ModSecurity (קוד פתוח)</span>
+                    </div>
+                    <div data-vendor-name="Suricata" data-type="ids_ips_os" draggable="true" class="vendor-item-draggable">
+                         <img src="https://suricata.io/wp-content/uploads/2020/12/Logo%20Dateien_Suricata_logo_Green_RGB.svg" alt="Suricata Logo" class="logo-img-light-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_suricata_ids_ips_os">Suricata (IDS/IPS - קוד פתוח)</span>
+                    </div>
+                     <div data-vendor-name="Snort" data-type="ids_ips_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://www.snort.org/assets/banner/snort-logo-transparent-1c6361489a37636a100e4163847f840bca2f4287217d91ab33a827021c507420.png" alt="Snort Logo" class="logo-img-light-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span data-lang-key="component_snort_ids_ips_os">Snort (IDS/IPS - קוד פתוח)</span>
+                    </div>
+                </section>
+                <section aria-labelledby="serversHeading">
+                    <h4 id="serversHeading" class="text-sm font-semibold mt-3 mb-2 px-1 text-subtitle" data-lang-key="components_servers">שרתים</h4>
+                    <div data-vendor-name="Windows Server 2022" data-type="server_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Windows Server Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Windows Server 2022</span>
+                    </div>
+                    <div data-vendor-name="Linux Server (Ubuntu 22.04)" data-type="server_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/ubuntu.com" alt="Ubuntu Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Linux Server (Ubuntu 22.04)</span>
+                    </div>
+                    <div data-vendor-name="Red Hat Enterprise Linux" data-type="server_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/redhat.com" alt="RHEL Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Red Hat Enterprise Linux</span>
+                    </div>
+                    <div data-vendor-name="Web Server (Apache)" data-type="server_app" draggable="true" class="vendor-item-draggable">
+                        <img src="https://www.apache.org/img/asf_logo.png" alt="Apache Logo" class="logo-img-dark-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Web Server (Apache)</span>
+                    </div>
+                    <div data-vendor-name="Web Server (Nginx)" data-type="server_app" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/nginx.com" alt="Nginx Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Web Server (Nginx)</span>
+                    </div>
+                    <div data-vendor-name="Database (MySQL)" data-type="server_app" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/mysql.com" alt="MySQL Logo" class="logo-img-dark-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Database (MySQL)</span>
+                    </div>
+                    <div data-vendor-name="Database (PostgreSQL)" data-type="server_app" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/postgresql.org" alt="PostgreSQL Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Database (PostgreSQL)</span>
+                    </div>
+                     <div data-vendor-name="Active Directory DC" data-type="server_infra" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Active Directory Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Active Directory DC</span>
+                    </div>
+                </section>
+                <section aria-labelledby="endpointsHeading">
+                    <h4 id="endpointsHeading" class="text-sm font-semibold mt-3 mb-2 px-1 text-subtitle" data-lang-key="components_endpoints">תחנות קצה</h4>
+                    <div data-vendor-name="Windows 11 Endpoint" data-type="endpoint_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Windows 11 Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Windows 11 Endpoint</span>
+                    </div>
+                    <div data-vendor-name="macOS Endpoint" data-type="endpoint_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/apple.com" alt="macOS Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>macOS Endpoint</span>
+                    </div>
+                    <div data-vendor-name="Linux Desktop (Fedora)" data-type="endpoint_os" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/fedoraproject.org" alt="Fedora Logo" class="logo-img-dark-static bg-white p-0.5 rounded" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Linux Desktop (Fedora)</span>
+                    </div>
+                </section>
+                <section aria-labelledby="cloudServicesHeading">
+                    <h4 id="cloudServicesHeading" class="text-sm font-semibold mt-3 mb-2 px-1 text-subtitle" data-lang-key="components_cloud_services">שירותי ענן</h4>
+                    <div data-vendor-name="AWS EC2 Instance" data-type="cloud_vm" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/aws.amazon.com" alt="AWS EC2 Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>AWS EC2 Instance</span>
+                    </div>
+                    <div data-vendor-name="Azure Virtual Machine" data-type="cloud_vm" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Azure VM Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Azure Virtual Machine</span>
+                    </div>
+                    <div data-vendor-name="AWS S3 Bucket" data-type="cloud_storage" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/aws.amazon.com" alt="AWS S3 Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>AWS S3 Bucket</span>
+                    </div>
+                     <div data-vendor-name="Azure Blob Storage" data-type="cloud_storage" draggable="true" class="vendor-item-draggable">
+                        <img src="https://logo.clearbit.com/microsoft.com" alt="Azure Blob Storage Logo" class="logo-img-light-static" onerror="this.style.display='none'; this.parentElement.classList.add('img-error'); this.nextElementSibling.textContent = this.parentElement.dataset.vendorName;"> <span>Azure Blob Storage</span>
+                    </div>
+                </section>
+            </div>
+        </aside>
+        <main class="main-content-area with-fixed-suggestion-pane">
+            <header class="mb-6">
+                 <h2 data-lang-key="instructor_create_scenario_title_main" class="text-2xl md:text-3xl font-bold text-header">יצירת תרחיש חדש</h2>
+            </header>
+            <form id="createScenarioForm" class="space-y-8">
+                <section class="card p-6 rounded-xl shadow-lg" aria-labelledby="architectureMapTitleForm">
+                    <h3 id="architectureMapTitleForm" data-lang-key="architecture_map_title_no_num" class="form-section-title">מפת ארכיטקטורה</h3>
+                    <p class="text-xs text-subtitle mb-3">
+                        <span data-lang-key="architecture_note_drag">גרור רכיבים מהרשימה בצד והצב אותם באזורים המתאימים.</span>
+                        <span class="block sm:inline" data-lang-key="architecture_note_dynamic">מבנה האזורים והרכיבים הזמינים עשוי להשתנות בהתאם לבחירותיך בתצורת הסביבה.</span>
+                        <span class="block sm:inline" data-lang-key="architecture_note_future">"מיגנוט" וחיבורים ויזואליים יתווספו בשלבים מתקדמים יותר.</span>
+                    </p>
+                    <div class="architecture-grid">
+                        <div class="architecture-zone zone-internet-area">
+                            <div class="drop-zone-title" data-lang-key="zone_internet">אינטרנט / חיצוני</div>
+                            <div id="drop-zone-internet" class="drop-zone" data-zone-type="external" aria-label="Internet Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_internet">גרור לכאן התקנים חיצוניים...</span>
+                             </div>
+                        </div>
+                        <div class="architecture-zone zone-management-area">
+                             <div class="drop-zone-title" data-lang-key="zone_management">רשת ניהול</div>
+                             <div id="drop-zone-management" class="drop-zone" data-zone-type="management" aria-label="Management Network Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_management">SIEM, בקרה, סורקים...</span>
+                            </div>
+                       </div>
+                        <div class="architecture-zone zone-perimeter-area">
+                            <div class="drop-zone-title" data-lang-key="zone_perimeter">הגנה היקפית</div>
+                             <div id="drop-zone-perimeter" class="drop-zone" data-zone-type="perimeter-security" aria-label="Perimeter Defense Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_perimeter">FW, WAF, IPS...</span>
+                            </div>
+                        </div>
+                         <div class="architecture-zone zone-dmz-area">
+                            <div class="drop-zone-title" data-lang-key="zone_dmz">DMZ</div>
+                             <div id="drop-zone-dmz-content" class="drop-zone" data-zone-type="dmz" aria-label="DMZ Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_dmz">שרתי Web, אפליקציה...</span>
+                            </div>
+                        </div>
+                        <div class="architecture-zone zone-internal-core-area">
+                             <div class="drop-zone-title" data-lang-key="zone_internal_core">שרתי ליבה</div>
+                             <div id="drop-zone-internal-core" class="drop-zone" data-zone-type="internal-core" aria-label="Core Servers Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_core">AD, DNS...</span>
+                            </div>
+                        </div>
+                        <div class="architecture-zone zone-internal-apps-area">
+                             <div class="drop-zone-title" data-lang-key="zone_internal_apps">שרתי יישומים</div>
+                             <div id="drop-zone-internal-apps" class="drop-zone" data-zone-type="internal-apps" aria-label="Application Servers Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_internal_apps">שרתי אפליקציות פנימיים...</span>
+                            </div>
+                        </div>
+                        <div class="architecture-zone zone-internal-db-area">
+                            <div class="drop-zone-title" data-lang-key="zone_internal_db">בסיסי נתונים</div>
+                             <div id="drop-zone-internal-db" class="drop-zone" data-zone-type="internal-db" aria-label="Database Servers Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_db">MySQL, MSSQL...</span>
+                             </div>
+                         </div>
+                        <div class="architecture-zone zone-internal-endpoints-area">
+                            <div class="drop-zone-title" data-lang-key="zone_internal_endpoints">תחנות קצה</div>
+                             <div id="drop-zone-internal-endpoints" class="drop-zone" data-zone-type="internal-endpoints" aria-label="Endpoints Drop Zone">
+                                <span class="drop-placeholder" data-lang-key="drop_placeholder_endpoints">Windows, Linux, macOS...</span>
+                             </div>
+                        </div>
+                         <div id="cloud-arch-zone" class="architecture-zone zone-cloud-area hidden">
+                            <div class="drop-zone-title"><span data-lang-key="zone_cloud_env_title_prefix">סביבת ענן</span> (<span id="selected-cloud-provider-arch"></span>)</div>
+                             <div id="drop-zone-cloud-environment" class="drop-zone" data-zone-type="cloud" aria-label="Cloud Environment Drop Zone">
+                                 <span class="drop-placeholder" data-lang-key="drop_placeholder_cloud">VMs, Storage, PaaS...</span>
+                             </div>
+                        </div>
+                    </div>
+                 </section>
+                <section class="card p-6 rounded-xl shadow-lg" aria-labelledby="basicDetailsTitleForm">
+                    <h3 id="basicDetailsTitleForm" data-lang-key="scenario_basic_details_title_numbered" class="form-section-title">1. פרטי תרחיש בסיסיים</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="scenario-name" data-lang-key="scenario_name_label" class="form-label">שם התרחיש</label>
+                             <input type="text" id="scenario-name" name="scenarioName" class="form-input" data-lang-key-placeholder="scenario_name_placeholder_key" placeholder="הכנס שם תרחיש" required>
+                        </div>
+                        <div>
+                            <label for="scenario-difficulty" data-lang-key="scenario_difficulty_label" class="form-label">רמת קושי</label>
+                            <select id="scenario-difficulty" name="scenarioDifficulty" class="form-select">
+                                <option value="easy" data-lang-key="difficulty_easy">קל</option>
+                                <option value="medium" data-lang-key="difficulty_medium" selected>בינוני</option>
+                                <option value="hard" data-lang-key="difficulty_hard">קשה</option>
+                                <option value="expert" data-lang-key="difficulty_expert">מומחה</option>
+                            </select>
+                         </div>
+                        <div class="md:col-span-2">
+                            <label for="scenario-description" data-lang-key="scenario_description_label" class="form-label">תיאור התרחיש</label>
+                             <textarea id="scenario-description" name="scenarioDescription" rows="3" class="form-textarea" data-lang-key-placeholder="scenario_desc_placeholder_key" placeholder="הכנס תיאור מפורט של התרחיש..." required></textarea>
+                        </div>
+                         <div class="md:col-span-2">
+                            <label for="mitre-tags" class="form-label" data-lang-key="mitre_tags_label">תגיות MITRE ATT&CK (מופרדות בפסיק)</label>
+                            <input type="text" id="mitre-tags" name="mitreTags" class="form-input" data-lang-key-placeholder="mitre_tags_placeholder" placeholder="לדוגמה: T1566.001, TA0007, T1059.003">
+                            <p class="text-xs text-subtitle mt-1" data-lang-key="mitre_tags_helper">הזן מזהי טקטיקות (TAxxxx) או טכניקות (Txxxx, Txxxx.xxx).</p>
+                         </div>
+                    </div>
+                </section>
+                <section class="card p-6 rounded-xl shadow-lg" aria-labelledby="envConfigTitleForm">
+                    <h3 id="envConfigTitleForm" data-lang-key="environment_config_title_numbered" class="form-section-title">2. תצורת סביבה</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="org-type" data-lang-key="org_type_label" class="form-label">סוג ארגון</label>
+                             <select id="org-type" name="orgType" class="form-select">
+                                <option value="generic" data-lang-key="org_type_generic">כללי</option>
+                                <option value="finance" data-lang-key="org_type_finance">פיננסי</option>
+                                 <option value="government" data-lang-key="org_type_government">ממשלתי</option>
+                                <option value="military" data-lang-key="org_type_military">צבאי</option>
+                                <option value="healthcare" data-lang-key="org_type_healthcare">בריאות</option>
+                                 <option value="tech_startup" data-lang-key="org_type_tech_startup">סטארטאפ טכנולוגי</option>
+                                <option value="ecommerce" data-lang-key="org_type_ecommerce">מסחר אלקטרוני</option>
+                            </select>
+                       </div>
+                        <div>
+                            <label for="service-type" data-lang-key="service_type_label" class="form-label">סוג שירות עיקרי</label>
+                            <select id="service-type" name="serviceType" class="form-select">
+                                 <option value="web_app" data-lang-key="service_type_web_app">אפליקציית ווב</option>
+                                <option value="saas_platform" data-lang-key="service_type_saas">פלטפורמת SaaS</option>
+                                <option value="internal_systems" data-lang-key="service_type_internal">מערכות פנימיות</option>
+                                 <option value="api_gateway" data-lang-key="service_type_api">שירותי API</option>
+                                <option value="data_processing" data-lang-key="service_type_data">עיבוד נתונים</option>
+                            </select>
+                         </div>
+                        <div>
+                            <label for="infra-type" data-lang-key="infra_type_label" class="form-label">סוג תשתית</label>
+                             <select id="infra-type" name="infraType" class="form-select">
+                                <option value="on_prem" data-lang-key="infra_type_on_prem">מקומי (On-Premise)</option>
+                                <option value="cloud" data-lang-key="infra_type_cloud">ענן</option>
+                                 <option value="hybrid" data-lang-key="infra_type_hybrid">היברידי</option>
+                            </select>
+                        </div>
+                        <div id="cloud-provider-section" class="hidden">
+                             <label for="cloud-provider" data-lang-key="cloud_provider_label" class="form-label">ספק ענן</label>
+                            <select id="cloud-provider" name="cloudProvider" class="form-select">
+                                <option value="aws" data-lang-key="cloud_aws">AWS</option>
+                                 <option value="azure" data-lang-key="cloud_azure">Azure</option>
+                                <option value="gcp" data-lang-key="cloud_gcp">Google Cloud</option>
+                                <option value="other" data-lang-key="cloud_other">אחר</option>
+                             </select>
+                        </div>
+                        <div class="lg:col-span-1 md:col-span-2">
+                            <label for="os-types-select" data-lang-key="os_types_label" class="form-label mb-2">מערכות הפעלה</label>
+                            <select id="os-types-select" name="os_type[]" class="form-select" multiple size="5">
+                                <option value="windows_server" data-lang-key="os_windows_server">Windows Server</option>
+                                <option value="linux_server" data-lang-key="os_linux_server">Linux Server</option>
+                                <option value="windows_client" data-lang-key="os_windows_client">Windows Client</option>
+                                <option value="linux_client" data-lang-key="os_linux_client">Linux Client</option>
+                                <option value="macos_client" data-lang-key="os_macos_client">macOS Client</option>
+                            </select>
+                            <p class="text-xs text-subtitle mt-1" data-lang-key="os_types_helper">לחץ על Ctrl (או Cmd ב-Mac) כדי לבחור מספר אפשרויות</p>
+                        </div>
+                        <div>
+                            <label for="containerization" data-lang-key="containerization_label" class="form-label">שימוש בקונטיינריזציה</label>
+                            <select id="containerization" name="containerization" class="form-select">
+                                <option value="no" data-lang-key="option_no">לא</option>
+                                 <option value="yes_docker" data-lang-key="option_yes_docker">כן (Docker)</option>
+                                <option value="yes_k8s" data-lang-key="option_yes_k8s">כן (Kubernetes)</option>
+                            </select>
+                         </div>
+                        <div>
+                            <label for="open-source-defense" data-lang-key="open_source_defense_label" class="form-label">שימוש בכלי קוד פתוח</label>
+                             <select id="open-source-defense" name="openSourceDefense" class="form-select">
+                                <option value="no" data-lang-key="option_no_oss">ללא (רק כלים מסחריים)</option>
+                                <option value="partial" data-lang-key="option_partial_oss">שילוב (מסחרי וקוד פתוח)</option>
+                                 <option value="yes" data-lang-key="option_yes_oss">כן (בעיקר קוד פתוח)</option>
+                            </select>
+                        </div>
+                    </div>
+                 </section>
+                <section class="card p-6 rounded-xl shadow-lg" aria-labelledby="defenseSystemsTitleForm">
+                    <h3 id="defenseSystemsTitleForm" data-lang-key="security_systems_config_title_numbered" class="form-section-title">3. בחירת מערכות הגנה ייעודיות</h3>
+                     <div class="mb-6">
+                        <h4 data-lang-key="mandatory_systems_title" class="text-lg font-medium mb-3 text-header">מערכות הגנה חובה</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                             <div>
+                                <label for="firewall-vendor" data-lang-key="firewall_vendor_label" class="form-label">חומת אש (Firewall)</label>
+                                <select id="firewall-vendor" name="firewallVendor" class="form-select mt-1">
+                                     <option value="" data-lang-key="select_vendor">בחר וונדור...</option>
+                                    <option value="paloalto_fw" data-lang-key="vendor_pa_select">Palo Alto Networks</option>
+                                     <option value="fortinet_fw" data-lang-key="vendor_fortinet_select">Fortinet FortiGate</option>
+                                    <option value="cisco_asa_fw" data-lang-key="vendor_cisco_asa_select">Cisco ASA</option>
+                                    <option value="checkpoint_fw" data-lang-key="vendor_checkpoint_select">Check Point</option>
+                                     <option value="juniper_srx_fw" data-lang-key="vendor_juniper_srx_select">Juniper SRX</option>
+                                    <option value="sophos_xg_fw" data-lang-key="vendor_sophos_select">Sophos XG Firewall</option>
+                                    <option value="watchguard_firebox_fw" data-lang-key="vendor_watchguard_select">WatchGuard Firebox</option>
+                                    <option value="sonicwall_nsa_fw" data-lang-key="vendor_sonicwall_select">SonicWall NSA</option>
+                                    <option value="pfsense_fw" data-lang-key="vendor_pfsense_select">pfSense (קוד פתוח)</option>
+                                    <option value="opnsense_fw" data-lang-key="vendor_opnsense_select">OPNsense (קוד פתוח)</option>
+                                </select>
+                            </div>
+                            <div>
+                                 <label for="epp-edr-vendor" data-lang-key="epp_edr_vendor_label" class="form-label">הגנת נקודות קצה (EPP/EDR)</label>
+                                <select id="epp-edr-vendor" name="eppEdrVendor" class="form-select mt-1">
+                                      <option value="" data-lang-key="select_vendor">בחר וונדור...</option>
+                                     <option value="ms_defender_edr" data-lang-key="vendor_ms_defender_edr_select">Microsoft Defender for Endpoint</option>
+                                    <option value="crowdstrike_falcon" data-lang-key="vendor_crowdstrike_select">CrowdStrike Falcon</option>
+                                     <option value="sentinelone_s1" data-lang-key="vendor_sentinelone_select">SentinelOne Singularity</option>
+                                    <option value="carbonblack_cb" data-lang-key="vendor_carbonblack_select">VMware Carbon Black</option>
+                                     <option value="symantec_sep_broadcom" data-lang-key="vendor_symantec_select">Broadcom Symantec SEP</option>
+                                    <option value="trendmicro_apex_one" data-lang-key="vendor_trendmicro_select">Trend Micro Apex One</option>
+                                    <option value="mcafee_ens" data-lang-key="vendor_mcafee_select">McAfee Endpoint Security</option>
+                                    <option value="sophos_intercept_x" data-lang-key="vendor_sophos_edr_select">Sophos Intercept X</option>
+                                    <option value="osquery_fleet" data-lang-key="vendor_osquery_select">osquery + Fleet/Kolide (קוד פתוח)</option>
+                                     <option value="wazuh_agent_edr" data-lang-key="vendor_wazuh_agent_select">Wazuh Agent (קוד פתוח)</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="siem-vendor" data-lang-key="siem_vendor_label" class="form-label">מערכת SIEM / ניהול לוגים</label>
+                                <select id="siem-vendor" name="siemVendor" class="form-select mt-1">
+                                       <option value="" data-lang-key="select_vendor">בחר וונדור...</option>
+                                    <option value="splunk_es" data-lang-key="vendor_splunk_select">Splunk Enterprise Security</option>
+                                     <option value="elastic_siem" data-lang-key="vendor_elastic_select">Elastic SIEM (ELK)</option>
+                                    <option value="ibm_qradar" data-lang-key="vendor_qradar_select">IBM QRadar</option>
+                                    <option value="ms_sentinel" data-lang-key="vendor_azure_sentinel_select">Microsoft Sentinel</option>
+                                     <option value="google_chronicle" data-lang-key="vendor_chronicle_select">Google Chronicle SOAR</option>
+                                    <option value="logrhythm_ax" data-lang-key="vendor_logrhythm_select">LogRhythm Axon</option>
+                                    <option value="arcsight_esm" data-lang-key="vendor_arcsight_select">ArcSight ESM</option>
+                                    <option value="exabeam_fusion" data-lang-key="vendor_exabeam_select">Exabeam Fusion SIEM</option>
+                                    <option value="wazuh_siem" data-lang-key="vendor_wazuh_select">Wazuh (קוד פתוח)</option>
+                                     <option value="graylog" data-lang-key="vendor_graylog_select">Graylog (קוד פתוח)</option>
+                                </select>
+                            </div>
+                        </div>
+                     </div>
+                    <div class="mt-6">
+                        <h4 data-lang-key="optional_systems_title" class="text-lg font-medium mb-3 text-header">מערכות הגנה נוספות (אופציונלי)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                             <div>
+                                <label for="waf-vendor" data-lang-key="waf_vendor_label" class="form-label">WAF</label>
+                                <select id="waf-vendor" name="wafVendor" class="form-select mt-1">
+                                     <option value="" data-lang-key="select_optional">בחר (אופציונלי)</option>
+                                    <option value="cloudflare_waf" data-lang-key="vendor_cloudflare_waf">Cloudflare WAF</option>
+                                     <option value="aws_waf" data-lang-key="vendor_aws_waf">AWS WAF</option>
+                                    <option value="azure_waf" data-lang-key="vendor_azure_waf">Azure WAF</option>
+                                    <option value="imperva_waf" data-lang-key="vendor_imperva_waf">Imperva WAF</option>
+                                     <option value="f5_waf" data-lang-key="vendor_f5_waf">F5 BIG-IP ASM</option>
+                                    <option value="barracuda_waf" data-lang-key="vendor_barracuda_waf">Barracuda WAF</option>
+                                    <option value="signal_sciences_waf" data-lang-key="vendor_signalsciences_waf">Signal Sciences WAF</option>
+                                    <option value="radware_appwall_waf" data-lang-key="vendor_radware_waf">Radware AppWall</option>
+                                    <option value="modsecurity_os" data-lang-key="vendor_modsecurity">ModSecurity (קוד פתוח)</option>
+                                 </select>
+                            </div>
+                            <div>
+                                <label for="ips-ids-vendor" data-lang-key="ips_ids_vendor_label" class="form-label">IPS/IDS</label>
+                                 <select id="ips-ids-vendor" name="ipsIdsVendor" class="form-select mt-1">
+                                    <option value="" data-lang-key="select_optional">בחר (אופציונלי)</option>
+                                     <option value="cisco_firepower_ips" data-lang-key="vendor_cisco_firepower">Cisco Firepower (NGIPS)</option>
+                                    <option value="fortinet_ips" data-lang-key="vendor_fortinet_ips">Fortinet FortiGate IPS</option>
+                                    <option value="trendmicro_tipping" data-lang-key="vendor_tippingpoint">Trend Micro TippingPoint</option>
+                                     <option value="mcafee_nsp" data-lang-key="vendor_mcafee_nsp">McAfee Network Security Platform</option>
+                                    <option value="darktrace_antigena" data-lang-key="vendor_darktrace_ips">Darktrace Antigena (Network)</option>
+                                    <option value="suricata_os" data-lang-key="vendor_suricata">Suricata (קוד פתוח)</option>
+                                    <option value="snort_os" data-lang-key="vendor_snort">Snort (קוד פתוח)</option>
+                                    <option value="zeek_ids_os" data-lang-key="vendor_zeek_ids">Zeek (Bro) IDS (קוד פתוח)</option>
+                                 </select>
+                            </div>
+                            <div>
+                                <label for="ndr-vendor" data-lang-key="ndr_vendor_label" class="form-label">NDR</label>
+                                 <select id="ndr-vendor" name="ndrVendor" class="form-select mt-1">
+                                    <option value="" data-lang-key="select_optional">בחר (אופציונלי)</option>
+                                     <option value="darktrace_ndr" data-lang-key="vendor_darktrace_ndr">Darktrace Enterprise Immune System</option>
+                                    <option value="vectra_ai_ndr" data-lang-key="vendor_vectra_ndr">Vectra AI Platform</option>
+                                    <option value="extrahop_revealx_ndr" data-lang-key="vendor_extrahop_ndr">ExtraHop Reveal(x)</option>
+                                     <option value="corelight_ndr" data-lang-key="vendor_corelight_ndr">Corelight (מבוסס Zeek)</option>
+                                    <option value="cisco_stealthwatch_ndr" data-lang-key="vendor_cisco_stealthwatch_ndr">Cisco Secure Network Analytics (Stealthwatch)</option>
+                                    <option value="splunk_ueba_ndr" data-lang-key="vendor_splunk_ueba_ndr">Splunk UBA/NDR capabilities</option>
+                                    <option value="ms_defender_iot_ndr" data-lang-key="vendor_ms_defender_iot_ndr">Microsoft Defender for IoT (NDR for OT/IoT)</option>
+                                    <option value="zeek_os_ndr" data-lang-key="vendor_zeek_ndr">Zeek (Bro) (קוד פתוח)</option>
+                                </select>
+                             </div>
+                             <div>
+                                <label for="xdr-vendor" data-lang-key="xdr_vendor_label" class="form-label">XDR</label>
+                                 <select id="xdr-vendor" name="xdrVendor" class="form-select mt-1">
+                                    <option value="" data-lang-key="select_optional">בחר (אופציונלי)</option>
+                                    <option value="paloalto_cortex_xdr" data-lang-key="vendor_pa_cortex">Palo Alto Cortex XDR</option>
+                                    <option value="microsoft_365_defender" data-lang-key="vendor_ms_365_defender">Microsoft 365 Defender (XDR)</option>
+                                    <option value="cybereason_xdr_platform" data-lang-key="vendor_cybereason_xdr">Cybereason XDR Platform</option>
+                                     <option value="rapid7_idr" data-lang-key="vendor_rapid7_idr">Rapid7 InsightIDR (XDR capabilities)</option>
+                                    <option value="trellix_helix_xdr" data-lang-key="vendor_trellix_xdr">Trellix Helix XDR</option>
+                                    <option value="cisco_xdr" data-lang-key="vendor_cisco_xdr">Cisco XDR</option>
+                                    <option value="fortinet_fortixdr" data-lang-key="vendor_fortinet_xdr">Fortinet FortiXDR</option>
+                                </select>
+                            </div>
+                       </div>
+                    </div>
+                </section>
+                <section class="card p-6 rounded-xl shadow-lg" aria-labelledby="mitrePathTitleForm">
+                    <h3 id="mitrePathTitleForm" data-lang-key="mitre_path_section_title_numbered" class="form-section-title">4. בניית נתיב תקיפה (MITRE ATT&CK)</h3>
+                    <div id="mitreBuilderContainer" class="mt-4">
+                        <p class="text-sm text-subtitle mb-3" data-lang-key="mitre_select_techniques_prompt">בחר טכניקות עבור כל טקטיקה רלוונטית לתרחיש זה.</p>
+                        <div id="mitreGridPlaceholder" class="mitre-grid-container">
+                            <span class="text-subtitle text-sm" data-lang-key="loading_mitre_data">טוען נתוני MITRE...</span>
+                        </div>
+                         <div class="mt-6">
+                            <h4 data-lang-key="selected_mitre_path_preview" class="text-md font-semibold mb-2 text-header">תצוגה מקדימה של הנתיב הנבחר:</h4>
+                            <div id="selectedMitrePathArea" class="selected-path-area p-3">
+                                 <span data-lang-key="no_techniques_selected_yet" class="text-subtitle">טרם נבחרו טכניקות.</span>
+                            </div>
+                        </div>
+                         <input type="hidden" id="selectedMitreTechniquesInput" name="selectedMitreTechniques">
+                    </div>
+                </section>
+                <div class="mt-8 flex flex-col sm:flex-row justify-end gap-3">
+                    <button type="button" id="preview-scenario-btn" class="btn btn-neutral">
+                         <span data-lang-key="preview_scenario_button">תצוגה מקדימה</span>
+                    </button>
+                    <button type="submit" id="save-scenario-btn" class="btn btn-primary">
+                        <span data-lang-key="save_scenario_button">שמור תרחיש</span>
+                    </button>
+                </div>
+            </form>
+            <footer class="text-center py-8 text-sm text-subtitle opacity-70">
+                <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+            </footer>
+        </main>
+        <div class="suggestion-pane">
+            <p data-lang-key="suggestion_pane_text">אם אינך רואה את המוצר המוכר לך כאן, אנא רשום לנו אותו ואנחנו נדאג שהוא יופיע!</p>
+        </div>
+    </div>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_create_scenario_translations.js" defer></script>
+    <script src="instructor_create_scenario.js" defer></script> <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            } else {
+                console.error("renderDynamicSidebar function not found.");
+            }
+            // MITRE section is now always visible, no toggle needed
+        });
+    </script>
+</body>
+</html>

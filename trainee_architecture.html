@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_architecture_page_title">סקירת ארכיטקטורה - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <style>
+        /* Default grid for Hebrew (RTL) */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto auto auto;
+            gap: 1rem;
+            min-height: 500px;
+            background-color: var(--card-bg-color-light);
+            padding: 1rem;
+            border-radius: var(--border-radius-lg);
+        }
+        body.dark-theme .architecture-grid { 
+            background-color: var(--card-bg-color-dark);
+        }
+        
+        /* Grid positions for zones - Hebrew (RTL) - Default */
+        .zone-management-area { grid-column: 1; grid-row: 1 / 6; } /* Left side for RTL */
+        .zone-internet-area { grid-column: 2 / 5; grid-row: 1; }
+        .zone-perimeter-area { grid-column: 2 / 5; grid-row: 2; }
+        .zone-dmz-area { grid-column: 2 / 5; grid-row: 3; }
+        .zone-internal-db-area { grid-column: 2; grid-row: 4; }
+        .zone-internal-apps-area { grid-column: 3; grid-row: 4; }
+        .zone-internal-core-area { grid-column: 4; grid-row: 4; }
+        .zone-internal-endpoints-area { grid-column: 2 / 5; grid-row: 5; }
+        
+        /* Grid positions for zones - English (LTR) */
+        html[dir="ltr"] .architecture-grid {
+            grid-template-columns: 1fr 1fr 1fr 200px;
+        }
+        html[dir="ltr"] .zone-management-area { grid-column: 4; grid-row: 1 / 6; } /* Right side for LTR */
+        html[dir="ltr"] .zone-internet-area { grid-column: 1 / 4; grid-row: 1; }
+        html[dir="ltr"] .zone-perimeter-area { grid-column: 1 / 4; grid-row: 2; }
+        html[dir="ltr"] .zone-dmz-area { grid-column: 1 / 4; grid-row: 3; }
+        html[dir="ltr"] .zone-internal-db-area { grid-column: 1; grid-row: 4; }
+        html[dir="ltr"] .zone-internal-apps-area { grid-column: 2; grid-row: 4; }
+        html[dir="ltr"] .zone-internal-core-area { grid-column: 3; grid-row: 4; }
+        html[dir="ltr"] .zone-internal-endpoints-area { grid-column: 1 / 4; grid-row: 5; }
+        
+        @media (max-width: 768px) {
+            .architecture-grid,
+            html[dir="ltr"] .architecture-grid {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: repeat(7, auto);
+            }
+            .zone-management-area,
+            .zone-internet-area,
+            .zone-perimeter-area,
+            .zone-dmz-area,
+            .zone-internal-core-area,
+            .zone-internal-apps-area,
+            .zone-internal-db-area,
+            .zone-internal-endpoints-area { 
+                grid-column: 1 !important; 
+                grid-row: auto !important;
+            }
+        }
+        .architecture-zone {
+            background-color: rgba(var(--card-bg-color-light-rgb, 255, 255, 255), 0.5);
+            border: 1px solid var(--card-border-color-light);
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+        }
+        body.dark-theme .architecture-zone {
+            background-color: rgba(var(--card-bg-color-dark-rgb, 30, 41, 59), 0.5);
+            border-color: var(--card-border-color-dark);
+        }
+        .architecture-zone .drop-zone-title {
+            font-size: 0.75rem !important; /* Tailwind: text-xs */
+            font-weight: 600 !important; /* Tailwind: font-semibold */
+            color: var(--text-subtitle-color-light) !important;
+            margin-bottom: 0.5rem !important; /* Tailwind: mb-2 */
+            padding-bottom: 0.25rem !important; /* Tailwind: pb-1 */
+            border-bottom: 1px solid var(--card-border-color-light) !important;
+            text-align: center !important;
+        }
+        body.dark-theme .architecture-zone .drop-zone-title {
+             color: var(--text-subtitle-color-dark) !important;
+             border-bottom-color: var(--card-border-color-dark) !important;
+        }
+        .drop-zone {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            min-height: 60px;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+        /* Management zone keeps column layout */
+        .zone-management-area .drop-zone {
+            flex-direction: column;
+        }
+        .drop-placeholder {
+            font-size: 0.75rem;
+            color: var(--text-muted-color-light);
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+        body.dark-theme .drop-placeholder {
+            color: var(--text-muted-color-dark);
+        }
+        .displayed-item {
+            background-color: var(--primary-color-light);
+            color: var(--primary-text-light);
+            border-color: var(--primary-color-light);
+            width: auto;
+            max-width: 140px;
+            flex: 0 1 auto;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.6rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .displayed-item span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        /* Management zone items keep full width */
+        .zone-management-area .displayed-item {
+            width: 90%;
+            max-width: 180px;
+        }
+        body.dark-theme .displayed-item {
+            background-color: var(--primary-color-dark);
+            color: var(--primary-text-dark);
+            border-color: var(--primary-color-dark);
+        }
+        .displayed-item.img-error {
+            background-color: var(--neutral-bg-color-light);
+            border-color: var(--neutral-border-color-light);
+            color: var(--neutral-text-color-light);
+        }
+        body.dark-theme .displayed-item.img-error {
+            background-color: var(--neutral-bg-color-dark);
+            border-color: var(--neutral-border-color-dark);
+            color: var(--neutral-text-color-dark);
+        }
+        .displayed-item img {
+            filter: brightness(0) invert(1);
+        }
+        .displayed-item.img-error img {
+            filter: none;
+        }
+        .displayed-item img.logo-img-light-static {
+            filter: none !important;
+        }
+        body.dark-theme .displayed-item img.logo-img-light-static {
+            filter: brightness(0) invert(1) !important;
+        }
+    </style>
+    </head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="architecture_overview_header" class="text-3xl font-bold text-header">סקירת ארכיטקטורת התרחיש</h2>
+            <p data-lang-key="architecture_overview_subtitle" class="text-subtitle mt-1 text-base">הבן את מבנה הרשת והרכיבים המרכזיים בתרחיש הנוכחי.</p>
+        </header>
+        <section class="card p-6 rounded-xl shadow-lg mb-6">
+            <h3 data-lang-key="diagram_section_title" class="text-xl font-semibold text-header mb-4">דיאגרמת רשת</h3>
+            <div id="architecture-diagram-display" class="architecture-grid">
+                <div class="architecture-zone zone-internet-area">
+                    <div class="drop-zone-title" data-lang-key="zone_internet">אינטרנט / חיצוני</div>
+                    <div id="display-zone-internet" class="drop-zone" data-zone-type="external" aria-label="Internet Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                     </div>
+                </div>
+                <div class="architecture-zone zone-management-area">
+                     <div class="drop-zone-title" data-lang-key="zone_management">רשת ניהול</div>
+                     <div id="display-zone-management" class="drop-zone" data-zone-type="management" aria-label="Management Network Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                    </div>
+               </div>
+                <div class="architecture-zone zone-perimeter-area">
+                    <div class="drop-zone-title" data-lang-key="zone_perimeter">הגנה היקפית</div>
+                     <div id="display-zone-perimeter" class="drop-zone" data-zone-type="perimeter-security" aria-label="Perimeter Defense Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                    </div>
+                </div>
+                 <div class="architecture-zone zone-dmz-area">
+                    <div class="drop-zone-title" data-lang-key="zone_dmz">DMZ</div>
+                     <div id="display-zone-dmz" class="drop-zone" data-zone-type="dmz" aria-label="DMZ Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                    </div>
+                </div>
+                <div class="architecture-zone zone-internal-core-area">
+                     <div class="drop-zone-title" data-lang-key="zone_internal_core">שרתי ליבה</div>
+                     <div id="display-zone-internal-core" class="drop-zone" data-zone-type="internal-core" aria-label="Core Servers Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                    </div>
+                </div>
+                <div class="architecture-zone zone-internal-apps-area">
+                     <div class="drop-zone-title" data-lang-key="zone_internal_apps">שרתי יישומים</div>
+                     <div id="display-zone-internal-apps" class="drop-zone" data-zone-type="internal-apps" aria-label="Application Servers Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                    </div>
+                </div>
+                <div class="architecture-zone zone-internal-db-area">
+                    <div class="drop-zone-title" data-lang-key="zone_internal_db">בסיסי נתונים</div>
+                     <div id="display-zone-internal-db" class="drop-zone" data-zone-type="internal-db" aria-label="Database Servers Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                     </div>
+                 </div>
+                <div class="architecture-zone zone-internal-endpoints-area">
+                    <div class="drop-zone-title" data-lang-key="zone_internal_endpoints">תחנות קצה</div>
+                     <div id="display-zone-internal-endpoints" class="drop-zone" data-zone-type="internal-endpoints" aria-label="Endpoints Zone Display">
+                        <span class="drop-placeholder" data-lang-key="zone_empty_placeholder_trainee">[אזור ריק או טוען רכיבים...]</span>
+                     </div>
+                </div>
+            </div>
+            <p class="text-sm text-subtitle mt-4" data-lang-key="diagram_description_interactive">הדיאגרמה מציגה את הרכיבים המרכזיים והחיבורים ביניהם. עיין ברשימת הרכיבים למטה למידע נוסף על כל אחד.</p>
+        </section>
+        <section class="card p-6 rounded-xl shadow-lg">
+            <h3 data-lang-key="components_list_title" class="text-xl font-semibold text-header mb-4">רשימת רכיבי מפתח</h3>
+            <ul id="architecture-components-list" class="space-y-3 custom-list">
+                <li id="no-components-msg" class="text-subtitle text-sm py-4 text-center" data-lang-key="no_components_to_display">טוען רכיבים...</li>
+            </ul>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span id="prev-button-text">[טוען טקסט כפתור אחורה...]</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_email_client_from_arch">המשך ללקוח דוא"ל</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> <span data-lang-key="footer_copyright_text">פלטפורמת סימולציות סייבר. כל הזכויות שמורות.</span></p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_architecture_translations.js" defer></script>
+    <script src="trainee_architecture.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+            document.body.dataset.userType = currentUserType;
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            } else {
+                console.error("renderDynamicSidebar function not found.");
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            const prevButtonTextEl = document.getElementById('prev-button-text');
+            const nextButton = document.getElementById('next-dashboard-button');
+            let prevLink = 'trainee_main.html';
+            let prevButtonKey = 'go_back_to_available_scenarios_from_arch';
+            if (currentUserType === 'trainee_workshop') {
+                prevLink = 'landing_trainee_workshop.html';
+                prevButtonKey = 'go_back_to_workshop_flow_from_arch';
+            }
+            if(prevButton && prevButtonTextEl) {
+                prevButtonTextEl.dataset.langKey = prevButtonKey;
+                if(typeof window.getTranslatedStringGlobal === 'function' && window.translations){
+                     // Ensure translations are applied after this script if not handled by the main translation flow.
+                    setTimeout(() => { // Delay to ensure translations object is populated by its own script
+                         prevButtonTextEl.textContent = window.getTranslatedStringGlobal(prevButtonKey);
+                    }, 0);
+                }
+                prevButton.addEventListener('click', () => {
+                    window.location.href = prevLink + `?userType=${currentUserType}`;
+                });
+            }
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_email.html' + `?userType=${currentUserType}`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

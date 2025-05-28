@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_main_page_title">תרחישים זמינים - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="available_scenarios_header" class="text-3xl font-bold text-header">תרחישים זמינים</h2>
+            <p data-lang-key="available_scenarios_subtitle" class="text-subtitle mt-1 text-base">בחר תרחיש כדי להתחיל את האימון שלך. בהצלחה!</p>
+        </header>
+        <div class="filter-section card p-4 rounded-xl shadow-lg mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label for="search-scenarios" class="form-label" data-lang-key="search_scenario_label_short">חיפוש</label> <input type="search" id="search-scenarios" class="form-input" data-lang-key-placeholder="search_scenarios_placeholder" placeholder="חפש תרחיש...">
+                </div>
+                <div>
+                    <label for="filter-difficulty-scenarios" class="form-label" data-lang-key="filter_by_difficulty_label">סינון לפי רמת קושי:</label>
+                    <select id="filter-difficulty-scenarios" name="difficultyFilter" class="form-select">
+                        <option value="all" data-lang-key="difficulty_all">הכל</option>
+                        <option value="easy" data-lang-key="difficulty_easy_badge">קל</option>
+                        <option value="medium" data-lang-key="difficulty_medium_badge">בינוני</option>
+                        <option value="hard" data-lang-key="difficulty_hard_badge">קשה</option>
+                        <option value="expert" data-lang-key="difficulty_expert_badge">מומחה</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-category-scenarios" class="form-label" data-lang-key="filter_by_category_label">סינון לפי קטגוריה:</label>
+                    <select id="filter-category-scenarios" name="categoryFilter" class="form-select">
+                        <option value="all" data-lang-key="category_all">כל הקטגוריות</option>
+                        <option value="phishing" data-lang-key="category_phishing">פישינג</option>
+                        <option value="ransomware" data-lang-key="category_ransomware">כופר</option>
+                        <option value="data_breach" data-lang-key="category_data_breach">דליפת מידע</option>
+                        <option value="network_attack" data-lang-key="category_network_attack">תקיפת רשת</option>
+                        <option value="web_security" data-lang-key="category_web_security">אבטחת ווב</option>
+                        <option value="cloud_security" data-lang-key="category_cloud_security">אבטחת ענן</option>
+                        <option value="insider_threat" data-lang-key="category_insider_threat">איום פנימי</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <section id="scenario-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <p id="no-scenarios-found" class="text-center text-subtitle hidden col-span-full py-8" data-lang-key="no_scenarios_found">לא נמצאו תרחישים התואמים את החיפוש או הסינון שלך.</p>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_trainee_dashboard">חזור ללוח המחוונים</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_architecture_overview">המשך לסקירת ארכיטקטורה</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_main_translations.js" defer></script>
+    <script src="trainee_main.js" defer></script>
+    <script>
+        const currentUserType = 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_dashboard.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_architecture.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

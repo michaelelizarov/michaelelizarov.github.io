@@ -1,0 +1,4901 @@
+/* style.css */
+/*
+  Cyber Simulation Platform Stylesheet
+  ------------------------------------
+  This stylesheet defines the visual appearance for the entire platform,
+  including light and dark themes, layout, common components, and
+  page-specific elements. It utilizes CSS Custom Properties (variables)
+  for easy theming and maintenance.
+*/
+
+/* ==========================================================================
+   1. CSS Custom Properties (Variables) & Base Styles
+   ========================================================================== */
+:root {
+    /* Base Colors (Defaults to Light Theme) */
+    --bg-color-light: #f1f5f9; /* Tailwind: slate-100 */
+    --text-color-light: #0f172a; /* Tailwind: slate-900 */
+    --text-subtitle-color-light: #475569; /* Tailwind: slate-600 */
+    --text-muted-color-light: #64748b;    /* Tailwind: slate-500 */
+    --header-color-light: #1e293b; /* Tailwind: slate-800 */
+    --card-bg-color-light: #ffffff;
+    --card-border-color-light: #e2e8f0; /* Tailwind: slate-200 */
+    --card-hover-bg-light: #f8fafc; /* Tailwind: slate-50 for subtle hover on list items in cards */
+    --primary-color-light: #2563eb; /* Tailwind: blue-600 */
+    --primary-hover-color-light: #1d4ed8; /* Tailwind: blue-700 */
+    --primary-focus-ring-light: rgba(59, 130, 246, 0.4); /* blue-600 with alpha */
+    --primary-text-light: #ffffff; /* Text on primary buttons */
+    --primary-color-light-rgb: 37, 99, 235;
+    --secondary-color-light: #10b981; /* Tailwind: emerald-500 */
+    --secondary-hover-color-light: #059669; /* Tailwind: emerald-600 */
+    --secondary-focus-ring-light: rgba(16, 185, 129, 0.4); /* emerald-500 with alpha */
+    --secondary-text-light: #ffffff;
+    --neutral-bg-color-light: #e2e8f0; /* Tailwind: slate-200 */
+    --neutral-hover-bg-color-light: #cbd5e1; /* Tailwind: slate-300 */
+    --neutral-text-color-light: #334155; /* Tailwind: slate-700 */
+    --neutral-border-color-light: #cbd5e1; /* Tailwind: slate-300 */
+    --danger-color-light: #dc2626; /* Tailwind: red-600 */
+    --danger-hover-color-light: #b91c1c; /* Tailwind: red-700 */
+    --danger-focus-ring-light: rgba(220, 38, 38, 0.4); /* red-600 with alpha */
+    --danger-text-light: #ffffff;
+    --danger-bg-light: #fee2e2; /* Tailwind: red-100 (for danger alerts bg) */
+    --danger-border-light: #fca5a5; /* Tailwind: red-300 (for danger alerts border) */
+    --success-color-light: #16a34a; /* Tailwind: green-600 */
+    --success-hover-color-light: #15803d; /* Tailwind: green-700 */
+    --success-text-light: #ffffff;
+    --success-bg-light: #dcfce7; /* Tailwind: green-100 */
+    --success-border-light: #86efac; /* Tailwind: green-300 */
+    --warning-color-light: #f59e0b; /* Tailwind: amber-500 */
+    --warning-hover-color-light: #d97706; /* Tailwind: amber-600 */
+    --warning-text-light: #ffffff;
+    --warning-bg-light: #fef3c7; /* Tailwind: amber-100 */
+    --warning-border-light: #fcd34d; /* Tailwind: amber-300 */
+    /* Input & Form Control Variables - Light */
+    --input-bg-color-light: #ffffff;
+    --input-border-color-light: #cbd5e1; /* Tailwind: slate-300 */
+    --input-focus-border-color-light: var(--primary-color-light);
+    --input-focus-ring-light: var(--primary-focus-ring-light);
+    --input-text-color-light: var(--text-color-light);
+    --input-placeholder-color-light: #94a3b8; /* Tailwind: slate-400 */
+    --input-disabled-bg-light: #f1f5f9; /* slate-100 */
+    --input-disabled-text-light: #94a3b8; /* slate-400 */
+    --input-bg-color-light-rgb: 255, 255, 255; /* For modal overlay calculation */
+    --card-border-color-light-rgb: 226, 232, 240; /* For modal overlay calculation */
+    /* Sidebar Variables - Light */
+    --sidebar-bg-color-light: #ffffff;
+    --sidebar-text-color-light: #334155; /* Tailwind: slate-700 */
+    --sidebar-icon-color-light: #64748b; /* Tailwind: slate-500 */
+    --sidebar-link-hover-bg-light: #eef2ff; /* Tailwind: indigo-50 */
+    --sidebar-link-hover-text-light: var(--primary-color-light);
+    --sidebar-link-active-bg-light: var(--primary-color-light);
+    --sidebar-link-active-text-light: #ffffff;
+    --sidebar-border-color-light: var(--card-border-color-light);
+    /* Chart Specific Colors - Light */
+    --chart-canvas-bg-color-light: var(--card-bg-color-light); /* Charts on light theme will have same bg as card */
+    --chart-line-primary-light: var(--primary-color-light);
+    --chart-line-primary-fill-light: rgba(var(--primary-color-light-rgb), 0.1);
+    --chart-bar-primary-light: var(--primary-color-light);
+    --chart-grid-border-color-light: #e5e7eb; /* Tailwind: gray-200 */
+    --chart-text-color-light: #374151;
+    --chart-label-color-light: #1f2937;
+    --chart-tooltip-bg-light: rgba(17, 24, 39, 0.9);
+    --chart-tooltip-text-light: #ffffff;
+    --chart-score-range-color1-light: rgba(220, 38, 38, 0.7); /* Red */
+    --chart-score-range-color2-light: rgba(234, 88, 12, 0.7); /* Orange */
+    --chart-score-range-color3-light: rgba(202, 138, 4, 0.7); /* Yellow */
+    --chart-score-range-color4-light: rgba(22, 163, 74, 0.7); /* Green */
+    --chart-alloc-color1-light: #60a5fa; /* blue-400 */
+    --chart-alloc-color2-light: #34d399; /* emerald-400 */
+    --chart-alloc-color3-light: #f59e0b; /* amber-500 */
+    --chart-alloc-color4-light: #e879f9; /* fuchsia-400 */
+    --chart-alloc-color5-light: #94a3b8; /* slate-400 */
+    /* General Variables */
+    --font-family-base: 'Rubik', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.375rem;
+    --border-radius-lg: 0.5rem;
+    --border-radius-xl: 0.75rem;
+    --border-radius-full: 9999px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition-speed: 0.2s;
+    --transition-timing: ease-in-out;
+    --modal-overlay-bg: rgba(15, 23, 42, 0.6); /* Default for light theme */
+    
+    /* Table styling variables - light mode */
+    --table-alt-row-bg-light: rgba(243, 244, 246, 0.5); /* Light gray for alternating rows */
+    --table-hover-bg-light: rgba(224, 231, 255, 0.6); /* Light blue on hover */
+    --table-border-color-light: #e5e7eb; /* Gray-200 border */
+    --table-header-bg-light: #f3f4f6; /* Gray-100 header background */
+    --table-header-text-light: #1f2937; /* Gray-800 header text */
+}
+body.dark-theme {
+    /* Base Colors - Dark Theme */
+    --bg-color-dark: #0f172a; /* Tailwind: slate-900 */
+    --text-color-dark: #e2e8f0; /* Tailwind: slate-200 */
+    --text-subtitle-color-dark: #94a3b8; /* Tailwind: slate-400 */
+    --text-muted-color-dark: #64748b;    /* Tailwind: slate-500 */
+    --header-color-dark: #f1f5f9; /* Tailwind: slate-100 */
+    --card-bg-color-dark: #1e293b; /* Tailwind: slate-800. Reverted to darker card background. */
+    --card-border-color-dark: #334155; /* Tailwind: slate-700. */
+    --card-hover-bg-dark: #293548;
+    --card-bg-color-dark-rgb: 30, 41, 59;
+    --card-border-color-dark-rgb: 51, 65, 85;
+    --primary-color-dark: #3b82f6; /* Tailwind: blue-500 */
+    --primary-hover-color-dark: #2563eb; /* Tailwind: blue-600 */
+    --primary-focus-ring-dark: rgba(96, 165, 250, 0.4); /* blue-500 with alpha */
+    --primary-text-dark: #ffffff;
+    --primary-color-dark-rgb: 59, 130, 246;
+    --secondary-color-dark: #10b981;
+    --secondary-hover-color-dark: #059669;
+    --secondary-focus-ring-dark: rgba(16, 185, 129, 0.4);
+    --secondary-text-dark: #ffffff;
+    --neutral-bg-color-dark: #334155; /* Tailwind: slate-700 */
+    --neutral-hover-bg-color-dark: #475569; /* Tailwind: slate-600 */
+    --neutral-text-color-dark: #cbd5e1; /* Tailwind: slate-300 */
+    --neutral-border-color-dark: #475569; /* Tailwind: slate-600 */
+    --danger-color-dark: #f87171; /* Tailwind: red-400 */
+    --danger-hover-color-dark: #ef4444; /* Tailwind: red-500 */
+    --danger-focus-ring-dark: rgba(248, 113, 113, 0.4);
+    --danger-text-dark: #1f2937;
+    --danger-bg-dark: #450a0a;
+    --danger-border-dark: #7f1d1d;
+    --success-color-dark: #22c55e; /* Tailwind: green-500 */
+    --success-hover-color-dark: #16a34a; /* Tailwind: green-600 */
+    --success-text-dark: #0f172a; /* Dark text for light green bg */
+    --success-bg-dark: #15803d; /* Darker Green for background in dark mode */
+    --success-border-dark: #14532d;
+    --warning-color-dark: #facc15; /* Tailwind: yellow-400 */
+    --warning-hover-color-dark: #eab308; /* Tailwind: yellow-500 */
+    --warning-text-dark: #1f2937;
+    --warning-bg-dark: #713f12; /* Dark Amber */
+    --warning-border-dark: #78350f;
+    /* Input & Form Control Variables - Dark */
+    --input-bg-color-dark: #1e293b; /* slate-800 */
+    --input-border-color-dark: #475569; /* slate-600 */
+    --input-focus-border-color-dark: var(--primary-color-dark);
+    --input-focus-ring-dark: var(--primary-focus-ring-dark);
+    --input-text-color-dark: var(--text-color-dark);
+    --input-placeholder-color-dark: #64748b; /* slate-500 */
+    --input-disabled-bg-dark: #0f172a; /* slate-900 */
+    --input-disabled-text-dark: #475569; /* slate-600 */
+    /* Sidebar Variables - Dark */
+    --sidebar-bg-color-dark: #1e293b; /* Tailwind: slate-800 */
+    --sidebar-text-color-dark: #94a3b8; /* Tailwind: slate-400 */
+    --sidebar-icon-color-dark: #64748b; /* Tailwind: slate-500 */
+    --sidebar-link-hover-bg-dark: #374151;
+    --sidebar-link-hover-text-dark: var(--primary-color-dark);
+    --sidebar-link-active-bg-dark: var(--primary-color-dark);
+    --sidebar-link-active-text-dark: #ffffff;
+    --sidebar-border-color-dark: #334155;
+    /* Chart Specific Colors - Dark */
+    --chart-canvas-bg-color-dark: var(--card-bg-color-dark); /* Use card background color for charts */
+    --chart-line-primary-dark: var(--primary-color-dark);
+    --chart-line-primary-fill-dark: rgba(var(--primary-color-dark-rgb), 0.2);
+    --chart-bar-primary-dark: var(--primary-color-dark);
+    --chart-grid-border-color-dark: #475569; /* Tailwind: slate-600. To be visible on --chart-canvas-bg-color-dark */
+    --chart-text-color-dark: #e2e8f0;
+    --chart-label-color-dark: #f3f4f6;
+    --chart-tooltip-bg-dark: rgba(30, 41, 59, 0.9);
+    --chart-tooltip-text-dark: #e2e8f0;
+    --chart-score-range-color1-dark: rgba(239, 68, 68, 0.7);
+    --chart-score-range-color2-dark: rgba(249, 115, 22, 0.7);
+    --chart-score-range-color3-dark: rgba(234, 179, 8, 0.7);
+    --chart-score-range-color4-dark: rgba(34, 197, 94, 0.7);
+    --chart-score-range-color5-dark: rgba(59, 130, 246, 0.7);
+    --chart-alloc-color1-dark: #2563eb; /* blue-600 */
+    --chart-alloc-color2-dark: #059669; /* emerald-600 */
+    --chart-alloc-color3-dark: #d97706; /* amber-600 */
+    --chart-alloc-color4-dark: #c026d3; /* fuchsia-600 */
+    --chart-alloc-color5-dark: #64748b; /* slate-500 */
+    --modal-overlay-bg: rgba(0, 0, 0, 0.75); /* Slightly darker overlay for dark theme */
+    
+    /* Table styling variables - dark mode */
+    --table-alt-row-bg-dark: rgba(30, 41, 59, 0.3); /* Slate-800 for alternating rows */
+    --table-hover-bg-dark: rgba(51, 65, 85, 0.5); /* Slate-700 on hover */
+    --table-border-color-dark: #334155; /* Slate-700 border */
+    --table-header-bg-dark: #1e293b; /* Slate-800 header background */
+    --table-header-text-dark: #e2e8f0; /* Slate-200 header text */
+}
+/* Base HTML and Body styles (No changes from previous version) */
+html {
+    font-family: var(--font-family-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+body {
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+    transition-property: background-color, color;
+    transition-duration: var(--transition-speed);
+    transition-timing-function: var(--transition-timing);
+    font-size: 16px; /* Base font size */
+    min-height: 100vh;
+}
+body.dark-theme {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--header-color-light);
+    font-weight: 600; /* semibold by default for Rubik */
+    line-height: 1.2; /* Adjusted for better heading spacing */
+    margin-bottom: 0.5em; /* Default bottom margin */
+}
+body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6 {
+    color: var(--header-color-dark);
+}
+/* Links */
+a {
+    color: var(--primary-color-light);
+    text-decoration: none;
+    transition: color var(--transition-speed) var(--transition-timing);
+}
+a:hover {
+    color: var(--primary-hover-color-light);
+    text-decoration: underline;
+}
+body.dark-theme a {
+    color: var(--primary-color-dark);
+}
+body.dark-theme a:hover {
+    color: var(--primary-hover-color-dark);
+}
+/* Custom Scrollbar (Optional, for Webkit browsers) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--card-bg-color-light);
+    border-radius: var(--border-radius-md);
+}
+body.dark-theme ::-webkit-scrollbar-track {
+    background: var(--card-bg-color-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--neutral-border-color-light);
+    border-radius: var(--border-radius-md);
+}
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: var(--neutral-border-color-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted-color-light);
+}
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted-color-dark);
+}
+/* ==========================================================================
+   2. Common Components
+   ========================================================================== */
+/* Buttons (.btn, .btn-primary, etc.) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.25rem; /* Tailwind: py-2.5 px-5, adjusted for slightly more padding */
+    border-radius: var(--border-radius-md);
+    font-weight: 500; /* medium */
+    text-align: center;
+    cursor: pointer;
+    transition-property: background-color, border-color, color, box-shadow, transform;
+    transition-duration: var(--transition-speed);
+    transition-timing-function: var(--transition-timing);
+    border: 1px solid transparent;
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem; /* leading-5 */
+    white-space: nowrap; /* Prevent wrapping */
+}
+.btn:focus-visible { /* Using :focus-visible for better accessibility */
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+.btn:disabled, .btn.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+.btn-primary {
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border-color: var(--primary-color-light);
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover-color-light);
+    border-color: var(--primary-hover-color-light);
+}
+.btn-primary:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--primary-focus-ring-light);
+}
+body.dark-theme .btn-primary {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+    border-color: var(--primary-color-dark);
+}
+body.dark-theme .btn-primary:hover {
+    background-color: var(--primary-hover-color-dark);
+    border-color: var(--primary-hover-color-dark);
+}
+body.dark-theme .btn-primary:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--primary-focus-ring-dark);
+}
+.btn-secondary {
+    background-color: var(--secondary-color-light);
+    color: var(--secondary-text-light);
+    border-color: var(--secondary-color-light);
+}
+.btn-secondary:hover {
+    background-color: var(--secondary-hover-color-light);
+    border-color: var(--secondary-hover-color-light);
+}
+.btn-secondary:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--secondary-focus-ring-light);
+}
+body.dark-theme .btn-secondary {
+    background-color: var(--secondary-color-dark);
+    color: var(--secondary-text-dark);
+    border-color: var(--secondary-color-dark);
+}
+body.dark-theme .btn-secondary:hover {
+    background-color: var(--secondary-hover-color-dark);
+    border-color: var(--secondary-hover-color-dark);
+}
+body.dark-theme .btn-secondary:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--secondary-focus-ring-dark);
+}
+.btn-neutral {
+    background-color: var(--neutral-bg-color-light);
+    color: var(--neutral-text-color-light);
+    border-color: var(--neutral-border-color-light);
+}
+.btn-neutral:hover {
+    background-color: var(--neutral-hover-bg-color-light);
+}
+.btn-neutral:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--primary-focus-ring-light); /* Use primary focus for neutral too */
+}
+body.dark-theme .btn-neutral {
+    background-color: var(--neutral-bg-color-dark);
+    color: var(--neutral-text-color-dark);
+    border-color: var(--neutral-border-color-dark);
+}
+body.dark-theme .btn-neutral:hover {
+    background-color: var(--neutral-hover-bg-color-dark);
+}
+body.dark-theme .btn-neutral:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--primary-focus-ring-dark);
+}
+.btn-danger {
+    background-color: var(--danger-color-light);
+    color: var(--danger-text-light);
+    border-color: var(--danger-color-light);
+}
+.btn-danger:hover {
+    background-color: var(--danger-hover-color-light);
+    border-color: var(--danger-hover-color-light);
+}
+.btn-danger:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--danger-focus-ring-light);
+}
+body.dark-theme .btn-danger {
+    background-color: var(--danger-color-dark);
+    color: var(--danger-text-dark); /* Ensure this text color has good contrast */
+    border-color: var(--danger-color-dark);
+}
+body.dark-theme .btn-danger:hover {
+    background-color: var(--danger-hover-color-dark);
+    border-color: var(--danger-hover-color-dark);
+}
+body.dark-theme .btn-danger:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--danger-focus-ring-dark);
+}
+.btn-danger-neutral { /* For less prominent danger actions */
+    background-color: var(--danger-bg-light);
+    color: var(--danger-color-light);
+    border: 1px solid var(--danger-border-light);
+}
+.btn-danger-neutral:hover {
+    background-color: var(--danger-color-light);
+    color: var(--danger-text-light);
+}
+body.dark-theme .btn-danger-neutral {
+    background-color: var(--danger-bg-dark);
+    color: var(--danger-color-dark);
+    border: 1px solid var(--danger-border-dark);
+}
+body.dark-theme .btn-danger-neutral:hover {
+    background-color: var(--danger-color-dark);
+    color: var(--text-color-light); /* Text on danger hover */
+}
+.btn-sm {
+    padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+    font-size: 0.75rem; /* text-xs */
+}
+.btn-lg {
+    padding: 0.75rem 1.5rem; /* py-3 px-6 */
+    font-size: 1rem; /* text-base */
+}
+.btn-icon { /* For buttons that are primarily icons */
+    padding: 0.5rem; /* p-2 */
+    line-height: 1; /* Ensure icon is centered */
+}
+.btn-ghost { /* Transparent background, shows on hover */
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--text-subtitle-color-light);
+}
+.btn-ghost:hover {
+    background-color: var(--neutral-bg-color-light);
+    color: var(--text-color-light);
+}
+body.dark-theme .btn-ghost {
+    color: var(--text-subtitle-color-dark);
+}
+body.dark-theme .btn-ghost:hover {
+    background-color: var(--neutral-bg-color-dark);
+    color: var(--text-color-dark);
+}
+/* Forms (.form-input, .form-select, etc.) */
+.form-label {
+    display: block;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* medium */
+    color: var(--text-color-light);
+    margin-bottom: 0.25rem; /* mb-1 */
+}
+body.dark-theme .form-label {
+    color: var(--text-color-dark);
+}
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--input-border-color-light);
+    background-color: var(--input-bg-color-light);
+    color: var(--input-text-color-light);
+    font-size: 0.875rem;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    appearance: none; /* Remove default styling on some browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--input-focus-border-color-light);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--input-focus-ring-light);
+}
+.form-input::placeholder, .form-textarea::placeholder {
+    color: var(--input-placeholder-color-light);
+    opacity: 1;
+}
+.form-input:disabled, .form-select:disabled, .form-textarea:disabled {
+    background-color: var(--input-disabled-bg-light);
+    color: var(--input-disabled-text-light);
+    cursor: not-allowed;
+}
+body.dark-theme .form-input, body.dark-theme .form-select, body.dark-theme .form-textarea {
+    background-color: var(--input-bg-color-dark);
+    border-color: var(--input-border-color-dark);
+    color: var(--input-text-color-dark);
+}
+body.dark-theme .form-input:focus, body.dark-theme .form-select:focus, body.dark-theme .form-textarea:focus {
+    border-color: var(--input-focus-border-color-dark);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+body.dark-theme .form-input::placeholder, body.dark-theme .form-textarea::placeholder {
+    color: var(--input-placeholder-color-dark);
+}
+body.dark-theme .form-input:disabled, body.dark-theme .form-select:disabled, body.dark-theme .form-textarea:disabled {
+    background-color: var(--input-disabled-bg-dark);
+    color: var(--input-disabled-text-dark);
+}
+
+/* Fix for email input in dark theme */
+body.dark-theme input[type="email"].form-input,
+body.dark-theme input[type="email"] {
+    background-color: var(--input-bg-color-dark) !important;
+    color: var(--input-text-color-dark) !important;
+    border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="email"]:focus {
+    border-color: var(--input-focus-border-color-dark);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Specific class for login email field */
+.dark-theme-email {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-theme .dark-theme-email {
+    background-color: var(--input-bg-color-dark) !important;
+    color: var(--input-text-color-dark) !important;
+    border-color: var(--input-border-color-dark);
+}
+
+/* ... existing code ... */
+
+/* For logo images that need specific background in dark mode if they are dark themselves */
+.logo-img-dark-static { /* No specific style for light mode */ }
+body.dark-theme .logo-img-dark-static {
+    background-color: white; padding: 2px; border-radius: var(--border-radius-sm);
+}
+.logo-img-light-static { /* No specific style needed generally */ }
+/* ==========================================================================
+   3. Layout Styles
+   ========================================================================== */
+.body-dashboard-layout { display: flex; }
+/* Main Sidebar */
+.main-sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg-color-light);
+    border-left-width: 1px; border-right-width: 0;
+    border-color: var(--sidebar-border-color-light);
+    box-shadow: var(--shadow-md);
+    position: fixed; top: 0; bottom: 0;
+    right: 0; left: auto;
+    z-index: 40;
+    display: flex; flex-direction: column;
+    transition: background-color var(--transition-speed) var(--transition-timing), border-color var(--transition-speed) var(--transition-timing);
+}
+html[dir="ltr"] .main-sidebar {
+    border-left-width: 0;
+    border-right-width: 1px;
+    right: auto;
+    left: 0;
+}
+body.dark-theme .main-sidebar {
+    background-color: var(--sidebar-bg-color-dark);
+    border-color: var(--sidebar-border-color-dark);
+}
+.main-sidebar nav { flex-grow: 1; overflow-y: auto; }
+.sidebar-link {
+    display: flex; align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-md);
+    color: var(--sidebar-text-color-light);
+    font-size: 0.875rem; font-weight: 500;
+    transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
+    margin-bottom: 0.25rem;
+}
+.sidebar-link svg {
+    width: 1.25rem; height: 1.25rem;
+    color: var(--sidebar-icon-color-light);
+    margin-left: 0.75rem; margin-right: 0;
+    flex-shrink: 0;
+    transition: color var(--transition-speed) var(--transition-timing);
+}
+html[dir="ltr"] .sidebar-link svg { margin-left: 0; margin-right: 0.75rem; }
+.sidebar-link span { flex-grow: 1; }
+.sidebar-link:hover {
+    background-color: var(--sidebar-link-hover-bg-light);
+    color: var(--sidebar-link-hover-text-light);
+    text-decoration: none;
+}
+.sidebar-link:hover svg { color: var(--sidebar-link-hover-text-light); }
+.sidebar-link.active {
+    background-color: var(--sidebar-link-active-bg-light);
+    color: var(--sidebar-link-active-text-light);
+    box-shadow: var(--shadow-sm);
+}
+.sidebar-link.active svg { color: var(--sidebar-link-active-text-light); }
+body.dark-theme .sidebar-link { color: var(--sidebar-text-color-dark); }
+body.dark-theme .sidebar-link svg { color: var(--sidebar-icon-color-dark); }
+body.dark-theme .sidebar-link:hover { background-color: var(--sidebar-link-hover-bg-dark); color: var(--sidebar-link-hover-text-dark); }
+body.dark-theme .sidebar-link:hover svg { color: var(--sidebar-link-hover-text-dark); }
+body.dark-theme .sidebar-link.active { background-color: var(--sidebar-link-active-bg-dark); color: var(--sidebar-link-active-text-dark); }
+body.dark-theme .sidebar-link.active svg { color: var(--sidebar-link-active-text-dark); }
+/* Removed old danger link styles as they're replaced by sidebar-bottom-btn styles */
+/* Main Content Area */
+.main-content-area {
+    flex-grow: 1;
+    padding: 1.5rem;
+    margin-right: 260px; margin-left: 0;
+    display: flex; flex-direction: column;
+    /* min-height: 100vh; Removed to allow body to control flex for footer */
+}
+html[dir="ltr"] .main-content-area { margin-right: 0; margin-left: 260px; }
+.main-content-area.with-fixed-suggestion-pane { padding-bottom: calc(4rem + 1.5rem); }
+.main-content-area > footer { margin-top: auto; /* Push footer to bottom */ }
+/* For pages with two sidebars (e.g., instructor_create_scenario.html) */
+.content-wrapper {
+    display: flex; flex-grow: 1;
+    margin-right: 260px; margin-left: 0;
+}
+html[dir="ltr"] .content-wrapper { margin-right: 0; margin-left: 260px; }
+.content-wrapper > .main-content-area { margin-right: 0 !important; margin-left: 0 !important; }
+.components-sidebar-container {
+    width: 280px;
+    background-color: var(--card-bg-color-light);
+    border-left: 1px solid var(--card-border-color-light); border-right: 0;
+    display: flex; flex-direction: column;
+    height: 100vh; position: sticky; top: 0;
+    flex-shrink: 0; box-shadow: var(--shadow-sm);
+}
+html[dir="ltr"] .components-sidebar-container { border-left: 0; border-right: 1px solid var(--card-border-color-light); }
+body.dark-theme .components-sidebar-container { background-color: var(--card-bg-color-dark); border-color: var(--card-border-color-dark); }
+.components-sidebar-container .components-list { overflow-y: auto; flex-grow: 1; }
+/* Global Toggle Container (e.g., on login page) */
+.global-toggle-container {
+    position: absolute; top: 1rem; left: 1rem; right: auto;
+    z-index: 10; display: flex; gap: 0.5rem;
+}
+html[dir="ltr"] .global-toggle-container { left: auto; right: 1rem; }
+.global-toggle-container .lang-switch-btn,
+.global_toggle-container .theme-switch-btn { /* Typo fixed in next line */
+    padding: 0.5rem 0.75rem; border-radius: var(--border-radius-md);
+    background-color: rgba(var(--input-bg-color-light-rgb), 0.6);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    color: var(--text-color-light);
+    border: 1px solid rgba(var(--card-border-color-light-rgb), 0.5);
+}
+.global-toggle-container .lang-switch-btn:hover,
+.global-toggle-container .theme-switch-btn:hover {
+    background-color: rgba(var(--input-bg-color-light-rgb), 0.8);
+}
+body.dark-theme .global-toggle-container .lang-switch-btn,
+body.dark-theme .global-toggle-container .theme-switch-btn {
+    background-color: rgba(var(--card-bg-color-dark-rgb), 0.6);
+    color: var(--text-color-dark);
+    border: 1px solid rgba(var(--card-border-color-dark-rgb), 0.6);
+}
+body.dark-theme .global-toggle-container .lang-switch-btn:hover,
+body.dark-theme .global-toggle-container .theme-switch-btn:hover {
+    background-color: rgba(var(--card-bg-color-dark-rgb), 0.8);
+}
+/* ==========================================================================
+   4. Page/Component Specific Styles
+   ========================================================================== */
+/* Login Page Layout */
+.body-login-layout {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+    background-image: url('login_bg.webp');
+    background-size: cover; background-position: center;
+}
+/* KPI Cards */
+.kpi-card { }
+.kpi-card .kpi-value {
+    color: var(--primary-color-light);
+    font-weight: 700;
+}
+body.dark-theme .kpi-card .kpi-value { color: var(--primary-color-dark); }
+.kpi-card .kpi-subtext { color: var(--text-subtitle-color-light); font-size: 0.75rem; }
+body.dark-theme .kpi-card .kpi-subtext { color: var(--text-subtitle-color-dark); }
+.kpi-card .kpi-link { color: var(--primary-color-light); font-weight: 500; }
+.kpi-card .kpi-link:hover { color: var(--primary-hover-color-light); }
+body.dark-theme .kpi-card .kpi-link { color: var(--primary-color-dark); }
+body.dark-theme .kpi-card .kpi-link:hover { color: var(--primary-hover-color-dark); }
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        min-height: 250px;
+    }
+    
+    /* Stack the skills chart and description on small screens */
+    .skills-chart-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Adjust radar chart size on small screens */
+    .chart-container.radar-chart {
+        max-height: 280px;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        min-height: 200px;
+    }
+    
+    /* Further reduce radar chart size on very small screens */
+    .chart-container.radar-chart {
+        max-height: 240px;
+    }
+}
+
+body.dark-theme .chart-container canvas {
+    filter: contrast(1.05); /* Slightly increase contrast for better readability */
+}
+
+.progress-bar-container-table { width: 100%; background-color: var(--neutral-bg-color-light); border-radius: var(--border-radius-full); height: 0.5rem; }
+body.dark-theme .progress-bar-container-table { background-color: var(--neutral-bg-color-dark); }
+.progress-bar-table { background-color: var(--primary-color-light); height: 100%; border-radius: var(--border-radius-full); transition: width 0.3s ease-in-out; }
+body.dark-theme .progress-bar-table { background-color: var(--primary-color-dark); }
+/* Architecture Map Styles */
+/* Inline styles for architecture-grid in HTML are kept for now, consider moving here */
+.architecture-zone {
+    /* Basic zone styling from HTML: border, bg, radius, padding, flex, min-height, shadow */
+}
+.architecture-zone .drop-zone-title {
+    /* Basic title styling from HTML */
+}
+.drop-zone { flex-grow: 1; padding: 0.5rem; border-radius: var(--border-radius-sm); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: background-color var(--transition-speed); }
+.drop-zone.drag-over { background-color: rgba(var(--primary-color-light-rgb), 0.08); border-style: solid; }
+body.dark-theme .drop-zone.drag-over { background-color: rgba(var(--primary-color-dark-rgb), 0.1); }
+.drop-placeholder { font-size: 0.75rem; color: var(--text-muted-color-light); text-align: center; padding: 1rem; width: 100%; display: flex; align-items: center; justify-content: center; min-height: 50px; border: 1px dashed transparent; }
+body.dark-theme .drop-placeholder { color: var(--text-muted-color-dark); }
+.vendor-item-draggable {
+    display: flex; align-items: center; padding: 0.5rem 0.75rem;
+    border: 1px solid var(--card-border-color-light); border-radius: var(--border-radius-md);
+    background-color: var(--card-bg-color-light); cursor: grab;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    font-size: 0.875rem;
+}
+.vendor-item-draggable:hover { background-color: var(--card-hover-bg-light); box-shadow: var(--shadow-sm); }
+.vendor-item-draggable.dragging-from-list, .dropped-item.dragging-existing { opacity: 0.5; border-style: dashed; cursor: grabbing; }
+.vendor-item-draggable.item-used-in-list { opacity: 0.6; cursor: not-allowed; background-color: var(--input-disabled-bg-light);
+}
+body.dark-theme .vendor-item-draggable { border-color: var(--card-border-color-dark); background-color: var(--card-bg-color-dark); }
+body.dark-theme .vendor-item-draggable:hover { background-color: var(--card-hover-bg-dark); }
+body.dark-theme .vendor-item-draggable.item-used-in-list { background-color: var(--input-disabled-bg-dark);
+}
+.vendor-item-draggable img, .dropped-item img { width: 1.25rem; height: 1.25rem; object-fit: contain; margin-inline-end: 0.5rem; }
+.vendor-item-draggable.img-error span::before, .dropped-item.img-error span::before { content: '🖼️ '; margin-inline-end: 0.25rem; }
+.dropped-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--primary-color-light);
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border-radius: var(--border-radius-md);
+    font-size: 0.75rem; width: 100%; box-shadow: var(--shadow-sm);
+    margin-bottom: 0.5rem; /* Space between dropped items */
+}
+body.dark-theme .dropped-item { border-color: var(--primary-color-dark); background-color: var(--primary-color-dark); color: var(--primary-text-dark); }
+.dropped-item img.logo-img-dark-static { filter: brightness(0) invert(1); } /* Ensure dark logos become white on primary bg */
+.dropped-item.img-error { background-color: var(--neutral-bg-color-light); border-color: var(--neutral-border-color-light); color: var(--neutral-text-color-light); }
+.dropped-item.img-error img { filter: none; }
+body.dark-theme .dropped-item.img-error { background-color: var(--neutral-bg-color-dark); border-color: var(--neutral-border-color-dark); color: var(--neutral-text-color-dark); }
+.dropped-item .remove-item-btn {
+    color: var(--primary-text-light); background: transparent; border: none;
+    font-size: 1.25rem; line-height: 1;
+    padding: 0 0.25rem; opacity: 0.7;
+    transition: opacity var(--transition-speed); cursor: pointer;
+}
+.dropped-item .remove-item-btn:hover { opacity: 1; }
+body.dark-theme .dropped-item .remove-item-btn { color: var(--primary-text-dark);
+}
+/* MITRE ATT&CK Builder/Viewer */
+.mitre-grid-container {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem; max-height: 400px; overflow-y: auto; padding: 0.5rem;
+    border: 1px solid var(--card-border-color-light); border-radius: var(--border-radius-md);
+}
+body.dark-theme .mitre-grid-container { border-color: var(--card-border-color-dark);
+}
+.tactic-column { padding: 0.5rem; }
+.tactic-title {
+    font-size: 0.875rem; font-weight: 600; color: var(--header-color-light);
+    margin-bottom: 0.25rem; border-bottom: 1px solid var(--card-border-color-light);
+    padding-bottom: 0.25rem;
+}
+body.dark-theme .tactic-title { color: var(--header-color-dark); border-bottom-color: var(--card-border-color-dark); }
+.tactic-id-display { font-size: 0.625rem; color: var(--text-muted-color-light); margin-bottom: 0.5rem; }
+body.dark-theme .tactic-id-display { color: var(--text-muted-color-dark); }
+.techniques-list { list-style: none; padding: 0; margin: 0; }
+.technique-item label.form-checkbox-label { font-size: 0.75rem; padding: 0.25rem 0; border-radius: var(--border-radius-sm); }
+.technique-item label.form-checkbox-label:hover { background-color: var(--card-hover-bg-light); }
+body.dark-theme .technique-item label.form-checkbox-label:hover { background-color: var(--card-hover-bg-dark);
+}
+.selected-path-area {
+    min-height: 60px; background-color: var(--input-bg-color-light);
+    border: 1px dashed var(--input-border-color-light); padding: 0.75rem;
+    border-radius: var(--border-radius-md); font-size: 0.875rem;
+    line-height: 1.6; display: flex; flex-wrap: wrap; gap: 0.5rem;
+}
+body.dark-theme .selected-path-area { background-color: var(--input-bg-color-dark); border-color: var(--input-border-color-dark); }
+.technique-tag {
+    display: inline-block;
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-full);
+    font-size: 0.75rem;
+}
+body.dark-theme .technique-tag { background-color: var(--primary-color-dark); color: var(--primary-text-dark); }
+/* MITRE Table (trainee_mitre.html) */
+.mitre-table th, .mitre-table td {
+    border: 1px solid var(--card-border-color-light); padding: 0.5rem;
+    font-size: 0.75rem; vertical-align: top; min-width: 100px;
+}
+.mitre-table th { background-color: var(--card-hover-bg-light); font-weight: 600; white-space: normal; text-align: center; }
+.mitre-table td { height: 80px;
+} /* Give cells some height */
+.mitre-technique-cell.identified {
+    background-color: rgba(var(--primary-color-light-rgb), 0.15);
+    border: 1px solid var(--primary-color-light);
+}
+body.dark-theme .mitre-table th, body.dark-theme .mitre-table td { border-color: var(--card-border-color-dark); }
+body.dark-theme .mitre-table th { background-color: var(--card-hover-bg-dark);
+}
+body.dark-theme .mitre-technique-cell.identified {
+    background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+    border-color: var(--primary-color-dark);
+}
+/* Email Client & Chat Interfaces */
+.email-layout-grid { display: grid; grid-template-columns: 240px 320px 1fr; gap: 0; height: calc(100vh - 200px); }
+.communication-layout-grid { display: grid; grid-template-columns: 260px 1fr; height: calc(100vh - 200px); }
+.ai-chat-container { height: calc(100vh - 220px); }
+.email-folders-sidebar, .chat-sidebar {
+    grid-row: 1 / -1; overflow-y: auto;
+    background-color: var(--card-bg-color-light);
+    border-right-width: 1px; border-color: var(--card-border-color-light);
+}
+html[dir="rtl"] .email-folders-sidebar, html[dir="rtl"] .chat-sidebar { border-right-width: 0; border-left-width: 1px; }
+body.dark-theme .email-folders-sidebar, body.dark-theme .chat-sidebar { background-color: var(--card-bg-color-dark); border-color: var(--card-border-color-dark); }
+.email-list-pane { grid-row: 1 / -1; display: flex; flex-direction: column; border-right-width: 1px; border-color: var(--card-border-color-light); }
+html[dir="rtl"] .email-list-pane { border-right-width: 0; border-left-width: 1px; }
+body.dark-theme .email-list-pane { border-color: var(--card-border-color-dark);
+}
+.email-content-pane, .chat-main-area { grid-row: 1 / -1; display: flex; flex-direction: column; overflow-y: auto;
+}
+.email-folder-item, .chat-list-item {
+    display: flex; align-items: center; width: 100%; padding: 0.625rem 0.75rem;
+    border-radius: var(--border-radius-md); color: var(--sidebar-text-color-light);
+    font-size: 0.875rem; transition: background-color 0.15s, color 0.15s;
+    text-align: right;
+}
+html[dir="ltr"] .email-folder-item, html[dir="ltr"] .chat-list-item { text-align: left;
+}
+.email-folder-item:hover, .chat-list-item:hover { background-color: var(--sidebar-link-hover-bg-light); color: var(--sidebar-link-hover-text-light); }
+.email-folder-item.active, .chat-list-item.active { background-color: var(--sidebar-link-active-bg-light); color: var(--sidebar-link-active-text-light); font-weight: 500;
+}
+body.dark-theme .email-folder-item, body.dark-theme .chat-list-item { color: var(--sidebar-text-color-dark); }
+body.dark-theme .email-folder-item:hover, body.dark-theme .chat-list-item:hover { background-color: var(--sidebar-link-hover-bg-dark); color: var(--sidebar-link-hover-text-dark);
+}
+body.dark-theme .email-folder-item.active, body.dark-theme .chat-list-item.active { background-color: var(--sidebar-link-active-bg-dark); color: var(--sidebar-link-active-text-dark); }
+.folder-count, .chat-list-item-unread {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--border-radius-full);
+    margin-right: auto;
+}
+html[dir="ltr"] .folder-count, html[dir="ltr"] .chat-list-item-unread { margin-left: auto; margin-right: 0; }
+.folder-count { color: var(--text-muted-color-light);
+    background-color: var(--neutral-bg-color-light); }
+body.dark-theme .folder-count { color: var(--text-muted-color-dark); background-color: var(--neutral-bg-color-dark); }
+.chat-list-item-unread { background-color: var(--primary-color-light); color: var(--primary-text-light);
+    font-weight: bold;}
+body.dark-theme .chat-list-item-unread { background-color: var(--primary-color-dark); color: var(--primary-text-dark); }
+.email-list-item.read h4, .email-list-item.read span, .email-list-item.read p { font-weight: 400; color: var(--text-subtitle-color-light);
+}
+body.dark-theme .email-list-item.read h4, body.dark-theme .email-list-item.read span, body.dark-theme .email-list-item.read p { color: var(--text-subtitle-color-dark); }
+.chat-list-item-icon { margin-left: 0.5rem; color: var(--text-muted-color-light);
+}
+html[dir="ltr"] .chat-list-item-icon { margin-right: 0.5rem; margin-left: 0;}
+body.dark-theme .chat-list-item-icon { color: var(--text-muted-color-dark); }
+.chat-list-item-avatar { width: 1.75rem; height: 1.75rem; border-radius: 9999px;
+    margin-left: 0.5rem; object-fit: cover; }
+html[dir="ltr"] .chat-list-item-avatar { margin-right: 0.5rem; margin-left: 0;}
+.chat-list-item-status { width: 0.625rem; height: 0.625rem; border-radius: 9999px; margin-right: auto;
+    margin-left: 0.25rem; border: 1px solid var(--card-bg-color-light); }
+html[dir="ltr"] .chat-list-item-status { margin-left: auto; margin-right: 0.25rem; }
+body.dark-theme .chat-list-item-status { border-color: var(--card-bg-color-dark);
+}
+.chat-list-item-status.online { background-color: var(--success-color-light); }
+body.dark-theme .chat-list-item-status.online { background-color: var(--success-color-dark); }
+.chat-list-item-status.offline { background-color: #9ca3af;
+} /* gray-400 */
+.chat-header .btn-icon svg { width: 1.25rem; height: 1.25rem;
+} /* Ensured icons in chat header are sized correctly */
+.chat-messages-scrollable { flex-grow: 1; overflow-y: auto; padding: 1rem; }
+.chat-message { display: flex; max-width: 75%; margin-bottom: 0.75rem; }
+.chat-message.sent { margin-left: auto; flex-direction: row-reverse; }
+html[dir="ltr"] .chat-message.sent { margin-right: auto; margin-left: 0; flex-direction: row;
+}
+.chat-message.received { margin-right: auto; }
+html[dir="ltr"] .chat-message.received { margin-left: auto; margin-right: 0; }
+.message-bubble { padding: 0.625rem 0.875rem; border-radius: var(--border-radius-lg); word-wrap: break-word; max-width: 100%;
+    box-shadow: var(--shadow-sm); }
+.chat-message.sent .message-bubble { background-color: var(--primary-color-light); color: var(--primary-text-light); border-bottom-right-radius: var(--border-radius-sm); }
+html[dir="ltr"] .chat-message.sent .message-bubble { border-bottom-left-radius: var(--border-radius-sm); border-bottom-right-radius: var(--border-radius-lg);
+}
+.chat-message.received .message-bubble { background-color: var(--card-hover-bg-light); color: var(--text-color-light); border-bottom-left-radius: var(--border-radius-sm); }
+html[dir="ltr"] .chat-message.received .message-bubble { border-bottom-right-radius: var(--border-radius-sm); border-bottom-left-radius: var(--border-radius-lg);
+}
+body.dark-theme .chat-message.sent .message-bubble { background-color: var(--primary-color-dark); color: var(--primary-text-dark); }
+body.dark-theme .chat-message.received .message-bubble { background-color: var(--card-hover-bg-dark); color: var(--text-color-dark); }
+.message-sender { font-size: 0.75rem;
+    font-weight: 500; margin-bottom: 0.125rem; color: var(--text-subtitle-color-light); }
+body.dark-theme .message-sender { color: var(--text-subtitle-color-dark); }
+.chat-message.sent .message-sender { display: none; }
+.message-text { font-size: 0.875rem;
+    line-height: 1.5; }
+.message-timestamp { font-size: 0.625rem; color: var(--text-muted-color-light); margin-top: 0.25rem; text-align: left; }
+html[dir="ltr"] .message-timestamp { text-align: right;
+}
+.chat-message.sent .message-timestamp { color: rgba(var(--primary-text-light-rgb, 255, 255, 255), 0.75); }
+body.dark-theme .chat-message.sent .message-timestamp { color: rgba(var(--primary-text-dark-rgb, 255, 255, 255), 0.75);
+}
+body.dark-theme .chat-message.received .message-timestamp { color: var(--text-muted-color-dark); }
+.chat-input-area .btn-icon svg { width: 1.125rem; height: 1.125rem;
+}
+/* Timeline Component */
+.timeline { position: relative; padding-inline-start: 1.5rem; /* For dot spacing */ }
+.timeline::before {
+    content: ''; position: absolute; top: 0; bottom: 0;
+    width: 2px;
+    background-color: var(--card-border-color-light);
+    /* Positioning depends on LTR/RTL handled by padding on .timeline */
+    right: calc(0.375rem - 1px); /* Default for RTL, assuming dot is 0.75rem wide */
+}
+html[dir="ltr"] .timeline::before { left: calc(0.375rem - 1px); right: auto;
+}
+body.dark-theme .timeline::before { background-color: var(--card-border-color-dark); }
+.timeline-item { position: relative; padding-bottom: 1.5rem; /* Space between items */ }
+html[dir="ltr"] .timeline-item {
+    /* LTR specific padding adjustments for timeline item if dot is on the left */
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot {
+    position: absolute; top: 0.25rem; /* Align with text better */
+    /* Positioning depends on LTR/RTL handled by padding on .timeline */
+    right: -1px; /* (dot_width / 2) - (line_width / 2) */
+    width: 0.75rem; height: 0.75rem; border-radius: var(--border-radius-full);
+    border: 2px solid var(--card-bg-color-light);
+    z-index: 1;
+}
+html[dir="ltr"] .timeline-dot { left: -1px; right: auto; }
+body.dark-theme .timeline-dot { border-color: var(--card-bg-color-dark); }
+/* Colors for timeline dots */
+.timeline-dot-pending { background-color: #9ca3af; }
+.timeline-dot-active { background-color: var(--primary-color-light); }
+body.dark-theme .timeline-dot-active { background-color: var(--primary-color-dark); }
+.timeline-dot-completed { background-color: var(--success-color-light);
+}
+body.dark-theme .timeline-dot-completed { background-color: var(--success-color-dark); }
+.timeline-dot.bg-danger-color { background-color: var(--danger-color-light); }
+body.dark-theme .timeline-dot.bg-danger-color { background-color: var(--danger-color-dark);
+}
+.timeline-title { font-size: 1rem; font-weight: 500; color: var(--text-color-light); margin-bottom: 0.125rem; }
+body.dark-theme .timeline-title { color: var(--text-color-dark); }
+.timeline-description { font-size: 0.875rem;
+    color: var(--text-subtitle-color-light); }
+body.dark-theme .timeline-description { color: var(--text-subtitle-color-dark); }
+/* Content Cards (instructor_content_management.html, trainee_prep_materials.html) */
+.content-card { display: flex; flex-direction: column;
+}
+.content-card-icon-wrapper { display: flex; justify-content: center; align-items: center; margin-bottom: 0.75rem;
+}
+.content-card-icon-wrapper svg { width: 2rem; height: 2rem; color: var(--primary-color-light); }
+body.dark-theme .content-card-icon-wrapper svg { color: var(--primary-color-dark); }
+.content-card-title { font-size: 1.125rem;
+    font-weight: 600; color: var(--header-color-light); margin-bottom: 0.25rem; line-height: 1.3; }
+body.dark-theme .content-card-title { color: var(--header-color-dark); }
+.content-card-description { font-size: 0.875rem; color: var(--text-subtitle-color-light);
+    line-height: 1.5; margin-bottom: 0.75rem; }
+body.dark-theme .content-card-description { color: var(--text-subtitle-color-dark); }
+.content-card-footer { display: flex; justify-content: space-between; align-items: center;
+}
+.content-card-type {
+    font-size: 0.75rem; font-weight: 500; color: var(--primary-color-light);
+    padding: 0.25rem 0.5rem; background-color: rgba(var(--primary-color-light-rgb), 0.1);
+    border-radius: var(--border-radius-full);
+}
+body.dark-theme .content-card-type {
+    color: var(--primary-color-dark);
+    background-color: rgba(var(--primary-color-dark-rgb), 0.15);
+}
+.content-card-button {
+    display: inline-flex; align-items: center; font-size: 0.875rem; font-weight: 500;
+    color: var(--primary-color-light);
+}
+.content-card-button svg { width: 1rem;
+    height: 1rem; margin-inline-start: 0.25rem;}
+body.dark-theme .content-card-button { color: var(--primary-color-dark); }
+/* Dashboard List Items (trainee_dashboard.html) */
+.dashboard-list-item { transition: background-color var(--transition-speed);
+}
+.dashboard-list-scrollable { /* max-height and overflow-y are set in HTML */ }
+.badge-item .text-3xl { font-size: 1.875rem;
+}
+@media (min-width: 640px) { .badge-item .text-4xl { font-size: 2.25rem; } }
+.cti-snippet-item { /* Basic item styling, JS adds more */ }
+/* Suggestion Pane (instructor_create_scenario.html) */
+.suggestion-pane {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background-color: var(--card-bg-color-light);
+    border-top: 1px solid var(--card-border-color-light);
+    padding: 0.75rem 1.5rem; text-align: center; font-size: 0.875rem;
+    color: var(--text-subtitle-color-light);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.07);
+    z-index: 30; /* Ensure it's above content but below modals */
+}
+body.dark-theme .suggestion-pane {
+    background-color: var(--card-bg-color-dark);
+    border-top-color: var(--card-border-color-dark);
+    color: var(--text-subtitle-color-dark);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+}
+/* Helper for specific icon theming if needed outside of JS logic */
+.icon-needs-dark-bg { /* Apply to an icon if its default is dark and needs a white bg in dark mode */
+    /* No style needed for light mode */
+}
+body.dark-theme .icon-needs-dark-bg {
+    background-color: white;
+    padding: 2px; /* Adjust as needed */
+    border-radius: var(--border-radius-sm);
+}
+/* Ensure that Tailwind's prose styles for dark mode are correctly applied if used */
+body.dark-theme .prose-invert {
+  --tw-prose-body: var(--text-color-dark);
+  --tw-prose-headings: var(--header-color-dark);
+  --tw-prose-links: var(--primary-color-dark);
+  /* Add other prose variables as needed */
+}
+/* Wizard progress bar styles */
+.progress-bar-container-global { /* Style for container if needed, already in HTML */ }
+.progress-bar-global { /* Style for bar if needed, already in HTML */ }
+.wizard-step { display: none; animation: fadeIn 0.5s; }
+.wizard-step-active { display: block !important; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Tab specific styles */
+.tab-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-subtitle-color-light);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+.tab-button:hover {
+    color: var(--text-color-light);
+}
+.tab-button.active {
+    color: var(--primary-color-light);
+    border-bottom-color: var(--primary-color-light);
+}
+body.dark-theme .tab-button {
+    color: var(--text-subtitle-color-dark);
+}
+body.dark-theme .tab-button:hover {
+    color: var(--text-color-dark);
+}
+body.dark-theme .tab-button.active {
+    color: var(--primary-color-dark);
+    border-bottom-color: var(--primary-color-dark);
+}
+.tab-panel {
+    /* display: none; // Handled by .hidden */
+}
+.tab-panel.active {
+    /* display: block; // Handled by removing .hidden */
+}
+/* Custom list styling for trainee_architecture.html */
+.custom-list .component-list-item {
+    border-bottom: 1px solid var(--card-border-color-light);
+}
+.custom-list .component-list-item:last-child {
+    border-bottom: none;
+}
+body.dark-theme .custom-list .component-list-item {
+    border-bottom-color: var(--card-border-color-dark);
+}
+/* Styling for event log entries in instructor_simulation_monitor_detail.html */
+.event-log-container .log-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid var(--input-border-color-light); /* Light border between entries */
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+.event-log-container .log-entry:last-child {
+    border-bottom: none;
+}
+body.dark-theme .event-log-container .log-entry {
+    border-bottom-color: var(--input-border-color-dark);
+}
+.log-entry .log-time {
+    color: var(--text-muted-color-light);
+    flex-shrink: 0;
+    margin-inline-end: 0.75rem;
+}
+body.dark-theme .log-entry .log-time {
+    color: var(--text-muted-color-dark);
+}
+.log-entry .log-text {
+    color: var(--text-color-light);
+    flex-grow: 1;
+    word-break: break-word;
+}
+body.dark-theme .log-entry .log-text {
+    color: var(--text-color-dark);
+}
+.log-entry .log-actor {
+    color: var(--text-subtitle-color-light);
+    font-style: italic;
+    flex-shrink: 0;
+    margin-inline-start: 0.75rem;
+    max-width: 100px; /* Prevent very long actor names from breaking layout */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+body.dark-theme .log-entry .log-actor {
+    color: var(--text-subtitle-color-dark);
+}
+/* Tag input display for mitre-tags-edit */
+.tag-input-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    border: 1px solid var(--input-border-color-light);
+    border-radius: var(--border-radius-md);
+    min-height: 2.5rem; /* Same as form-input approx */
+}
+body.dark-theme .tag-input-container {
+    border-color: var(--input-border-color-dark);
+}
+.tag-display-item {
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--border-radius-full);
+    font-size: 0.75rem; /* text-xs */
+    display: inline-flex;
+    align-items: center;
+}
+body.dark-theme .tag-display-item {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+.tag-remove-btn {
+    margin-inline-start: 0.25rem;
+    background: none;
+    border: none;
+    color: var(--primary-text-light);
+    cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1;
+    padding:0;
+}
+body.dark-theme .tag-remove-btn {
+    color: var(--primary-text-dark);
+}
+.tag-remove-btn:hover {
+    font-weight: bold;
+}
+/* For dashboard_main.html active simulations table progress bar text */
+/* This was removed as it made text hard to read. Progress text is now next to the bar. */
+/*
+.progress-bar-container-table {
+    position: relative;
+}
+.progress-bar-container-table .progress-bar-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.65rem;
+    line-height: 1;
+    color: var(--text-color-light);
+    font-weight: 500;
+    mix-blend-mode: difference;
+}
+body.dark-theme .progress-bar-container-table .progress-bar-text {
+    color: var(--text-color-dark);
+}
+*/
+/* Ensure chart text colors use the right CSS variables */
+.chart-container text {
+  fill: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text {
+  fill: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light);
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark);
+}
+
+/* Chart legends and axes labels */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light);
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark);
+}
+
+/* Chart tooltip styling */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light);
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark);
+}
+
+/* Resource allocation chart specific styling */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light);
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark);
+}
+
+/* Make chart colors more visible in dark theme */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2);
+}
+
+/* Enhanced tooltip styles for better visibility */
+.chartjs-tooltip {
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+}
+
+/* Ensure all chart text and grid lines are visible */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+  background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+  color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+  background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+  color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+  background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+  color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+    background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+    background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+    color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+    color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+    pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+    border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+    border-color: var(--input-focus-border-color-dark);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+    background-color: var(--card-bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+    padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+  color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+    background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+    background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+    fill: var(--chart-text-color-light) !important;
+    color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+    fill: var(--chart-text-color-dark) !important;
+    color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+    stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+  background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+    color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+    color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Login page specific styles */
+.login-card {
+  background-color: var(--card-bg-color-light);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-theme .login-card {
+  background-color: var(--card-bg-color-dark);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Fix for password input in dark theme */
+body.dark-theme input[type="password"].form-input,
+body.dark-theme input[type="password"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="password"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Enhance select dropdown in dark theme */
+body.dark-theme .form-select option {
+  background-color: var(--card-bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+/* Additional responsive chart styles */
+.responsive-chart {
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-chart {
+    height: 400px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-chart {
+    height: 350px !important;
+  }
+  
+  /* Resource allocation chart - stack legend vertically on small screens */
+  .chart-container.resource-chart .chartjs-legend {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .chart-container.resource-chart .chartjs-legend-item {
+    margin-bottom: 4px !important;
+  }
+}
+
+/* Landing page tutorial items and feature styling */
+.tutorial-item {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+.tutorial-item:hover {
+  background-color: rgba(var(--primary-color-light-rgb), 0.05);
+}
+
+body.dark-theme .tutorial-item:hover {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.1);
+}
+
+.feature-item, .tip-item {
+  padding: 0.25rem 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover, .tip-item:hover {
+  transform: translateX(0.25rem);
+}
+
+html[dir="ltr"] .feature-item:hover, 
+html[dir="ltr"] .tip-item:hover {
+  transform: translateX(-0.25rem);
+}
+
+/* Enhanced card hover effects for interactive elements */
+.card.hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+body.dark-theme .card.hover-effect:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Icon styles for landing page */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .icon-container {
+  background-color: rgba(var(--primary-color-dark-rgb), 0.2);
+}
+
+.icon-container svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--primary-color-light);
+}
+
+body.dark-theme .icon-container svg {
+  color: var(--primary-color-dark);
+}
+
+/* CSS variables for warning color */
+.text-warning-color {
+  color: var(--warning-color-light);
+}
+
+body.dark-theme .text-warning-color {
+  color: var(--warning-color-dark);
+}
+
+.bg-warning-color {
+  background-color: var(--warning-color-light);
+}
+
+body.dark-theme .bg-warning-color {
+  background-color: var(--warning-color-dark);
+}
+
+/* Ensure chart text colors use the right CSS variables - Enhanced selectors */
+.chart-container text,
+.chart-container .chart-title,
+.chart-container .chart-axis-title,
+.chart-container .chart-legend text,
+.chart-container .chart-axis text {
+  fill: var(--chart-text-color-light) !important;
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container text,
+body.dark-theme .chart-container .chart-title,
+body.dark-theme .chart-container .chart-axis-title,
+body.dark-theme .chart-container .chart-legend text,
+body.dark-theme .chart-container .chart-axis text {
+  fill: var(--chart-text-color-dark) !important;
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart canvas backgrounds - Enhanced specificity */
+.chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Chart legends and axes labels - Enhanced specificity */
+.chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container .chartjs-legend-text {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Chart tooltip styling - Enhanced */
+.chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-light) !important;
+  color: var(--chart-tooltip-text-light) !important;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px 12px !important;
+  opacity: 0.95 !important;
+  pointer-events: none;
+  z-index: 100;
+}
+
+body.dark-theme .chartjs-tooltip {
+  background-color: var(--chart-tooltip-bg-dark) !important;
+  color: var(--chart-tooltip-text-dark) !important;
+}
+
+/* Radar chart specific styling - Enhanced specificity */
+.chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-light) !important;
+}
+
+body.dark-theme .chart-container.radar-chart canvas {
+  background-color: var(--chart-canvas-bg-color-dark) !important;
+}
+
+/* Resource allocation chart specific styling - Enhanced specificity */
+.chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme .chart-container.resource-chart .chartjs-legend-item {
+  color: var(--chart-text-color-dark) !important;
+}
+
+/* Make chart colors more visible in dark theme - Enhanced */
+body.dark-theme .chart-container .chartjs-render-monitor {
+  filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Ensure all chart text and grid lines are visible - Enhanced */
+body.dark-theme .chart-container line,
+body.dark-theme .chart-container path.domain {
+  stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+.chart-container line,
+.chart-container path.domain {
+  stroke: var(--chart-grid-border-color-light) !important;
+}
+
+/* Fix for black text in specific charts */
+#scenarioProgressChart text,
+#resourceUtilizationChart text,
+#costTrendChart text,
+#resourceAllocationChart text,
+#participantPerformanceChart text,
+#scoreDistributionChart text,
+#stageCompletionTimeChart text,
+#skillsRadarChart text {
+  fill: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme #scenarioProgressChart text,
+body.dark-theme #resourceUtilizationChart text,
+body.dark-theme #costTrendChart text,
+body.dark-theme #resourceAllocationChart text,
+body.dark-theme #participantPerformanceChart text,
+body.dark-theme #scoreDistributionChart text,
+body.dark-theme #stageCompletionTimeChart text,
+body.dark-theme #skillsRadarChart text {
+  fill: var(--chart-text-color-dark) !important;
+}
+
+/* Enhanced table styling for better spacing and readability */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 0;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.8rem 1rem;
+  text-align: right;
+  border-bottom: 1px solid var(--card-border-color-light);
+  vertical-align: middle;
+}
+
+html[dir="ltr"] .custom-table th,
+html[dir="ltr"] .custom-table td {
+  text-align: left;
+}
+
+body.dark-theme .custom-table th,
+body.dark-theme .custom-table td {
+  border-bottom-color: var(--card-border-color-dark);
+}
+
+.custom-table th {
+  font-weight: 600;
+  color: var(--header-color-light);
+  background-color: var(--card-hover-bg-light);
+  white-space: nowrap;
+}
+
+body.dark-theme .custom-table th {
+  color: var(--header-color-dark);
+  background-color: var(--card-hover-bg-dark);
+}
+
+.custom-table tr:hover td {
+  background-color: var(--card-hover-bg-light);
+}
+
+body.dark-theme .custom-table tr:hover td {
+  background-color: var(--card-hover-bg-dark);
+}
+
+.table-text-muted {
+  color: var(--text-subtitle-color-light);
+}
+
+body.dark-theme .table-text-muted {
+  color: var(--text-subtitle-color-dark);
+}
+
+/* Specifically target tables in these pages with more spacing */
+#instructor_cost_resource .custom-table th,
+#instructor_cost_resource .custom-table td,
+#instructor_manage_users_teams .custom-table th,
+#instructor_manage_users_teams .custom-table td,
+#instructor_manage_scenarios .custom-table th,
+#instructor_manage_scenarios .custom-table td,
+#instructor_monitor_simulations .custom-table th,
+#instructor_monitor_simulations .custom-table td {
+  padding: 1.25rem 1.5rem;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+/* Add more spacing between table rows in specific dashboards */
+#instructor_cost_resource .custom-table tr,
+#instructor_manage_users_teams .custom-table tr,
+#instructor_manage_scenarios .custom-table tr,
+#instructor_monitor_simulations .custom-table tr {
+  border-bottom: 8px solid transparent;
+}
+
+/* Improved spacing between table columns */
+.custom-table th + th,
+.custom-table td + td {
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+/* Fix for email input in dark theme - Enhanced */
+body.dark-theme input[type="email"].form-input,
+body.dark-theme input[type="email"] {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+body.dark-theme input[type="email"]:focus {
+  border-color: var(--input-focus-border-color-dark);
+  box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+/* Specific class for login email field - Enhanced */
+.dark-theme-email {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-theme .dark-theme-email {
+  background-color: var(--input-bg-color-dark) !important;
+  color: var(--input-text-color-dark) !important;
+  border-color: var(--input-border-color-dark);
+}
+
+/* Add event listeners for email inputs to maintain dark theme */
+
+/* ==========================================================================
+   Main Navbar Styles - Updated
+   ========================================================================== */
+.main-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--card-bg-color-light);
+    border-bottom: 1px solid var(--card-border-color-light);
+    margin-bottom: 1.5rem;
+}
+
+body.dark-theme .main-navbar {
+    background-color: var(--card-bg-color-dark);
+    border-color: var(--card-border-color-dark);
+}
+
+.navbar-title-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--header-color-light);
+    margin: 0;
+    line-height: 1.2;
+}
+
+body.dark-theme .page-title {
+    color: var(--header-color-dark);
+}
+
+.breadcrumbs {
+    margin-top: 0.25rem;
+}
+
+.breadcrumbs-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-subtitle-color-light);
+}
+
+body.dark-theme .breadcrumbs-list {
+    color: var(--text-subtitle-color-dark);
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: "/";
+    margin: 0 0.5rem;
+    color: var(--text-muted-color-light);
+    font-weight: 300;
+}
+
+body.dark-theme .breadcrumb-item:not(:last-child)::after {
+    color: var(--text-muted-color-dark);
+}
+
+.breadcrumb-item a {
+    color: var(--primary-color-light);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-hover-color-light);
+    text-decoration: underline;
+}
+
+body.dark-theme .breadcrumb-item a {
+    color: var(--primary-color-dark);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-subtitle-color-light);
+}
+
+body.dark-theme .breadcrumb-item.active {
+    color: var(--text-subtitle-color-dark);
+}
+
+.navbar-tools {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 1rem;
+}
+
+html[dir="ltr"] .user-info {
+    align-items: flex-start;
+    margin-right: 1rem;
+    margin-left: 0;
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-subtitle-color-light);
+    gap: 0.25rem;
+}
+
+body.dark-theme .user-status {
+    color: var(--text-subtitle-color-dark);
+}
+
+.status-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #9ca3af;
+    display: inline-block;
+}
+
+.status-indicator.online {
+    background-color: var(--success-color-light);
+}
+
+body.dark-theme .status-indicator.online {
+    background-color: var(--success-color-dark);
+}
+
+.active-simulation-indicator {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--success-color-light);
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius-full);
+    background-color: rgba(var(--success-color-light-rgb), 0.1);
+}
+
+body.dark-theme .active-simulation-indicator {
+    color: var(--success-color-dark);
+    background-color: rgba(var(--success-color-dark-rgb), 0.15);
+}
+
+.notifications-area {
+    position: relative;
+}
+
+.notification-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color-light);
+    border-radius: var(--border-radius-full);
+    transition: background-color var(--transition-speed);
+    cursor: pointer;
+    position: relative;
+}
+
+.notification-button:hover {
+    background-color: var(--card-hover-bg-light);
+}
+
+body.dark-theme .notification-button {
+    color: var(--text-color-dark);
+}
+
+body.dark-theme .notification-button:hover {
+    background-color: var(--card-hover-bg-dark);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-text-light);
+    background-color: var(--danger-color-light);
+    border-radius: var(--border-radius-full);
+    transform: translate(25%, -25%);
+}
+
+html[dir="ltr"] .notification-badge {
+    right: 0;
+    left: auto;
+}
+
+body.dark-theme .notification-badge {
+    background-color: var(--danger-color-dark);
+}
+
+.ai-helper-area {
+    position: relative;
+}
+
+.ai-helper-button {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background-color: transparent;
+    color: var(--primary-color-light);
+    border-radius: var(--border-radius-md);
+    transition: background-color var(--transition-speed);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    gap: 0.375rem;
+}
+
+.ai-helper-button:hover {
+    background-color: rgba(var(--primary-color-light-rgb), 0.1);
+}
+
+body.dark-theme .ai-helper-button {
+    color: var(--primary-color-dark);
+}
+
+body.dark-theme .ai-helper-button:hover {
+    background-color: rgba(var(--primary-color-dark-rgb), 0.15);
+}
+
+.timer-area {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--border-radius-md);
+    background-color: var(--neutral-bg-color-light);
+    color: var(--text-color-light);
+    font-size: 0.875rem;
+    font-family: monospace;
+}
+
+body.dark-theme .timer-area {
+    background-color: var(--neutral-bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+/* ==========================================================================
+   Main Footer Styles - Updated
+   ========================================================================== */
+.main-footer {
+    margin-top: auto;
+    padding: 1rem 1.5rem;
+    background-color: var(--card-bg-color-light);
+    border-top: 1px solid var(--card-border-color-light);
+    z-index: 10;
+}
+
+body.dark-theme .main-footer {
+    background-color: var(--card-bg-color-dark);
+    border-color: var(--card-border-color-dark);
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.footer-copyright {
+    font-size: 0.875rem;
+    color: var(--text-subtitle-color-light);
+}
+
+body.dark-theme .footer-copyright {
+    color: var(--text-subtitle-color-dark);
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-link {
+    font-size: 0.875rem;
+    color: var(--primary-color-light);
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+    color: var(--primary-hover-color-light);
+}
+
+body.dark-theme .footer-link {
+    color: var(--primary-color-dark);
+}
+
+.footer-version {
+    font-size: 0.75rem;
+    color: var(--text-muted-color-light);
+    font-family: monospace;
+}
+
+body.dark-theme .footer-version {
+    color: var(--text-muted-color-dark);
+}
+
+.support-chat-button {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border-radius: var(--border-radius-md);
+    transition: background-color var(--transition-speed);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    gap: 0.375rem;
+}
+
+.support-chat-button:hover {
+    background-color: var(--primary-hover-color-light);
+}
+
+body.dark-theme .support-chat-button {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+
+body.dark-theme .support-chat-button:hover {
+    background-color: var(--primary-hover-color-dark);
+}
+
+/* Support Chat Container */
+.support-chat-container {
+    position: fixed;
+    bottom: 5rem;
+    right: 1.5rem;
+    width: 360px;
+    background-color: var(--card-bg-color-light);
+    border: 1px solid var(--card-border-color-light);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
+    height: 480px;
+    z-index: 1000;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+html[dir="ltr"] .support-chat-container {
+    right: 1.5rem;
+    left: auto;
+}
+
+body.dark-theme .support-chat-container {
+    background-color: var(--card-bg-color-dark);
+    border-color: var(--card-border-color-dark);
+}
+
+.support-chat-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.support-chat-container.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.support-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--card-border-color-light);
+}
+
+body.dark-theme .support-chat-header {
+    border-color: var(--card-border-color-dark);
+}
+
+.support-chat-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--header-color-light);
+}
+
+body.dark-theme .support-chat-header h3 {
+    color: var(--header-color-dark);
+}
+
+.support-chat-close {
+    background: none;
+    border: none;
+    color: var(--text-subtitle-color-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s;
+}
+
+.support-chat-close:hover {
+    background-color: var(--card-hover-bg-light);
+}
+
+body.dark-theme .support-chat-close {
+    color: var(--text-subtitle-color-dark);
+}
+
+body.dark-theme .support-chat-close:hover {
+    background-color: var(--card-hover-bg-dark);
+}
+
+.support-chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.support-message {
+    display: flex;
+    max-width: 75%;
+    margin-bottom: 0.75rem;
+}
+
+.support-message.sent {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
+html[dir="ltr"] .support-message.sent {
+    margin-right: auto;
+    margin-left: 0;
+    flex-direction: row;
+}
+
+.support-message.received {
+    margin-right: auto;
+}
+
+html[dir="ltr"] .support-message.received {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.support-message .message-bubble {
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--border-radius-lg);
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+.support-message.sent .message-bubble {
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+
+html[dir="ltr"] .support-message.sent .message-bubble {
+    border-bottom-left-radius: var(--border-radius-sm);
+    border-bottom-right-radius: var(--border-radius-lg);
+}
+
+.support-message.received .message-bubble {
+    background-color: var(--card-hover-bg-light);
+    color: var(--text-color-light);
+    border-bottom-left-radius: var(--border-radius-sm);
+}
+
+html[dir="ltr"] .support-message.received .message-bubble {
+    border-bottom-right-radius: var(--border-radius-sm);
+    border-bottom-left-radius: var(--border-radius-lg);
+}
+
+body.dark-theme .support-message.sent .message-bubble {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+
+body.dark-theme .support-message.received .message-bubble {
+    background-color: var(--card-hover-bg-dark);
+    color: var(--text-color-dark);
+}
+
+.support-chat-input {
+    display: flex;
+    border-top: 1px solid var(--card-border-color-light);
+    padding: 0.75rem;
+}
+
+body.dark-theme .support-chat-input {
+    border-color: var(--card-border-color-dark);
+}
+
+.support-chat-text-input {
+    flex-grow: 1;
+    border: 1px solid var(--input-border-color-light);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem 0.75rem;
+    background-color: var(--input-bg-color-light);
+    color: var(--input-text-color-light);
+}
+
+.support-chat-text-input:focus {
+    outline: none;
+    border-color: var(--input-focus-border-color-light);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-light);
+}
+
+.support-chat-text-input::placeholder {
+    color: var(--input-placeholder-color-light);
+}
+
+body.dark-theme .support-chat-text-input {
+    border-color: var(--input-border-color-dark);
+    background-color: var(--input-bg-color-dark);
+    color: var(--input-text-color-dark);
+}
+
+body.dark-theme .support-chat-text-input:focus {
+    border-color: var(--input-focus-border-color-dark);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+body.dark-theme .support-chat-text-input::placeholder {
+    color: var(--input-placeholder-color-dark);
+}
+
+.support-chat-send {
+    margin-right: 0;
+    margin-left: 0.5rem;
+    background-color: var(--primary-color-light);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+html[dir="ltr"] .support-chat-send {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+.support-chat-send:hover {
+    background-color: var(--primary-hover-color-light);
+}
+
+body.dark-theme .support-chat-send {
+    background-color: var(--primary-color-dark);
+}
+
+body.dark-theme .support-chat-send:hover {
+    background-color: var(--primary-hover-color-dark);
+}
+
+/* ==========================================================================
+   AI Helper Styles
+   ========================================================================== */
+.ai-helper-container {
+    position: fixed;
+    bottom: 5rem;
+    left: 1.5rem;
+    width: 400px;
+    background-color: var(--card-bg-color-light);
+    border: 1px solid var(--card-border-color-light);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    flex-direction: column;
+    height: 520px;
+    z-index: 1000;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+html[dir="ltr"] .ai-helper-container {
+    left: auto;
+    right: 1.5rem;
+}
+
+body.dark-theme .ai-helper-container {
+    background-color: var(--card-bg-color-dark);
+    border-color: var(--card-border-color-dark);
+}
+
+.ai-helper-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ai-helper-container.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.ai-helper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--card-border-color-light);
+}
+
+body.dark-theme .ai-helper-header {
+    border-color: var(--card-border-color-dark);
+}
+
+.ai-helper-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--header-color-light);
+}
+
+body.dark-theme .ai-helper-header h3 {
+    color: var(--header-color-dark);
+}
+
+.ai-helper-close {
+    background: none;
+    border: none;
+    color: var(--text-subtitle-color-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s;
+}
+
+.ai-helper-close:hover {
+    background-color: var(--card-hover-bg-light);
+}
+
+body.dark-theme .ai-helper-close {
+    color: var(--text-subtitle-color-dark);
+}
+
+body.dark-theme .ai-helper-close:hover {
+    background-color: var(--card-hover-bg-dark);
+}
+
+.ai-helper-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.ai-message {
+    display: flex;
+    max-width: 85%;
+    margin-bottom: 1rem;
+}
+
+.ai-message.sent {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
+html[dir="ltr"] .ai-message.sent {
+    margin-right: auto;
+    margin-left: 0;
+    flex-direction: row;
+}
+
+.ai-message.received {
+    margin-right: auto;
+}
+
+html[dir="ltr"] .ai-message.received {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.ai-message .message-bubble {
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-lg);
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+.ai-message.sent .message-bubble {
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+
+html[dir="ltr"] .ai-message.sent .message-bubble {
+    border-bottom-left-radius: var(--border-radius-sm);
+    border-bottom-right-radius: var(--border-radius-lg);
+}
+
+.ai-message.received .message-bubble {
+    background-color: var(--card-hover-bg-light);
+    color: var(--text-color-light);
+    border-bottom-left-radius: var(--border-radius-sm);
+}
+
+html[dir="ltr"] .ai-message.received .message-bubble {
+    border-bottom-right-radius: var(--border-radius-sm);
+    border-bottom-left-radius: var(--border-radius-lg);
+}
+
+body.dark-theme .ai-message.sent .message-bubble {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+
+body.dark-theme .ai-message.received .message-bubble {
+    background-color: var(--card-hover-bg-dark);
+    color: var(--text-color-dark);
+}
+
+.ai-message .message-sender {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--primary-color-light);
+}
+
+body.dark-theme .ai-message .message-sender {
+    color: var(--primary-color-dark);
+}
+
+.ai-example-questions {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+}
+
+.ai-example-questions li {
+    margin-bottom: 0.5rem;
+}
+
+.ai-example-question-btn {
+    background: none;
+    border: 1px solid var(--card-border-color-light);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem;
+    text-align: right;
+    cursor: pointer;
+    color: var(--text-subtitle-color-light);
+    width: 100%;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.875rem;
+}
+
+html[dir="ltr"] .ai-example-question-btn {
+    text-align: left;
+}
+
+.ai-example-question-btn:hover {
+    background-color: var(--neutral-bg-color-light);
+    color: var(--text-color-light);
+}
+
+body.dark-theme .ai-example-question-btn {
+    border-color: var(--card-border-color-dark);
+    color: var(--text-subtitle-color-dark);
+}
+
+body.dark-theme .ai-example-question-btn:hover {
+    background-color: var(--neutral-bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+.ai-helper-input {
+    display: flex;
+    border-top: 1px solid var(--card-border-color-light);
+    padding: 0.75rem;
+}
+
+body.dark-theme .ai-helper-input {
+    border-color: var(--card-border-color-dark);
+}
+
+.ai-helper-text-input {
+    flex-grow: 1;
+    border: 1px solid var(--input-border-color-light);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem 0.75rem;
+    background-color: var(--input-bg-color-light);
+    color: var(--input-text-color-light);
+}
+
+.ai-helper-text-input:focus {
+    outline: none;
+    border-color: var(--input-focus-border-color-light);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-light);
+}
+
+.ai-helper-text-input::placeholder {
+    color: var(--input-placeholder-color-light);
+}
+
+body.dark-theme .ai-helper-text-input {
+    border-color: var(--input-border-color-dark);
+    background-color: var(--input-bg-color-dark);
+    color: var(--input-text-color-dark);
+}
+
+body.dark-theme .ai-helper-text-input:focus {
+    border-color: var(--input-focus-border-color-dark);
+    box-shadow: 0 0 0 2px var(--input-focus-ring-dark);
+}
+
+body.dark-theme .ai-helper-text-input::placeholder {
+    color: var(--input-placeholder-color-dark);
+}
+
+.ai-helper-send {
+    margin-right: 0;
+    margin-left: 0.5rem;
+    background-color: var(--primary-color-light);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+html[dir="ltr"] .ai-helper-send {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+.ai-helper-send:hover {
+    background-color: var(--primary-hover-color-light);
+}
+
+body.dark-theme .ai-helper-send {
+    background-color: var(--primary-color-dark);
+}
+
+body.dark-theme .ai-helper-send:hover {
+    background-color: var(--primary-hover-color-dark);
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+}
+
+.typing-indicator span {
+    height: 0.5rem;
+    width: 0.5rem;
+    float: right;
+    margin: 0 1px;
+    background-color: var(--text-muted-color-light);
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+}
+
+body.dark-theme .typing-indicator span {
+    background-color: var(--text-muted-color-dark);
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: 1s blink infinite 0.3333s;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: 1s blink infinite 0.6666s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: 1s blink infinite 0.9999s;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Sidebar flow context styling */
+.sidebar-link.flow-context {
+    background-color: rgba(var(--primary-color-light-rgb), 0.08);
+    position: relative;
+}
+
+body.dark-theme .sidebar-link.flow-context {
+    background-color: rgba(var(--primary-color-dark-rgb), 0.12);
+}
+
+.sidebar-link .flow-indicator {
+    display: block;
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--success-color-light);
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+html[dir="ltr"] .sidebar-link .flow-indicator {
+    right: auto;
+    left: 0.5rem;
+}
+
+body.dark-theme .sidebar-link .flow-indicator {
+    background-color: var(--success-color-dark);
+}
+
+/* Add left or right border to indicate flow progress */
+.sidebar-link.flow-context:not(.active)::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--success-color-light);
+}
+
+html[dir="ltr"] .sidebar-link.flow-context:not(.active)::before {
+    right: auto;
+    left: 0;
+}
+
+body.dark-theme .sidebar-link.flow-context:not(.active)::before {
+    background-color: var(--success-color-dark);
+}
+
+/* Adjustments for active items in flow */
+.sidebar-link.flow-context.active {
+    background-color: var(--sidebar-link-active-bg-light);
+    color: var(--sidebar-link-active-text-light);
+}
+
+body.dark-theme .sidebar-link.flow-context.active {
+    background-color: var(--sidebar-link-active-bg-dark);
+    color: var(--sidebar-link-active-text-dark);
+}
+
+/* ==========================================================================
+   Collapsible Sidebar & Mobile Support
+   ========================================================================== */
+
+/* Mobile toggle button */
+.mobile-sidebar-toggle {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+    border: none;
+    border-radius: var(--border-radius-md);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
+html[dir="ltr"] .mobile-sidebar-toggle {
+    right: auto;
+    left: 1rem;
+}
+
+body.dark-theme .mobile-sidebar-toggle {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+
+.mobile-sidebar-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Responsive classes */
+@media (max-width: 767px) {
+    .mobile-sidebar-toggle {
+        display: flex;
+    }
+
+    .main-sidebar {
+        width: 275px;
+        transform: translateX(100%);
+        z-index: 100;
+        transition: transform 0.3s ease;
+    }
+
+    html[dir="ltr"] .main-sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.sidebar-mobile-open .main-sidebar {
+        transform: translateX(0);
+    }
+
+    .main-content-area {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    /* Add overlay when sidebar is open on mobile */
+    body.sidebar-mobile-open::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 90;
+    }
+}
+
+/* Sidebar collapse/expand button */
+.sidebar-collapse-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    border-radius: var(--border-radius-sm);
+    color: var(--text-subtitle-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+html[dir="ltr"] .sidebar-collapse-toggle {
+    right: auto;
+    left: 0.75rem;
+}
+
+.sidebar-collapse-toggle:hover {
+    background-color: var(--sidebar-link-hover-bg-light);
+    color: var(--sidebar-link-hover-text-light);
+}
+
+body.dark-theme .sidebar-collapse-toggle {
+    color: var(--text-subtitle-color-dark);
+}
+
+body.dark-theme .sidebar-collapse-toggle:hover {
+    background-color: var(--sidebar-link-hover-bg-dark);
+    color: var(--sidebar-link-hover-text-dark);
+}
+
+.sidebar-collapse-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Toggle between collapse/expand icons */
+.expand-icon {
+    display: none;
+}
+
+.collapse-icon {
+    display: block;
+}
+
+.main-sidebar.collapsed .expand-icon {
+    display: block;
+}
+
+.main-sidebar.collapsed .collapse-icon {
+    display: none;
+}
+
+/* Make collapsed sidebar narrower */
+.main-sidebar.collapsed {
+    width: 5rem;
+    overflow-x: hidden;
+}
+
+/* Adjust sidebar header for collapsed state */
+.main-sidebar.collapsed .sidebar-header h1 {
+    display: none;
+}
+
+.main-sidebar.collapsed .text-center.mb-6 {
+    margin-bottom: 0.5rem;
+}
+
+/* Show only icons in collapsed sidebar */
+.main-sidebar.collapsed .sidebar-link .link-text {
+    display: none;
+}
+
+.main-sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.main-sidebar.collapsed .sidebar-link svg {
+    margin: 0;
+}
+
+/* Language and theme toggles in collapsed sidebar */
+.main-sidebar.collapsed .lang-switch-btn,
+.main-sidebar.collapsed .theme-switch-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+}
+
+.main-sidebar.collapsed .lang-switch-btn {
+    font-size: 0.75rem;
+    max-width: 2.5rem;
+}
+
+/* Removed old danger link styles as they're replaced by sidebar-bottom-btn styles */
+
+/* Adjust layout for collapsed sidebar */
+body.sidebar-collapsed .main-content-area {
+    margin-right: 5rem;
+    margin-left: 0;
+}
+
+html[dir="ltr"] body.sidebar-collapsed .main-content-area {
+    margin-right: 0;
+    margin-left: 5rem;
+}
+
+/* Add tooltips for links when sidebar is collapsed */
+.main-sidebar.collapsed .sidebar-link {
+    position: relative;
+}
+
+/* Position of flow indicator in collapsed sidebar */
+.main-sidebar.collapsed .sidebar-link .flow-indicator {
+    right: 0.25rem;
+}
+
+html[dir="ltr"] .main-sidebar.collapsed .sidebar-link .flow-indicator {
+    right: auto;
+    left: 0.25rem;
+}
+
+/* Ensure sidebar header is properly positioned */
+.sidebar-header {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+/* Sidebar badges for notifications */
+.sidebar-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: var(--border-radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: auto;
+    margin-left: 0.5rem;
+}
+
+html[dir="ltr"] .sidebar-badge {
+    margin-left: auto;
+    margin-right: 0.5rem;
+}
+
+.sidebar-badge.badge-primary {
+    background-color: var(--primary-color-light);
+    color: var(--primary-text-light);
+}
+
+body.dark-theme .sidebar-badge.badge-primary {
+    background-color: var(--primary-color-dark);
+    color: var(--primary-text-dark);
+}
+
+.sidebar-badge.badge-danger {
+    background-color: var(--danger-color-light);
+    color: var(--danger-text-light);
+}
+
+body.dark-theme .sidebar-badge.badge-danger {
+    background-color: var(--danger-color-dark);
+    color: var(--danger-text-dark);
+}
+
+.sidebar-badge.badge-success {
+    background-color: var(--success-color-light);
+    color: var(--success-text-light);
+}
+
+body.dark-theme .sidebar-badge.badge-success {
+    background-color: var(--success-color-dark);
+    color: var(--success-text-dark);
+}
+
+.sidebar-badge.badge-warning {
+    background-color: var(--warning-color-light);
+    color: var(--warning-text-light);
+}
+
+body.dark-theme .sidebar-badge.badge-warning {
+    background-color: var(--warning-color-dark);
+    color: var(--warning-text-dark);
+}
+
+/* Position badges in collapsed sidebar */
+.main-sidebar.collapsed .sidebar-badge {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    margin: 0;
+    min-width: 1rem;
+    height: 1rem;
+    padding: 0 0.25rem;
+    font-size: 0.625rem;
+}
+
+html[dir="ltr"] .main-sidebar.collapsed .sidebar-badge {
+    right: auto;
+    left: 0.25rem;
+}
+
+/* Improved focus styles for keyboard navigation */
+.sidebar-link:focus-visible {
+    outline: 2px solid var(--primary-color-light);
+    outline-offset: -2px;
+}
+
+body.dark-theme .sidebar-link:focus-visible {
+    outline-color: var(--primary-color-dark);
+}
+
+.sidebar-collapse-toggle:focus-visible,
+.mobile-sidebar-toggle:focus-visible,
+.sidebar-bottom-btn:focus-visible,
+.sidebar-bottom-btn-inline:focus-visible {
+    outline: 2px solid var(--primary-color-light);
+    outline-offset: 2px;
+}
+
+body.dark-theme .sidebar-collapse-toggle:focus-visible,
+body.dark-theme .mobile-sidebar-toggle:focus-visible,
+body.dark-theme .sidebar-bottom-btn:focus-visible,
+body.dark-theme .sidebar-bottom-btn-inline:focus-visible {
+    outline-color: var(--primary-color-dark);
+}
+
+/* Ensure collapsed sidebar transitions smoothly */
+.main-sidebar {
+    transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-link span.link-text {
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.main-sidebar.collapsed .sidebar-link span.link-text {
+    opacity: 0;
+}
+
+/* Improved responsive content area adjustments */
+@media (min-width: 768px) {
+    .main-content-area {
+        transition: margin 0.3s ease;
+    }
+    
+    body.sidebar-collapsed .content-wrapper {
+        margin-right: 5rem;
+        margin-left: 0;
+    }
+    
+    html[dir="ltr"] body.sidebar-collapsed .content-wrapper {
+        margin-right: 0;
+        margin-left: 5rem;
+    }
+}
+
+/* Additional accessibility improvements */
+.screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Fix for charts in instructor and trainee pages that have black text */
+#instructor_cost_resource .chart-container text,
+#instructor_main .chart-container text,
+#instructor_reports_analytics .chart-container text,
+#trainee_my_progress .chart-container text {
+    fill: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme #instructor_cost_resource .chart-container text,
+body.dark-theme #instructor_main .chart-container text,
+body.dark-theme #instructor_reports_analytics .chart-container text,
+body.dark-theme #trainee_my_progress .chart-container text {
+    fill: var(--chart-text-color-dark) !important;
+}
+
+/* Ultra specific selectors to ensure chart text is visible in dark theme */
+#instructor_cost_resource .chart-container .chart-title,
+#instructor_cost_resource .chart-container .chart-axis-title,
+#instructor_cost_resource .chart-container .chart-axis text,
+#instructor_cost_resource .chart-container .chart-legend text,
+#instructor_main .chart-container .chart-title,
+#instructor_main .chart-container .chart-axis-title,
+#instructor_main .chart-container .chart-axis text,
+#instructor_main .chart-container .chart-legend text,
+#instructor_reports_analytics .chart-container .chart-title,
+#instructor_reports_analytics .chart-container .chart-axis-title,
+#instructor_reports_analytics .chart-container .chart-axis text,
+#instructor_reports_analytics .chart-container .chart-legend text,
+#trainee_my_progress .chart-container .chart-title,
+#trainee_my_progress .chart-container .chart-axis-title,
+#trainee_my_progress .chart-container .chart-axis text,
+#trainee_my_progress .chart-container .chart-legend text {
+    fill: var(--chart-text-color-light) !important;
+    color: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme #instructor_cost_resource .chart-container .chart-title,
+body.dark-theme #instructor_cost_resource .chart-container .chart-axis-title,
+body.dark-theme #instructor_cost_resource .chart-container .chart-axis text,
+body.dark-theme #instructor_cost_resource .chart-container .chart-legend text,
+body.dark-theme #instructor_main .chart-container .chart-title,
+body.dark-theme #instructor_main .chart-container .chart-axis-title,
+body.dark-theme #instructor_main .chart-container .chart-axis text,
+body.dark-theme #instructor_main .chart-container .chart-legend text,
+body.dark-theme #instructor_reports_analytics .chart-container .chart-title,
+body.dark-theme #instructor_reports_analytics .chart-container .chart-axis-title,
+body.dark-theme #instructor_reports_analytics .chart-container .chart-axis text,
+body.dark-theme #instructor_reports_analytics .chart-container .chart-legend text,
+body.dark-theme #trainee_my_progress .chart-container .chart-title,
+body.dark-theme #trainee_my_progress .chart-container .chart-axis-title,
+body.dark-theme #trainee_my_progress .chart-container .chart-axis text,
+body.dark-theme #trainee_my_progress .chart-container .chart-legend text {
+    fill: var(--chart-text-color-dark) !important;
+    color: var(--chart-text-color-dark) !important;
+}
+
+/* Improved table spacing for the dashboards */
+#instructor_cost_resource .custom-table td,
+#instructor_manage_users_teams .custom-table td,
+#instructor_manage_scenarios .custom-table td,
+#instructor_monitor_simulations .custom-table td {
+    padding: 1.25rem 1.5rem;
+    line-height: 1.6;
+    vertical-align: middle;
+}
+
+#instructor_cost_resource .custom-table th,
+#instructor_manage_users_teams .custom-table th,
+#instructor_manage_scenarios .custom-table th,
+#instructor_monitor_simulations .custom-table th {
+    padding: 1.25rem 1.5rem;
+    line-height: 1.6;
+    vertical-align: middle;
+}
+
+/* Add more space between table rows in specific dashboards */
+#instructor_cost_resource .custom-table tr,
+#instructor_manage_users_teams .custom-table tr,
+#instructor_manage_scenarios .custom-table tr,
+#instructor_monitor_simulations .custom-table tr {
+    border-bottom: 8px solid transparent;
+}
+
+/* Add more space between table columns */
+#instructor_cost_resource .custom-table th + th,
+#instructor_cost_resource .custom-table td + td,
+#instructor_manage_users_teams .custom-table th + th,
+#instructor_manage_users_teams .custom-table td + td,
+#instructor_manage_scenarios .custom-table th + th,
+#instructor_manage_scenarios .custom-table td + td,
+#instructor_monitor_simulations .custom-table th + th,
+#instructor_monitor_simulations .custom-table td + td {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* CSS variables for chart theme colors */
+:root {
+    --chart-text-color-light: #374151;
+    --chart-text-color-dark: #e2e8f0;
+    --chart-label-color-light: #1f2937;
+    --chart-label-color-dark: #f3f4f6;
+    --chart-grid-border-color-light: rgba(209, 213, 219, 0.5);
+    --chart-grid-border-color-dark: rgba(75, 85, 99, 0.5);
+    --chart-tooltip-bg-light: rgba(17, 24, 39, 0.9);
+    --chart-tooltip-bg-dark: rgba(30, 41, 59, 0.9);
+    --chart-tooltip-text-light: #ffffff;
+    --chart-tooltip-text-dark: #e2e8f0;
+}
+
+/* Fix for chart text colors in dark theme */
+body.dark-theme .chart-container text {
+    fill: var(--chart-text-color-dark) !important;
+    color: var(--chart-text-color-dark) !important;
+}
+
+/* Fix for chart text colors in light theme */
+.chart-container text {
+    fill: var(--chart-text-color-light) !important;
+    color: var(--chart-text-color-light) !important;
+}
+
+/* Fix for tables in instructor dashboards - increase spacing */
+#instructor_cost_resource table.data-table td,
+#instructor_cost_resource table.data-table th,
+#instructor_main table.data-table td,
+#instructor_main table.data-table th,
+#instructor_reports_analytics table.data-table td,
+#instructor_reports_analytics table.data-table th {
+    padding: 0.75rem 1rem;
+}
+
+/* Add zebra striping to improve readability */
+#instructor_cost_resource table.data-table tbody tr:nth-child(even),
+#instructor_main table.data-table tbody tr:nth-child(even),
+#instructor_reports_analytics table.data-table tbody tr:nth-child(even) {
+    background-color: var(--table-alt-row-bg);
+}
+
+/* Add hover effect for better UX */
+#instructor_cost_resource table.data-table tbody tr:hover,
+#instructor_main table.data-table tbody tr:hover,
+#instructor_reports_analytics table.data-table tbody tr:hover {
+    background-color: var(--table-hover-bg);
+}
+
+/* Style table headers */
+#instructor_cost_resource table.data-table th,
+#instructor_main table.data-table th,
+#instructor_reports_analytics table.data-table th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid var(--table-border-color);
+}
+
+/* Style table borders */
+#instructor_cost_resource table.data-table,
+#instructor_main table.data-table,
+#instructor_reports_analytics table.data-table {
+    border: 1px solid var(--table-border-color);
+    border-collapse: collapse;
+}
+
+#instructor_cost_resource table.data-table td,
+#instructor_main table.data-table td,
+#instructor_reports_analytics table.data-table td {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+/* Ensure chart text is visible in dark theme for specific dashboards */
+#instructor_cost_resource .chart-container text,
+#instructor_main .chart-container text,
+#instructor_reports_analytics .chart-container text,
+#trainee_my_progress .chart-container text {
+    fill: var(--chart-text-color-light) !important;
+}
+
+body.dark-theme #instructor_cost_resource .chart-container text,
+body.dark-theme #instructor_main .chart-container text,
+body.dark-theme #instructor_reports_analytics .chart-container text,
+body.dark-theme #trainee_my_progress .chart-container text {
+    fill: var(--chart-text-color-dark) !important;
+}
+
+/* Ensure radar chart lines are visible in dark theme */
+body.dark-theme .chart-js-render-monitor[data-type="radar"] .chart-radar-graph-axis {
+    stroke: var(--chart-grid-border-color-dark) !important;
+}
+
+/* Fix for input fields in dark theme - especially for email inputs */
+body.dark-theme input[type="email"] {
+    color: var(--input-text-color-dark);
+    background-color: var(--input-bg-color-dark);
+    border-color: var(--input-border-color-dark);
+}
+
+/* Contextual CSS variables that change with theme */
+:root {
+    /* ... existing variables ... */
+    
+    /* Table styling variables */
+    --table-alt-row-bg: var(--table-alt-row-bg-light);
+    --table-hover-bg: var(--table-hover-bg-light);
+    --table-border-color: var(--table-border-color-light);
+    --table-header-bg: var(--table-header-bg-light);
+    --table-header-text: var(--table-header-text-light);
+}
+
+body.dark-theme {
+    /* ... existing variables ... */
+    
+    /* Table styling variables */
+    --table-alt-row-bg: var(--table-alt-row-bg-dark);
+    --table-hover-bg: var(--table-hover-bg-dark);
+    --table-border-color: var(--table-border-color-dark);
+    --table-header-bg: var(--table-header-bg-dark);
+    --table-header-text: var(--table-header-text-dark);
+}
+
+/* Sidebar bottom controls */
+.sidebar-bottom-controls {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid var(--border-color-light);
+}
+
+body.dark-theme .sidebar-bottom-controls {
+    border-top-color: var(--border-color-dark);
+}
+
+.sidebar-bottom-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary-light);
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    text-align: start;
+    width: 100%;
+    cursor: pointer;
+}
+
+body.dark-theme .sidebar-bottom-btn {
+    color: var(--text-secondary-dark);
+}
+
+.sidebar-bottom-btn:hover {
+    background-color: var(--sidebar-link-hover-bg-light);
+    color: var(--text-primary-light);
+}
+
+body.dark-theme .sidebar-bottom-btn:hover {
+    background-color: var(--sidebar-link-hover-bg-dark);
+    color: var(--text-primary-dark);
+}
+
+.sidebar-bottom-btn.danger-btn {
+    color: var(--danger-color-light);
+}
+
+body.dark-theme .sidebar-bottom-btn.danger-btn {
+    color: var(--danger-color-dark);
+}
+
+.sidebar-bottom-btn.danger-btn:hover {
+    background-color: var(--danger-bg-light);
+    color: var(--danger-hover-color-light);
+}
+
+body.dark-theme .sidebar-bottom-btn.danger-btn:hover {
+    background-color: var(--danger-bg-dark);
+    color: var(--danger-hover-color-dark);
+}
+
+.sidebar-bottom-btn svg {
+    margin-inline-end: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Collapsed sidebar bottom controls */
+.main-sidebar.collapsed .sidebar-bottom-btn {
+    justify-content: center;
+    padding: 0.75rem 0;
+}
+
+.main-sidebar.collapsed .sidebar-bottom-btn .link-text {
+    display: none;
+}
+
+.main-sidebar.collapsed .sidebar-bottom-btn svg {
+    margin-inline-end: 0;
+}
+
+/* Theme and language toggle row */
+.theme-lang-toggle-row {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+body.dark-theme .theme-lang-toggle-row {
+    border-bottom-color: var(--border-color-dark);
+}
+
+.sidebar-bottom-btn-inline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    color: var(--text-secondary-light);
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+body.dark-theme .sidebar-bottom-btn-inline {
+    color: var(--text-secondary-dark);
+}
+
+.sidebar-bottom-btn-inline:hover {
+    background-color: var(--sidebar-link-hover-bg-light);
+    color: var(--text-primary-light);
+}
+
+body.dark-theme .sidebar-bottom-btn-inline:hover {
+    background-color: var(--sidebar-link-hover-bg-dark);
+    color: var(--text-primary-dark);
+}
+
+.sidebar-bottom-btn-inline .link-text {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+}
+
+html[dir="ltr"] .sidebar-bottom-btn-inline .link-text {
+    margin-right: 0.5rem;
+    margin-left: 0;
+}
+
+/* Adjust styles for collapsed sidebar */
+.main-sidebar.collapsed .theme-lang-toggle-row {
+    flex-direction: column;
+}
+
+.main-sidebar.collapsed .sidebar-bottom-btn-inline {
+    padding: 0.5rem 0;
+}
+
+.main-sidebar.collapsed .sidebar-bottom-btn-inline .link-text {
+    display: none;
+}
+
+/* Make sure instructor_cost_resource charts match instructor_main charts */
+#instructor_cost_resource .chart-container canvas {
+    background-color: transparent !important;
+}
+
+body.dark-theme #instructor_cost_resource .chart-container canvas {
+    background-color: transparent !important;
+}
+
+#instructor_cost_resource .chart-container text,
+#instructor_cost_resource .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-light);
+}
+
+body.dark-theme #instructor_cost_resource .chart-container text,
+body.dark-theme #instructor_cost_resource .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-dark);
+}
+
+/* Fix any other chart style inconsistencies */
+#costTrendChart, #resourceAllocationChart {
+    background-color: transparent !important;
+}
+
+/* Ensure the same table styling */
+#instructor_cost_resource .custom-table th {
+    background-color: var(--card-hover-bg-light);
+}
+
+body.dark-theme #instructor_cost_resource .custom-table th {
+    background-color: var(--card-hover-bg-dark);
+}
+
+/* Make sure instructor_reports_analytics charts match instructor_main charts */
+#participantPerformanceChart, #scoreDistributionChart, #stageCompletionTimeChart, #resourceAllocationChart {
+    background-color: transparent !important;
+}
+
+body.dark-theme #participantPerformanceChart, 
+body.dark-theme #scoreDistributionChart, 
+body.dark-theme #stageCompletionTimeChart, 
+body.dark-theme #resourceAllocationChart {
+    background-color: transparent !important;
+}
+
+#instructor_reports_analytics .chart-container text,
+#instructor_reports_analytics .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-light);
+}
+
+body.dark-theme #instructor_reports_analytics .chart-container text,
+body.dark-theme #instructor_reports_analytics .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-dark);
+}
+
+/* Make sure instructor_main charts have consistent styling */
+#scenarioProgressChart, #resourceUtilizationChart {
+    background-color: transparent !important;
+}
+
+body.dark-theme #scenarioProgressChart, 
+body.dark-theme #resourceUtilizationChart {
+    background-color: transparent !important;
+}
+
+#instructor_main .chart-container text,
+#instructor_main .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-light);
+}
+
+body.dark-theme #instructor_main .chart-container text,
+body.dark-theme #instructor_main .chart-container .chartjs-legend-text {
+    color: var(--chart-text-color-dark);
+}
+
+/* Sidebar header */
+.sidebar-header {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border-color-light);
+}
+
+body.dark-theme .sidebar-header {
+    border-bottom-color: var(--card-border-color-dark);
+}
+
+/* Product logo link in sidebar header */
+.product-logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.product-logo-link:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.product-logo {
+    color: var(--primary-color-light);
+}
+
+body.dark-theme .product-logo {
+    color: var(--primary-color-dark);
+}
+
+/* Theme and language toggle column */
+.theme-lang-toggle-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+body.dark-theme .theme-lang-toggle-column {
+    border-bottom-color: var(--border-color-dark);
+}
+
+/* Adjust collapsed sidebar styles for new column layout */
+.main-sidebar.collapsed .theme-lang-toggle-column {
+    gap: 0;
+}
+
+.main-sidebar.collapsed .product-logo-link {
+    padding: 0.75rem 0;
+}
+
+.theme-toggle-dark {
+    display: block;
+}
+
+/* Navigation Icon Cards - for landing pages */
+.nav-icon-card {
+    @apply bg-card p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300;
+    @apply flex flex-col items-center text-center;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply hover:bg-gray-50 dark:hover:bg-gray-800;
+    @apply transform hover:scale-105;
+}
+
+.nav-icon-wrapper {
+    @apply w-16 h-16 bg-primary/10 dark:bg-primary-dark/10 rounded-full;
+    @apply flex items-center justify-center mb-3;
+    @apply group-hover:bg-primary/20 dark:group-hover:bg-primary-dark/20;
+    @apply transition-colors duration-300;
+}
+
+.nav-icon-wrapper svg {
+    @apply text-primary dark:text-primary-dark;
+}
+
+.nav-icon-text {
+    @apply text-sm font-semibold text-header mb-1;
+    @apply group-hover:text-primary dark:group-hover:text-primary-dark;
+}
+
+.nav-icon-desc {
+    @apply text-xs text-subtitle opacity-80;
+    @apply line-clamp-2;
+}
+
+/* Media Query Adjustments */
+@media (max-width: 640px) {
+    .nav-icon-card {
+        @apply p-3;
+    }
+    
+    .nav-icon-wrapper {
+        @apply w-12 h-12;
+    }
+    
+    .nav-icon-wrapper svg {
+        @apply w-6 h-6;
+    }
+}
+
+/* Application Specific Settings */

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_reports_analytics_page_title">דוחות ואנליטיקה - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js" defer></script>
+    </head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="reports_analytics_header" class="text-3xl font-bold text-header">דוחות ואנליטיקה</h2>
+            <p data-lang-key="reports_analytics_subtitle" class="text-subtitle mt-1 text-base">נתח ביצועי משתתפים, מגמות בתרחישים, וקבל תובנות לשיפור תהליכי ההכשרה.</p>
+        </header>
+        <section class="card p-4 md:p-6 rounded-xl shadow-lg mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label for="start-date-filter" class="form-label" data-lang-key="start_date_label">מתאריך:</label>
+                    <input type="date" id="start-date-filter" name="startDateFilter" class="form-input">
+                </div>
+                <div>
+                    <label for="end-date-filter" class="form-label" data-lang-key="end_date_label">עד תאריך:</label>
+                    <input type="date" id="end-date-filter" name="endDateFilter" class="form-input">
+                </div>
+                <button id="export-report-btn" class="btn btn-neutral md:mt-6 lg:mt-0 w-full md:w-auto">
+                    <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span data-lang-key="export_report_button">ייצא דוח (PDF)</span>
+                </button>
+            </div>
+        </section>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_completed_sims_title" class="text-lg font-semibold text-text-color mb-1">סה"כ סימולציות שהושלמו</h3>
+                <p id="completed-simulations-count" class="kpi-value text-3xl font-bold mt-2">0</p>
+                <p data-lang-key="kpi_in_selected_range_subtext" class="kpi-subtext text-xs mt-1">בטווח התאריכים הנבחר</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_avg_success_rate_title" class="text-lg font-semibold text-text-color mb-1">אחוז הצלחה ממוצע</h3>
+                <p id="avg-success-rate" class="kpi-value text-3xl font-bold mt-2">0%</p>
+                <p data-lang-key="kpi_across_all_scenarios_subtext" class="kpi-subtext text-xs mt-1">בכלל התרחישים</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_avg_resolution_time_title" class="text-lg font-semibold text-text-color mb-1">זמן ממוצע לפתרון</h3>
+                <p id="avg-resolution-time" class="kpi-value text-3xl font-bold mt-2">0 <span class="text-lg" data-lang-key="minutes_suffix_short">דק'</span></p>
+                <p data-lang-key="kpi_per_scenario_subtext" class="kpi-subtext text-xs mt-1">לתרחיש בודד</p>
+            </div>
+            <div class="kpi-card p-5 rounded-xl text-center">
+                <h3 data-lang-key="kpi_most_challenging_scenario_title" class="text-lg font-semibold text-text-color mb-1">התרחיש המאתגר ביותר</h3>
+                <p id="most-challenging-scenario" class="kpi-value text-xl font-bold mt-2" data-lang-key="kpi_no_data_placeholder_short">אין נתונים</p>
+                <p data-lang-key="kpi_lowest_avg_score_subtext" class="kpi-subtext text-xs mt-1">עם הציון הממוצע הנמוך ביותר</p>
+            </div>
+        </section>
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="card p-0 rounded-xl shadow-lg overflow-hidden lg:col-span-2">
+                <div class="p-6 border-b border-[var(--card-border-color)]">
+                    <h3 data-lang-key="participant_performance_chart_title" class="text-xl font-semibold text-header">ביצועי משתתפים לאורך זמן</h3>
+                </div>
+                <div class="p-4 chart-container h-96">
+                    <canvas id="participantPerformanceChart"></canvas>
+                    <p id="participantPerformanceChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_participant_perf">אין נתונים לגרף ביצועי משתתפים.</p>
+                </div>
+            </div>
+            <div class="card p-0 rounded-xl shadow-lg overflow-hidden lg:col-span-1">
+                <div class="p-6 border-b border-[var(--card-border-color)]">
+                    <h3 data-lang-key="score_distribution_chart_title" class="text-xl font-semibold text-header">התפלגות ציונים לפי תרחיש</h3>
+                </div>
+                <div class="p-4 chart-container h-96">
+                    <canvas id="scoreDistributionChart"></canvas>
+                    <p id="scoreDistributionChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_score_dist">אין נתונים לגרף התפלגות ציונים.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)]">
+                     <h3 data-lang-key="resource_allocation_chart_title" class="text-xl font-semibold text-header">ניתוח הקצאת משאבים לפי תרחיש</h3>
+                </div>
+                <div class="p-4 chart-container resource-chart h-96 responsive-chart">
+                    <canvas id="resourceAllocationChart"></canvas>
+                     <p id="resourceAllocationChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_resource_allocation">אין נתונים לגרף הקצאת משאבים.</p>
+                </div>
+            </div>
+            
+            <div class="card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-[var(--card-border-color)]">
+                     <h3 data-lang-key="stage_completion_time_chart_title" class="text-xl font-semibold text-header">זמן ממוצע להשלמת שלבים (TOP 5 תרחישים)</h3>
+                </div>
+                <div class="p-4 chart-container h-96">
+                    <canvas id="stageCompletionTimeChart"></canvas>
+                     <p id="stageCompletionTimeChart-nodata" class="text-center text-subtitle p-4 hidden" data-lang-key="chart_no_data_stage_complete">אין נתונים לגרף זמן השלמת שלבים.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-[var(--card-border-color)]">
+                <h3 data-lang-key="detailed_reports_table_title" class="text-xl font-semibold text-header">דוחות מפורטים</h3>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                    <select id="filter-report-scenario" class="form-select">
+                        <option value="all" data-lang-key="filter_all_scenarios">כל התרחישים</option>
+                    </select>
+                    <select id="filter-report-user-team" class="form-select">
+                        <option value="all" data-lang-key="filter_all_teams_users_detailed">כל המשתמשים/צוותים</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" data-lang-key="reports_table_header_user_team">משתמש/צוות</th>
+                            <th scope="col" data-lang-key="reports_table_header_scenario">תרחיש</th>
+                            <th scope="col" data-lang-key="reports_table_header_date">תאריך</th>
+                            <th scope="col" data-lang-key="reports_table_header_score">ציון</th>
+                            <th scope="col" data-lang-key="reports_table_header_completion_time">זמן השלמה</th>
+                            <th scope="col" data-lang-key="reports_table_header_actions" class="text-center">פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reports-table-body">
+                        <tr id="loading-reports-row"><td colspan="6" class="text-center p-4" data-lang-key="loading_detailed_reports">טוען דוחות מפורטים...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                <nav id="reports-pagination" class="flex items-center gap-2" aria-label="Detailed reports pagination">
+                </nav>
+            </div>
+        </section>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_monitor_simulations_short">חזור לניטור סימולציות</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_content_management_short">המשך לניהול תוכן</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_reports_analytics_translations.js" defer></script>
+    <script src="instructor_reports_analytics.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_monitor_simulations.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_content_management.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

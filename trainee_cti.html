@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_cti_page_title">מאגר מודיעין (CTI) - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general"> <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <h2 data-lang-key="cti_feed_header" class="text-3xl font-bold text-header">מאגר מודיעין סייבר (CTI)</h2>
+            <p data-lang-key="cti_feed_subtitle" class="text-subtitle mt-1 text-base">הישאר מעודכן עם המידע האחרון על איומים, חולשות וקמפיינים פעילים.</p>
+        </header>
+        <div class="filter-section card p-4 rounded-xl shadow-lg mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label for="cti-search-input" class="form-label">חיפוש בפיד:</label>
+                    <input type="search" id="cti-search-input" class="form-input" data-lang-key-placeholder="search_cti_placeholder" placeholder="חפש בפיד המודיעין...">
+                </div>
+                <div>
+                    <label for="cti-filter-source" class="form-label" data-lang-key="filter_cti_source_label">מקור המידע:</label>
+                    <select id="cti-filter-source" name="ctiSourceFilter" class="form-select">
+                        <option value="all" data-lang-key="cti_source_all">כל המקורות</option>
+                        <option value="cti_source_internal" data-lang-key="cti_source_internal">מודיעין פנימי</option>
+                        <option value="cti_source_osint" data-lang-key="cti_source_osint">OSINT</option>
+                        <option value="cti_source_gov" data-lang-key="cti_source_gov">גורמי ממשל</option>
+                        <option value="cti_source_vendor" data-lang-key="cti_source_vendor">יצרנים וספקים</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="cti-filter-severity" class="form-label" data-lang-key="filter_cti_severity_label">רמת חומרה:</label>
+                    <select id="cti-filter-severity" name="ctiSeverityFilter" class="form-select">
+                        <option value="all" data-lang-key="cti_severity_all">כל הרמות</option>
+                        <option value="cti_severity_low" data-lang-key="cti_severity_low">נמוכה</option>
+                        <option value="cti_severity_medium" data-lang-key="cti_severity_medium">בינונית</option>
+                        <option value="cti_severity_high" data-lang-key="cti_severity_high">גבוהה</option>
+                        <option value="cti_severity_critical" data-lang-key="cti_severity_critical">קריטית</option>
+                    </select>
+                </div>
+                </div>
+        </div>
+        <section id="cti-feed-container" class="space-y-4">
+            <p id="no-cti-items-msg" class="text-center text-subtitle hidden col-span-full py-8" data-lang-key="no_cti_items_found">לא נמצאו עדכוני מודיעין התואמים את החיפוש או הסינון שלך.</p>
+        </section>
+        <div class="mt-6 text-center">
+            <button id="load-more-cti-btn" class="btn btn-neutral hidden">
+                <span data-lang-key="load_more_cti_button">טען מידע נוסף</span>
+                <svg class="w-4 h-4 rtl:mr-2 ltr:ml-2 animate-spin hidden" id="load-more-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+            <p id="all-cti-loaded-msg" class="text-subtitle text-sm mt-2 hidden" data-lang-key="all_cti_loaded_message">כל עדכוני המודיעין נטענו.</p>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_email_client">חזור ללקוח דוא"ל</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_guiding_questions">המשך לשאלות מנחות</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_cti_translations.js" defer></script>
+    <script src="trainee_cti.js" defer></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+        document.body.dataset.userType = currentUserType; // Set for sidebar logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_email.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_questions.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

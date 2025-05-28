@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="landing_instructor_page_title">עמוד נחיתה מדריך - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-10 text-center">
+            <h2 data-lang-key="landing_instructor_header" class="text-4xl font-bold text-header mb-2">ברוכים הבאים, מדריכים!</h2>
+            <p data-lang-key="landing_instructor_subtitle" class="text-subtitle text-lg">זהו עמוד הנחיתה שלכם. מכאן תוכלו להתחיל לנהל את הפלטפורמה ביעילות.</p>
+        </header>
+        
+        <!-- Navigation Icons Section -->
+        <section class="mb-10">
+            <h3 data-lang-key="navigation_quick_access" class="text-2xl font-semibold text-header mb-6 text-center">גישה מהירה לכלי הניהול</h3>
+            <p data-lang-key="navigation_sidebar_explanation" class="text-center text-subtitle mb-4">כלים אלו זמינים גם בסרגל הניווט הצדדי</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <!-- Landing Page -->
+                <a href="landing_instructor.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_landing_page_title">עמוד הבית</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_landing_page_desc">הדף הראשי שלך עם סקירה כללית</span>
+                </a>
+                
+                <!-- Dashboard -->
+                <a href="instructor_main.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_main_title">לוח בקרה</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_main_desc">מרכז הבקרה הראשי שלך</span>
+                </a>
+                
+                <!-- Cost & Resources -->
+                <a href="instructor_cost_resource.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_cost_resource_title">עלויות ומשאבים</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_cost_resource_desc">ניהול עלויות ומשאבי ענן</span>
+                </a>
+                
+                <!-- Manage Users & Teams -->
+                <a href="instructor_manage_users_teams.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_manage_users_teams_title">משתמשים וצוותים</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_manage_users_teams_desc">הוספה ועריכת משתמשים</span>
+                </a>
+                
+                <!-- Manage Scenarios -->
+                <a href="instructor_manage_scenarios.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_manage_scenarios_title">תרחישים</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_manage_scenarios_desc">יצירה ועריכת תרחישים</span>
+                </a>
+                
+                <!-- Monitor Simulations -->
+                <a href="instructor_monitor_simulations.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_monitor_simulations_title">ניטור</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_monitor_simulations_desc">מעקב בזמן אמת</span>
+                </a>
+                
+                <!-- Reports & Analytics -->
+                <a href="instructor_reports_analytics.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_reports_analytics_title">דוחות</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_reports_analytics_desc">נתונים ותובנות</span>
+                </a>
+                
+                <!-- Content Management -->
+                <a href="instructor_content_management.html" class="nav-icon-card group">
+                    <div class="nav-icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                    </div>
+                    <span class="nav-icon-text" data-lang-key="nav_instructor_content_management_title">תוכן לימודי</span>
+                    <span class="nav-icon-desc" data-lang-key="nav_instructor_content_management_desc">חומרי עזר ומדריכים</span>
+                </a>
+            </div>
+        </section>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <section class="card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <h3 data-lang-key="quick_start_guide_title" class="text-2xl font-semibold text-header mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    מדריך מהיר למערכת
+                </h3>
+                <p data-lang-key="instructor_tutorial_intro" class="text-text-color mb-4">פלטפורמה זו מאפשרת לכם ליצור, לנהל ולנטר סימולציות סייבר מתקדמות. להלן סקירה של האזורים המרכזיים:</p>
+                <ul class="space-y-3">
+                    <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <a href="instructor_manage_users_teams.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_manage_users">ניהול משתמשים וצוותים:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_manage_users_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">הוספה, עריכה והקצאת משתתפים לצוותים ולתרחישים.</p>
+                    </li>
+                    <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <a href="instructor_manage_scenarios.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_manage_scenarios_content">יצירה וניהול תרחישים ותוכן:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_manage_scenarios_content_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">בניית תרחישים מותאמים אישית, כולל מפות ארכיטקטורה, נתיבי תקיפה (MITRE) והגדרת מערכות הגנה.</p>
+                    </li>
+                    <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <a href="instructor_monitor_simulations.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_monitor_simulations">ניטור סימולציות:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_monitor_simulations_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">מעקב בזמן אמת אחר התקדמות החניכים, התערבות במידת הצורך ומתן משוב.</p>
+                    </li>
+                    <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <a href="instructor_reports_analytics.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_view_reports">הפקת דוחות ואנליטיקה:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_view_reports_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">ניתוח ביצועי חניכים וצוותים, אפקטיביות תרחישים וקבלת תובנות לשיפור.</p>
+                    </li>
+                     <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <a href="instructor_cost_resource.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_cost_management">ניהול עלויות ומשאבים:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_cost_management_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">מעקב אחר צריכת משאבי ענן ועלויות סימולציה.</p>
+                    </li>
+                     <li class="tutorial-item transition-all duration-200 hover:translate-x-1 rtl:hover:translate-x-1 ltr:hover:-translate-x-1">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rtl:ml-2 ltr:mr-2 flex-shrink-0 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            <a href="instructor_content_management.html" class="text-primary hover:underline font-bold" data-lang-key="tutorial_item_content_management_nav">ניהול תוכן לימודי:</a>
+                        </div>
+                        <p data-lang-key="tutorial_item_content_management_nav_desc" class="text-sm text-subtitle rtl:mr-7 ltr:ml-7">הוספה וניהול של חומרי עזר, מאמרים ומדריכים עבור החניכים.</p>
+                    </li>
+                </ul>
+            </section>
+            <div class="space-y-8">
+                <section class="card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <h3 data-lang-key="key_features_title" class="text-2xl font-semibold text-header mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-secondary dark:text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                        תכונות מרכזיות
+                    </h3>
+                    <ul class="list-disc list-inside text-text-color space-y-2 rtl:pr-4 ltr:pl-4">
+                        <li data-lang-key="feature_dynamic_scenarios" class="feature-item">בניית תרחישים דינמיים ומותאמים.</li>
+                        <li data-lang-key="feature_team_ind_training" class="feature-item">תמיכה באימון פרטני וצוותי.</li>
+                        <li data-lang-key="feature_real_time_monitoring" class="feature-item">ניטור בזמן אמת והתערבות מדריך.</li>
+                        <li data-lang-key="feature_detailed_analytics" class="feature-item">דוחות מפורטים ואנליטיקה לשיפור מתמיד.</li>
+                        <li data-lang-key="feature_mitre_integration" class="feature-item">שילוב מסגרת MITRE ATT&CK.</li>
+                    </ul>
+                </section>
+                <section class="card p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <h3 data-lang-key="tips_for_instructors_title" class="text-2xl font-semibold text-header mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary dark:text-primary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        טיפים למדריך
+                    </h3>
+                    <ul class="list-disc list-inside text-text-color space-y-2 rtl:pr-4 ltr:pl-4">
+                        <li data-lang-key="tip_1_start_simple" class="tip-item">התחל עם תרחישים פשוטים והעלה את רמת המורכבות בהדרגה.</li>
+                        <li data-lang-key="tip_2_clear_objectives" class="tip-item">הגדר מטרות למידה ברורות לכל תרחיש.</li>
+                        <li data-lang-key="tip_3_encourage_collaboration" class="tip-item">עודד שיתוף פעולה ותקשורת בתרחישים צוותיים.</li>
+                        <li data-lang-key="tip_4_provide_feedback" class="tip-item">ספק משוב בונה ומיידי לחניכים.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+        <div class="mt-10 flex justify-center items-center">
+             <button type="button" id="next-dashboard-button" class="btn btn-primary btn-lg px-8 py-3 text-lg hover:shadow-lg transition-shadow">
+                <span data-lang-key="go_to_instructor_dashboard_button">המשך ללוח המחוונים</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 rtl:mr-2 ltr:ml-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="landing_instructor_translations.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) yearEl.textContent = new Date().getFullYear();
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            } else {
+                 console.error("renderDynamicSidebar function not found on landing_instructor.html");
+            }
+            // Logic for the "Continue to Dashboard" button
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_main.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

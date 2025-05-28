@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_email_page_title">לקוח דוא"ל - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="trainee_general"> <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+            <h2 data-lang-key="email_client_header" class="text-3xl font-bold text-header">לקוח דוא"ל</h2>
+            <button id="compose-email-btn" class="btn btn-primary">
+                <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                <span data-lang-key="compose_new_email_button">מייל חדש</span>
+            </button>
+        </header>
+        <div class="email-layout-grid">
+            <aside class="email-folders-sidebar card p-4 rounded-xl shadow-lg">
+                <nav>
+                    <ul class="space-y-1">
+                        <li><button class="email-folder-item active" data-folder="inbox" data-lang-key="folder_inbox">דואר נכנס <span class="folder-count text-xs text-subtitle">(0)</span></button></li>
+                        <li><button class="email-folder-item" data-folder="sent" data-lang-key="folder_sent">נשלח <span class="folder-count text-xs text-subtitle">(0)</span></button></li>
+                        <li><button class="email-folder-item" data-folder="drafts" data-lang-key="folder_drafts">טיוטות <span class="folder-count text-xs text-subtitle">(0)</span></button></li>
+                        <li><button class="email-folder-item" data-folder="junk" data-lang-key="folder_junk">דואר זבל <span class="folder-count text-xs text-subtitle">(0)</span></button></li>
+                        <li><button class="email-folder-item" data-folder="archive" data-lang-key="folder_archive">ארכיון <span class="folder-count text-xs text-subtitle">(0)</span></button></li>
+                    </ul>
+                </nav>
+            </aside>
+            <div class="email-list-pane card p-0 rounded-xl shadow-lg overflow-hidden">
+                <div class="p-4 border-b border-[var(--card-border-color)]">
+                    <input type="search" id="email-search-input" class="form-input w-full" data-lang-key-placeholder="email_list_search_placeholder" placeholder="חפש בדוא\"ל...">
+                </div>
+                <div id="email-list-container" class="email-list-scrollable max-h-[calc(100vh-280px)] overflow-y-auto">
+                    <p id="no-emails-message" class="text-center text-subtitle p-6 hidden" data-lang-key="no_emails_in_folder">אין הודעות להצגה בתיקייה זו.</p>
+                    </div>
+            </div>
+            <div id="email-content-view" class="email-content-pane card rounded-xl shadow-lg overflow-hidden hidden">
+                <div id="email-content-header-actions" class="p-3 border-b border-[var(--card-border-color)] flex flex-wrap items-center gap-2">
+                    <button id="email-action-reply" type="button" class="btn btn-sm btn-neutral" disabled>
+                        <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                        <span data-lang-key="action_reply">השב</span>
+                    </button>
+                    <button id="email-action-reply-all" type="button" class="btn btn-sm btn-neutral" disabled>
+                         <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6m11 1L15 4m0 11v-2m0 0h2.086a1 1 0 00.924-.618l.997-2.468a1 1 0 00-.127-1.044L15.414 6H12m0 0H9m3 0v4"></path></svg>
+                        <span data-lang-key="action_reply_all">השב לכולם</span>
+                    </button>
+                    <button id="email-action-forward" type="button" class="btn btn-sm btn-neutral" disabled>
+                        <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1 transform rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
+                        <span data-lang-key="action_forward">העבר</span>
+                    </button>
+                    <button id="email-action-delete" type="button" class="btn btn-sm btn-danger-neutral" disabled>
+                        <svg class="w-4 h-4 rtl:ml-1 ltr:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        <span data-lang-key="action_delete_email">מחק</span>
+                    </button>
+                    </div>
+                </div>
+            <div id="email-view-placeholder" class="email-content-pane card rounded-xl shadow-lg flex items-center justify-center">
+                <div class="text-center text-subtitle">
+                    <svg class="w-16 h-16 mx-auto mb-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <p data-lang-key="select_email_to_view_prompt">בחר הודעה מהרשימה כדי להציג את תוכנה.</p>
+                    </div>
+            </div>
+        </div>
+        <div id="compose-modal" class="modal-overlay fixed inset-0 bg-[var(--modal-overlay-bg)] flex items-center justify-center p-4 z-50 hidden" aria-labelledby="compose-modal-title" role="dialog" aria-modal="true">
+            <div class="modal-content card max-w-2xl w-full p-0 rounded-xl shadow-2xl">
+                <div class="flex justify-between items-center p-4 sm:p-6 border-b border-[var(--card-border-color)]">
+                    <h3 id="compose-modal-title-el" class="modal-title text-xl font-semibold" data-lang-key="compose_modal_title">כתיבת הודעה חדשה</h3>
+                    <button type="button" class="modal-close-button p-1 rounded-full hover:bg-[var(--sidebar-link-hover-bg)]" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="compose-email-form">
+                    <div class="p-4 sm:p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                        <div>
+                            <label for="composeTo" class="form-label" data-lang-key="compose_to_label">אל:</label>
+                            <input type="email" id="composeTo" name="composeTo" class="form-input" data-lang-key-placeholder="compose_to_placeholder" placeholder="כתובות נמענים" required multiple>
+                        </div>
+                        <div>
+                            <label for="composeCc" class="form-label" data-lang-key="compose_cc_label">עותק (אופציונלי):</label>
+                            <input type="email" id="composeCc" name="composeCc" class="form-input" data-lang-key-placeholder="compose_cc_placeholder" placeholder="כתובות נמענים לעותק" multiple>
+                        </div>
+                         <div>
+                            <label for="composeBcc" class="form-label" data-lang-key="compose_bcc_label">עותק מוסתר (אופציונלי):</label>
+                            <input type="email" id="composeBcc" name="composeBcc" class="form-input" data-lang-key-placeholder="compose_bcc_placeholder" placeholder="כתובות נמענים לעותק מוסתר" multiple>
+                        </div>
+                        <div>
+                            <label for="composeSubject" class="form-label" data-lang-key="compose_subject_label">נושא:</label>
+                            <input type="text" id="composeSubject" name="composeSubject" class="form-input" data-lang-key-placeholder="compose_subject_placeholder" placeholder="הקלד את נושא ההודעה" required>
+                        </div>
+                        <div>
+                            <label for="composeBody" class="form-label sr-only" data-lang-key="compose_body_label">תוכן ההודעה</label> <textarea id="composeBody" name="composeBody" rows="8" class="form-textarea" data-lang-key-placeholder="compose_body_placeholder" placeholder="הקלד את תוכן ההודעה כאן..." required></textarea>
+                        </div>
+                        </div>
+                    <div class="p-4 sm:p-6 border-t border-[var(--card-border-color)] flex flex-col sm:flex-row justify-end gap-3">
+                        <button type="button" class="btn btn-danger-neutral modal-close-button" data-lang-key="discard_draft_button">בטל טיוטה</button>
+                        <button type="button" class="btn btn-neutral" data-lang-key="save_draft_button">שמור טיוטה</button> <button type="submit" class="btn btn-primary" data-lang-key="send_email_button">שלח</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span data-lang-key="go_back_to_architecture">חזור לסקירת ארכיטקטורה</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_cti_feed_from_email">המשך למאגר מודיעין (CTI)</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="trainee_email_translations.js" defer></script>
+    <script src="trainee_email.js" defer></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentUserType = urlParams.get('userType') || localStorage.getItem('currentUserType') || 'trainee_general';
+        document.body.dataset.userType = currentUserType;
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_architecture.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'trainee_cti.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

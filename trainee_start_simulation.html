@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="trainee_start_simulation_page_title">הכנת סימולציה - פלטפורמת סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <style>
+        /* Ensure solid backgrounds with no transparency */
+        .card, .bg-card-bg, .bg-body-bg {
+            opacity: 1 !important;
+        }
+        
+        .body-login-layout {
+            background-color: var(--body-bg) !important;
+        }
+        
+        header, footer {
+            background-color: var(--card-bg) !important;
+        }
+        
+        .card {
+            background-color: var(--card-bg) !important;
+        }
+        
+        /* Scenario image styling */
+        .scenario-image {
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            background-color: var(--input-bg-color);
+        }
+    </style>
+</head>
+<body class="body-login-layout bg-body-bg text-text-color transition-colors duration-300 flex flex-col min-h-screen">
+    <header class="py-4 px-6 shadow-md bg-card-bg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <svg class="h-8 w-auto text-primary rtl:ml-2 ltr:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                <span class="text-xl font-semibold text-header" data-lang-key="platform_title_sidebar">סימולציות סייבר</span>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl text-center">
+            <div class="spinner mx-auto mb-6"></div>
+            <h2 id="preparing-environment-title" data-lang-key="preparing_environment_title" class="text-2xl font-semibold text-header mb-3">מכין את סביבת הסימולציה שלך...</h2>
+            <div id="scenario-info" class="card p-6 rounded-lg shadow-md mb-6 text-right rtl:text-right ltr:text-left">
+                <img id="scenario-image" class="scenario-image" src="default_scenario.webp" alt="Scenario Image">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="inline-flex items-center px-2 py-1 bg-primary bg-opacity-10 rounded-full">
+                        <svg class="w-4 h-4 text-primary rtl:ml-1 ltr:mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span id="scenario-duration-display" class="text-xs font-medium text-primary">[...]</span>
+                    </div>
+                    <div class="inline-flex items-center px-2 py-1 bg-yellow-100 rounded-full">
+                        <svg class="w-4 h-4 text-yellow-600 rtl:ml-1 ltr:mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                        </svg>
+                        <span id="scenario-difficulty-display" class="text-xs font-medium text-yellow-700">[...]</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-medium text-primary mb-2">
+                    <span data-lang-key="scenario_label">תרחיש:</span>
+                    <span id="scenario-title-display" class="font-semibold">[טוען שם תרחיש...]</span>
+                </h3>
+                <p id="scenario-description-display" class="text-sm text-text-color mb-3">[טוען תיאור תרחיש...]</p>
+                <div id="scenario-details-section" class="border-t border-[var(--card-border-color)] pt-2">
+                    <!-- This will be populated dynamically with scenario assets and tools -->
+                </div>
+            </div>
+            <progress id="loading-progress" value="0" max="100" class="w-full h-3 rounded-full overflow-hidden mb-2"></progress>
+            <p id="loading-status-text" class="text-sm text-subtitle mt-1" data-lang-key="loading_status_initializing">מאתחל רכיבים...</p>
+            <section id="team-lobby" class="mt-6 card p-6 rounded-lg shadow-md hidden">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xl font-semibold text-header">
+                        <span data-lang-key="team_lobby_title_prefix">לובי</span>
+                        <span data-lang-key="team_alpha_lobby_name" id="team-lobby-name" class="text-primary">צוות אלפא</span>
+                    </h3>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                        <span class="animate-pulse inline-block w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
+                        <span data-lang-key="team_lobby_live">חי</span>
+                    </span>
+                </div>
+                <p data-lang-key="team_lobby_waiting_text" class="text-sm text-subtitle mb-4">ממתין לשאר חברי הצוות להצטרף ולהכנת הסביבה...</p>
+                <ul id="team-lobby-list" class="space-y-2 text-right rtl:text-right ltr:text-left list-none p-0">
+                    <!-- Team members will be populated here dynamically -->
+                </ul>
+            </section>
+            <div class="mt-8">
+                <a href="trainee_main.html" data-lang-key="cancel_and_return_link" class="text-sm text-subtitle hover:text-primary hover:underline">
+                    ביטול וחזרה ללוח המחוונים
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer class="text-center py-6 text-sm text-subtitle opacity-70">
+        <p>&copy; <span id="currentYear"></span> <span data-lang-key="footer_copyright_text">Cyber Simulation Platform. All rights reserved.</span></p>
+    </footer>
+    <script src="app-global.js" defer></script>
+    <script src="trainee_start_simulation_translations.js" defer></script>
+    <script src="trainee_start_simulation.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) yearEl.textContent = new Date().getFullYear();
+            
+            // Force translation update when the page loads
+            setTimeout(() => {
+                if (typeof window.applyTranslationsGlobal === 'function') {
+                    window.applyTranslationsGlobal();
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

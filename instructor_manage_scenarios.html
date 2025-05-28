@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="instructor_manage_scenarios_page_title">ניהול תרחישים - פלטפורמת סימולציות סייבר</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body class="body-dashboard-layout bg-body-bg text-text-color transition-colors duration-300" data-user-type="instructor">
+    <div id="sidebar-placeholder"></div>
+    <main class="main-content-area">
+        <header class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+                <h2 data-lang-key="manage_scenarios_header" class="text-3xl font-bold text-header">ניהול תרחישים</h2>
+                <button id="create-new-scenario-btn" class="btn btn-primary">
+                    <svg class="w-5 h-5 rtl:ml-2 ltr:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    <span data-lang-key="create_new_scenario_button">צור תרחיש חדש</span>
+                </button>
+            </div>
+            <p data-lang-key="manage_scenarios_subtitle" class="text-subtitle mt-1 text-base">נהל את מאגר התרחישים, ערוך קיימים, והוסף חדשים למערכת.</p>
+        </header>
+        <div class="filter-section card p-4 rounded-xl shadow-lg mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                 <div>
+                    <label for="search-scenario" class="form-label" data-lang-key="search_scenario_label">חיפוש לפי שם</label>
+                    <input type="text" id="search-scenario" name="searchScenario" class="form-input" data-lang-key-placeholder="search_scenario_placeholder" placeholder="הכנס שם תרחיש...">
+                </div>
+                <div>
+                     <label for="filter-difficulty" class="form-label" data-lang-key="filter_difficulty_label">סינון לפי רמת קושי</label>
+                    <select id="filter-difficulty" name="filterDifficulty" class="form-select">
+                        <option value="all" data-lang-key="difficulty_all">הכל</option>
+                        <option value="easy" data-lang-key="difficulty_easy_badge">קל</option>
+                        <option value="low" data-lang-key="difficulty_low">נמוכה</option>
+                        <option value="medium" data-lang-key="difficulty_medium_badge">בינוני</option>
+                        <option value="hard" data-lang-key="difficulty_hard_badge">קשה</option>
+                        <option value="high" data-lang-key="difficulty_high">גבוהה</option>
+                         <option value="expert" data-lang-key="difficulty_expert_badge">מומחה</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-status" class="form-label" data-lang-key="filter_status_label">סינון לפי סטטוס</label>
+                    <select id="filter-status" name="filterStatus" class="form-select">
+                        <option value="all" data-lang-key="status_all">הכל</option>
+                        <option value="published" data-lang-key="status_published">פורסם</option>
+                        <option value="active" data-lang-key="status_active">פעיל</option>
+                        <option value="draft" data-lang-key="status_draft">טיוטה</option>
+                        <option value="archived" data-lang-key="status_archived">בארכיון</option>
+                        <option value="inactive" data-lang-key="status_inactive">לא פעיל</option>
+                        <option value="pending_review" data-lang-key="status_pending_review">ממתין לבדיקה</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+         <section class="card p-0 rounded-xl shadow-lg overflow-hidden">
+             <div class="p-6 border-b border-[var(--card-border-color)]">
+                 <h3 data-lang-key="scenarios_list_title" class="text-xl font-semibold text-header">רשימת תרחישים</h3>
+            </div>
+            <div class="table-container">
+                <table class="custom-table">
+                     <thead>
+                        <tr>
+                            <th scope="col" data-lang-key="table_header_scenario_name">שם התרחיש</th>
+                            <th scope="col" data-lang-key="table_header_difficulty">רמת קושי</th>
+                             <th scope="col" data-lang-key="table_header_status">סטטוס</th>
+                            <th scope="col" data-lang-key="table_header_created_by">נוצר ע"י</th>
+                            <th scope="col" data-lang-key="table_header_last_modified">עדכון אחרון</th>
+                             <th scope="col" data-lang-key="table_header_participants_teams">משתתפים/צוותים</th>
+                            <th scope="col" data-lang-key="table_header_actions" class="text-center">פעולות</th>
+                        </tr>
+                    </thead>
+                     <tbody id="scenarios-table-body">
+                        <tr id="loading-scenarios-row"><td colspan="7" class="text-center p-4" data-lang-key="loading_scenarios">טוען תרחישים...</td></tr>
+                        </tbody>
+                </table>
+            </div>
+             <div class="p-4 border-t border-[var(--card-border-color)] flex justify-center">
+                <nav id="scenarios-pagination" class="flex items-center gap-2" aria-label="Scenarios list pagination">
+                    </nav>
+            </div>
+        </section>
+        <div id="assignScenarioModal" class="modal-overlay fixed inset-0 flex items-center justify-center p-4 z-50 hidden" aria-labelledby="assignScenarioModalTitle" role="dialog" aria-modal="true">
+             <div class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
+             <div class="modal-content card max-w-lg w-full p-6 rounded-xl shadow-2xl relative z-10 bg-white dark:bg-gray-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="assignScenarioModalTitle" class="modal-title text-xl font-semibold" data-lang-key="assign_scenario_modal_title">הקצאת תרחיש</h3>
+                    <button type="button" class="modal-close-button p-1 rounded-full hover:bg-[var(--sidebar-link-hover-bg)]" data-modal-id="assignScenarioModal" data-lang-key-title="close_modal_tooltip" title="סגור חלון">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <form id="assignScenarioForm" class="space-y-4">
+                     <div>
+                        <p class="text-sm"><strong data-lang-key="scenario_to_assign_label_modal">תרחיש להקצאה:</strong> <span id="assignScenarioNameDisplay" class="text-primary font-medium"></span></p>
+                    </div>
+                    <div>
+                        <label for="assignToType" class="form-label" data-lang-key="assign_to_label">הקצה ל:</label>
+                        <select id="assignToType" name="assignToType" class="form-select">
+                            <option value="user" data-lang-key="assign_to_type_user">משתמש בודד</option>
+                            <option value="team" data-lang-key="assign_to_type_team">צוות</option>
+                         </select>
+                    </div>
+                    <div id="assignUserSelectContainer">
+                        <label for="assign-user-select" class="form-label" data-lang-key="assign_select_user_label">בחר משתמש:</label>
+                         <select id="assign-user-select" name="assignUserId" class="form-select">
+                            <option value="" data-lang-key="assign_select_user_placeholder">טוען משתמשים...</option>
+                            </select>
+                    </div>
+                     <div id="assignTeamSelectContainer" class="hidden">
+                        <label for="assign-team-select" class="form-label" data-lang-key="assign_select_team_label">בחר צוות:</label>
+                        <select id="assign-team-select" name="assignTeamId" class="form-select">
+                             <option value="" data-lang-key="assign_select_team_placeholder">טוען צוותים...</option>
+                             </select>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button type="button" class="btn btn-neutral modal-close-button" data-modal-id="assignScenarioModal" data-lang-key="cancel_button_modal">ביטול</button>
+                        <button type="submit" class="btn btn-primary" data-lang-key="assign_scenario_button_modal">הקצה תרחיש</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <button type="button" id="prev-dashboard-button" class="btn btn-neutral w-full sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:mr-2 ltr:ml-2 transform rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                 <span data-lang-key="go_back_to_manage_users_teams">חזור לניהול משתמשים וצוותים</span>
+            </button>
+            <button type="button" id="next-dashboard-button" class="btn btn-primary w-full sm:w-auto">
+                <span data-lang-key="go_to_monitor_simulations">המשך לניטור סימולציות</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:ml-2 ltr:mr-2">
+                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+        <footer class="text-center py-8 text-sm text-subtitle opacity-70 mt-auto">
+            <p>&copy; <span id="currentYear"></span> Cyber Simulation Platform. All rights reserved.</p>
+        </footer>
+    </main>
+    <script src="app-global.js" defer></script>
+    <script src="sidebar.js" defer></script>
+    <script src="instructor_manage_scenarios_translations.js" defer></script>
+    <script src="instructor_manage_scenarios.js" defer></script>
+    <script>
+        const currentUserType = 'instructor';
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('currentYear');
+            if(yearEl) { yearEl.textContent = new Date().getFullYear(); }
+            if (typeof window.renderDynamicSidebar === 'function') {
+                window.renderDynamicSidebar();
+            }
+             const createNewScenarioBtn = document.getElementById('create-new-scenario-btn');
+            if (createNewScenarioBtn) {
+                createNewScenarioBtn.addEventListener('click', () => {
+                    window.location.href = 'instructor_create_scenario.html';
+                });
+            }
+            const prevButton = document.getElementById('prev-dashboard-button');
+            if(prevButton) {
+                prevButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_manage_users_teams.html';
+                });
+            }
+            const nextButton = document.getElementById('next-dashboard-button');
+            if(nextButton) {
+                nextButton.addEventListener('click', () => {
+                    window.location.href = 'instructor_monitor_simulations.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
