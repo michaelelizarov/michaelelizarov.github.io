@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Cyber Security Course - Welcome</title>
+    <style>
+        :root {
+            --primary-color: #00ff41;
+            --secondary-color: #00c8ff;
+            --accent-color: #ff3333;
+            --bg-dark: #0a0e12;
+            --bg-card: rgba(20, 25, 30, 0.9);
+            --text-light: #e0e0e0;
+            --text-bright: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00c8ff 0%, #00ff41 100%);
+            --gradient-3: linear-gradient(135deg, #ff3333 0%, #ff8c00 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 51, 51, 0.03) 0%, transparent 50%);
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            overflow: hidden;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-size: 20px;
+            width: 20px;
+            animation: matrix-fall linear infinite;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        @keyframes matrix-fall {
+            to {
+                top: 100%;
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--secondary-color);
+            text-shadow: 0 0 30px rgba(0, 200, 255, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 30px rgba(0, 200, 255, 0.5); }
+            to { text-shadow: 0 0 40px rgba(0, 200, 255, 0.8), 0 0 50px rgba(0, 255, 65, 0.5); }
+        }
+
+        .header .subtitle {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+        }
+
+        /* Resources Grid */
+        .resources-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .resource-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-2);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .resource-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.3);
+            border-color: var(--secondary-color);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px currentColor);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover .resource-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .resource-title {
+            font-size: 1.5rem;
+            color: var(--text-bright);
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .resource-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            opacity: 0.85;
+        }
+
+        /* Special styling for different cards */
+        .card-bookmarks { 
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        .card-bookmarks .resource-icon { color: var(--secondary-color); }
+
+        .card-dictionary { 
+            border-color: rgba(0, 255, 65, 0.3);
+        }
+        .card-dictionary .resource-icon { color: var(--primary-color); }
+
+        .card-trivia { 
+            border-color: rgba(118, 75, 162, 0.3);
+        }
+        .card-trivia .resource-icon { color: #764ba2; }
+
+        .card-summaries { 
+            border-color: rgba(255, 140, 0, 0.3);
+        }
+        .card-summaries .resource-icon { color: #ff8c00; }
+
+        .card-killchain { 
+            border-color: rgba(255, 51, 51, 0.3);
+        }
+        .card-killchain .resource-icon { color: var(--accent-color); }
+
+        .card-mitre { 
+            border-color: rgba(255, 94, 0, 0.3);
+        }
+        .card-mitre .resource-icon { color: #ff5e00; }
+
+        /* Terminal prompt effect */
+        .terminal-prompt {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-card);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+            font-size: 0.9rem;
+            animation: fadeIn 2s ease-out;
+            z-index: 20;
+        }
+
+        .terminal-prompt::before {
+            content: '> ';
+            color: var(--primary-color);
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: var(--primary-color);
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .resources-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .terminal-prompt {
+                display: none;
+            }
+        }
+
+        /* Loading animation */
+        .loading-text {
+            display: inline-block;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Effect -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>🔐 Cyber Security Course Portal</h1>
+        <p class="subtitle">Welcome to the Digital Fortress of Knowledge</p>
+    </header>
+
+    <!-- Resources Grid -->
+    <main class="resources-container">
+        <!-- Bookmarks Card -->
+        <a href="Cyber Bookmarks.html" class="resource-card card-bookmarks">
+            <div class="resource-icon">🔗</div>
+            <h2 class="resource-title">Cyber Bookmarks</h2>
+            <p class="resource-description">
+                Access all class resources and important links in one organized collection. 
+                Your gateway to course materials, tools, and references.
+            </p>
+        </a>
+
+        <!-- Dictionary Card -->
+        <a href="Cyber Dictionary.md" class="resource-card card-dictionary">
+            <div class="resource-icon">📚</div>
+            <h2 class="resource-title">Cyber Dictionary</h2>
+            <p class="resource-description">
+                Comprehensive glossary of terms, concepts, and cheat sheets. 
+                Your personal reference guide for all things cybersecurity.
+            </p>
+        </a>
+
+        <!-- Trivia Card -->
+        <a href="Cyber Trivia.html" class="resource-card card-trivia">
+            <div class="resource-icon">🎯</div>
+            <h2 class="resource-title">Cyber Trivia</h2>
+            <p class="resource-description">
+                Test your knowledge with interactive questions based on course materials. 
+                Challenge yourself and track your learning progress.
+            </p>
+        </a>
+
+        <!-- Summaries Card -->
+        <a href="Cyber Summaries.html" class="resource-card card-summaries">
+            <div class="resource-icon">📊</div>
+            <h2 class="resource-title">Cyber Summaries</h2>
+            <p class="resource-description">
+                Visual class summaries powered by Napkin.AI. 
+                Review key concepts with engaging infographics and diagrams.
+            </p>
+        </a>
+
+        <!-- Kill Chain Card -->
+        <a href="Cyber Methodology Cyber Kill Chain.html" class="resource-card card-killchain">
+            <div class="resource-icon">⚡</div>
+            <h2 class="resource-title">Cyber Kill Chain</h2>
+            <p class="resource-description">
+                Explore Metasploit's role in the Cyber Kill Chain methodology. 
+                Interactive demonstration of attack phases and techniques.
+            </p>
+        </a>
+
+        <!-- MITRE ATT&CK Card -->
+        <a href="Cyber Methodology MITRE ATT&CK.html" class="resource-card card-mitre">
+            <div class="resource-icon">🎯</div>
+            <h2 class="resource-title">MITRE ATT&CK</h2>
+            <p class="resource-description">
+                Discover how Metasploit aligns with MITRE ATT&CK framework. 
+                Learn adversary tactics, techniques, and procedures.
+            </p>
+        </a>
+    </main>
+
+    <!-- Terminal Prompt -->
+    <div class="terminal-prompt">
+        <span class="loading-text">system ready</span><span class="blink">_</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>🛡️ Stay Curious, Stay Secure 🛡️</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">© 2024 Cyber Security Course</p>
+    </footer>
+
+    <script>
+        // Matrix rain effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = i * 20 + 'px';
+                column.style.animationDuration = Math.random() * 15 + 10 + 's';
+                column.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Add random characters
+                const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+                let text = '';
+                for (let j = 0; j < 50; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                }
+                column.innerHTML = text;
+                
+                matrixBg.appendChild(column);
+            }
+        }
+
+        // Initialize matrix effect
+        createMatrixRain();
+
+        // Add hover sound effect (visual feedback instead of actual sound)
+        document.querySelectorAll('.resource-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(20, 25, 30, 0.95)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(20, 25, 30, 0.9)';
+            });
+        });
+
+        // Terminal typing effect
+        const messages = [
+            'system ready',
+            'access granted',
+            'welcome back',
+            'stay vigilant',
+            'hack the planet',
+            'security first'
+        ];
+        
+        let messageIndex = 0;
+        setInterval(() => {
+            const loadingText = document.querySelector('.loading-text');
+            messageIndex = (messageIndex + 1) % messages.length;
+            loadingText.style.opacity = '0';
+            
+            setTimeout(() => {
+                loadingText.textContent = messages[messageIndex];
+                loadingText.style.opacity = '1';
+            }, 300);
+        }, 3000);
+    </script>
+</body>
+</html>

