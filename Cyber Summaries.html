@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Summaries - Cybersecurity Course Materials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border-radius: 10px;
+            margin: -20px -20px 40px -20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .module {
+            margin-bottom: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .module:hover {
+            border-color: #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .module-header h2 {
+            font-size: 1.5em;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .module-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .module.active .module-content {
+            max-height: 2000px;
+        }
+
+        .module.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topic:last-child {
+            border-bottom: none;
+        }
+
+        .topic:hover {
+            background-color: #f8f9fa;
+        }
+
+        .topic-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .topic-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .link-button {
+            padding: 5px 12px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .link-button:hover {
+            background: #2980b9;
+        }
+
+        .link-button.summary {
+            background: #27ae60;
+        }
+
+        .link-button.summary:hover {
+            background: #229954;
+        }
+
+        .link-button.project {
+            background: #e74c3c;
+        }
+
+        .link-button.project:hover {
+            background: #c0392b;
+        }
+
+        .placeholder {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .last-updated {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .topic {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .topic-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+                margin: 0;
+            }
+            
+            .module-content {
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ Cyber Summaries</h1>
+            <div class="subtitle">Cybersecurity Course Materials & Resources</div>
+        </header>
+
+        <div class="module active">
+            <div class="module-header" onclick="toggleModule(this)">
+                <h2>02 - Network Research</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="module-content">
+                <div class="topic">
+                    <span class="topic-name">99 - Project</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="module active">
+            <div class="module-header" onclick="toggleModule(this)">
+                <h2>03 - Windows Forensics</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="module-content">
+                <div class="topic">
+                    <span class="topic-name">01 - Files And Disks</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">02 - Automatic Carving</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">03 - Metadata</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">04 - Steganography</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">05 - File System Analysis</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">06 - Artifacts</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">07 - Registry Analysis</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">08 - Memory Analysis</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">09 - Windows Events</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">10 - Network Analysis</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">100 - Scenario</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">99 - Project</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="module active">
+            <div class="module-header" onclick="toggleModule(this)">
+                <h2>04 - Penetration Testing</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="module-content">
+                <div class="topic">
+                    <span class="topic-name">01 - Information Gathering</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">02 - Scanning</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">03 - Enumeration</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">04 - Exploitation</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">05 - Meterpreter</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">06 - Payloads</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">07 - Post Exploitation</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">08 - Social Engineering</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">09 - WebApp Security</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">99 - Project</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="module active">
+            <div class="module-header" onclick="toggleModule(this)">
+                <h2>05 - Network Security</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="module-content">
+                <div class="topic">
+                    <span class="topic-name">01 - Subnetting</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">02 - Network Attacks</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">03 - Domain Setup</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">04 - Domain Events</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">05 - PowerShell</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">06 - Domain Enumeration</span>
+                    <div class="topic-links">
+                        <span class="placeholder">Materials coming soon...</span>
+                    </div>
+                </div>
+                <div class="topic">
+                    <span class="topic-name">07 - Domain Exploitation</span>
+                    <div class="topic-links">
+                        <a href="https://app.napkin.ai/page/CgoiCHByb2Qtb25lEiwKBFBhZ2UaJDA0ZTUzNzkwLTNlNmEtNDhiNS1iM2VhLTE3MDBlZTdjZGY3OA" 
+                           class="link-button" target="_blank" rel="noopener noreferrer">📊 Visual Summary</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            <strong>Last Updated:</strong> June 11, 2025<br>
+            <em>Latest addition: Domain Exploitation visual summary</em>
+        </div>
+    </div>
+
+    <script>
+        function toggleModule(header) {
+            const module = header.parentElement;
+            module.classList.toggle('active');
+        }
+
+        // Initialize all modules as expanded for better accessibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const modules = document.querySelectorAll('.module');
+            modules.forEach(module => {
+                module.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
