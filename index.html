@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fsociety: Mr. Robot CTF Challenge</title>
+    <title>fsociety: Mr. Robot CTF Challenge NEW</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -114,6 +114,8 @@ fsociety</pre>
         let answered = new Set();
         let currentQ = 0;
         let flags = {1: '', 2: '', 3: ''};
+        // Store user answers for each question
+        let userAnswers = {};
 
         // Questions all text, with multiple answer variations, case-insensitive
         const questions = [
@@ -183,12 +185,17 @@ fsociety</pre>
 
         function renderQuestion() {
             const q = questions[currentQ];
+            const isAnswered = answered.has(currentQ);
+            const savedAnswer = userAnswers[currentQ] || '';
+            
             let html = `
                 <div class="terminal p-4 mb-4">
                     <h3 class="text-lg mb-2">${q.section} Challenge ${currentQ + 1}: ${q.q}</h3>
-                    <div id="feedback" class="feedback hidden mb-2"></div>
-                    <input id="answer-input" type="text" class="w-full bg-black border border-fs-green text-fs-green p-2 mb-2" placeholder="Your answer..." ${answered.has(currentQ) ? 'disabled' : ''}>
-                    <button onclick="checkAnswer()" class="bg-fs-green text-fs-black px-4 py-1 rounded" ${answered.has(currentQ) ? 'disabled' : ''}>Submit</button>
+                    <div id="feedback" class="feedback ${isAnswered ? 'correct' : 'hidden'} mb-2">
+                        ${isAnswered ? '<span class="text-fs-green">Access granted! +20 points. fsociety approves.</span>' : ''}
+                    </div>
+                    <input id="answer-input" type="text" class="w-full bg-black border border-fs-green text-fs-green p-2 mb-2" placeholder="Your answer..." value="${savedAnswer}" ${isAnswered ? 'disabled' : ''}>
+                    <button onclick="checkAnswer()" class="bg-fs-green text-fs-black px-4 py-1 rounded" ${isAnswered ? 'disabled' : ''}>Submit</button>
                 </div>
             `;
             document.getElementById('qa-content').innerHTML = html;
@@ -213,11 +220,14 @@ fsociety</pre>
             const correctAnswers = questions[currentQ].answers.map(normalizeAnswer);
             let isCorrect = correctAnswers.includes(userAns);
             let pointsChange = 0;
+            
             if (isCorrect) {
                 if (!answered.has(currentQ)) {
                     pointsChange = 20;
                     score += 20;
                     answered.add(currentQ);
+                    // Store the user's original answer
+                    userAnswers[currentQ] = input.value;
                     input.disabled = true;
                     document.querySelector('button[onclick="checkAnswer()"]').disabled = true;
                 }
@@ -251,8 +261,13 @@ fsociety</pre>
 
         function updateScore() {
             document.getElementById('score').innerHTML = `Score: ${Math.max(0, score)}`;
-            localStorage.setItem('ctfScore', score);
-            localStorage.setItem('ctfAnswered', JSON.stringify(Array.from(answered)));
+            // Save state to localStorage
+            const gameState = {
+                score: score,
+                answered: Array.from(answered),
+                userAnswers: userAnswers
+            };
+            localStorage.setItem('ctfGameState', JSON.stringify(gameState));
         }
 
         function resetGame() {
@@ -261,9 +276,11 @@ fsociety</pre>
             answered.clear();
             currentQ = 0;
             flags = {1:'',2:'',3:''};
+            userAnswers = {};
             document.getElementById('flag1').value = '';
             document.getElementById('flag2').value = '';
             document.getElementById('flag3').value = '';
+            localStorage.removeItem('ctfGameState');
             updateScore();
             navigateTo('welcome');
         }
@@ -271,13 +288,18 @@ fsociety</pre>
         // Init
         window.onload = () => {
             const hash = window.location.hash.substring(1) || 'welcome';
-            navigateTo(hash);
-            // Restore state
-            const savedScore = localStorage.getItem('ctfScore');
-            const savedAnswered = localStorage.getItem('ctfAnswered');
-            if (savedScore) score = parseInt(savedScore);
-            if (savedAnswered) answered = new Set(JSON.parse(savedAnswered));
+            
+            // Restore state from localStorage
+            const savedState = localStorage.getItem('ctfGameState');
+            if (savedState) {
+                const gameState = JSON.parse(savedState);
+                score = gameState.score || 100;
+                answered = new Set(gameState.answered || []);
+                userAnswers = gameState.userAnswers || {};
+            }
+            
             updateScore();
+            navigateTo(hash);
         };
     </script>
 </body>
