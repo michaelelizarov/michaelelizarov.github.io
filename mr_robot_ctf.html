@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fsociety: Mr. Robot CTF Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'mono': ['Courier New', 'monospace'],
+                    },
+                    colors: {
+                        'fs-green': '#00ff00',
+                        'fs-black': '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: linear-gradient(135deg, #000000, #1a1a1a); color: #00ff00; font-family: 'Courier New', monospace; }
+        .terminal { background: #000; border: 1px solid #00ff00; padding: 10px; border-radius: 5px; }
+        .fade-in { animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .question-list li { cursor: pointer; padding: 5px; }
+        .question-list li.answered { color: #00ff00; }
+        .feedback { padding: 8px; margin: 8px 0; border-radius: 4px; font-weight: bold; }
+        .feedback.correct { background: rgba(0, 255, 0, 0.2); border: 1px solid #00ff00; }
+        .feedback.incorrect { background: rgba(255, 0, 0, 0.2); border: 1px solid #ff0000; }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-fs-green mb-2">fsociety</h1>
+        <p class="text-xl">Hello, friend. Ready to wake up?</p>
+        <div id="score" class="mt-4 text-lg">Score: 100</div>
+    </header>
+
+    <!-- Welcome Section -->
+    <section id="welcome" class="fade-in">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-2xl mb-4">Welcome, Patriot</h2>
+            <p class="mb-4">You've joined fsociety. The American Dream is a myth. Time to hack the world.</p>
+            <button onclick="navigateTo('scenario')" class="bg-fs-green text-fs-black px-6 py-2 rounded hover:bg-green-400">Continue</button>
+        </div>
+    </section>
+
+    <!-- Scenario Section -->
+    <section id="scenario" class="hidden fade-in">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl mb-4">The Mission</h2>
+            <p class="mb-4">E Corp has hidden secrets in a vulnerable machine. Your task: Recon, exploit, escalate, and extract the three keys. Prove you're not a script kiddie.</p>
+            <p class="mb-4">Start with your Kali box. Target: Spin up the Mr. Robot VM and note its IP as TARGET_IP.</p>
+            <button onclick="navigateTo('intro')" class="bg-fs-green text-fs-black px-6 py-2 rounded hover:bg-green-400">Intro to Target</button>
+        </div>
+    </section>
+
+    <!-- Intro Section -->
+    <section id="intro" class="hidden fade-in">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl mb-4">Target Overview</h2>
+            <p class="mb-4">Mr. Robot VM: A Linux box with Apache/WordPress. Ports? Secrets in code. Terminal tease on the site. fsociety awaits.</p>
+            <div class="terminal">
+                <pre>$ whoami
+fsociety</pre>
+            </div>
+            <button onclick="navigateTo('qa')" class="bg-fs-green text-fs-black px-6 py-2 rounded hover:bg-green-400">Begin Q&A</button>
+        </div>
+    </section>
+
+    <!-- Q&A Section -->
+    <section id="qa" class="hidden fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Sidebar: Question List -->
+            <aside class="md:col-span-1">
+                <h3 class="text-xl mb-2">Challenges</h3>
+                <ul id="question-list" class="question-list space-y-1">
+                    <!-- Populated by JS -->
+                </ul>
+                <div id="flag-inputs" class="mt-4 space-y-2">
+                    <p class="text-sm">Enter Keys for Bonus:</p>
+                    <input id="flag1" type="text" class="w-full bg-black border border-fs-green text-fs-green p-1" placeholder="Key 1">
+                    <input id="flag2" type="text" class="w-full bg-black border border-fs-green text-fs-green p-1" placeholder="Key 2">
+                    <input id="flag3" type="text" class="w-full bg-black border border-fs-green text-fs-green p-1" placeholder="Key 3">
+                </div>
+                <button onclick="checkWin()" class="mt-2 bg-fs-green text-fs-black px-4 py-2 rounded w-full">Check Victory</button>
+            </aside>
+
+            <!-- Main Q&A -->
+            <main class="md:col-span-3">
+                <div id="qa-content">
+                    <!-- Current question rendered here -->
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- Victory Modal (hidden) -->
+    <div id="victory" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+        <div class="bg-fs-black p-8 rounded border border-fs-green max-w-md">
+            <h2 class="text-2xl mb-4">Owned!</h2>
+            <p id="final-score"></p>
+            <p class="mb-4">Keys collected. fsociety wins.</p>
+            <button onclick="resetGame()" class="bg-fs-green text-fs-black px-6 py-2 rounded">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let score = 100;
+        let answered = new Set();
+        let currentQ = 0;
+        let flags = {1: '', 2: '', 3: ''};
+
+        // Questions all text, with multiple answer variations, case-insensitive
+        const questions = [
+            // Recon Section
+            {id: 0, section: 'Recon', q: "What tool can scan the network to find the target's IP (e.g., in 10.0.0.0/24)?", answers: ["netdiscover", "nmap", "masscan", "ping", "telnet"]},
+            {id: 1, section: 'Recon', q: "Run a full port scan on TARGET_IP. Which ports are open? (e.g., 80 443)", answers: ["80 443", "80,443", "80/tcp 443/tcp", "80 and 443", "443 80"]},
+            {id: 2, section: 'Recon', q: "From the nmap scan, what's the OS family on TARGET_IP? (e.g., linux 3.x)", answers: ["linux 3.x", "linux 4.x", "linux 3.10 - 4.11", "linux 3", "linux 4"]},
+            {id: 3, section: 'Recon', q: "Browse to TARGET_IP in your browser. Check the page source—what suspicious variable holds an IP? (e.g., user_ip)", answers: ["user_ip", "userip"]},
+            {id: 4, section: 'Recon', q: "The site loads with a cool animation. What's your first instinct after viewing source? (e.g., scan suspicious ip)", answers: ["scan the suspicious ip", "scan suspicious ip", "ping the ip", "nmap the ip"]},
+            {id: 5, section: 'Recon', q: "What tool brute-forces web directories to find hidden paths? (e.g., dirbuster)", answers: ["dirbuster", "gobuster", "dirb"]},
+            {id: 6, section: 'Recon', q: "Dirbuster reveals WordPress directories. What's a key finding? (e.g., wordpress installed)", answers: ["wordpress installed", "wordpress", "wp installed"]},
+            {id: 7, section: 'Recon', q: "Run nikto on TARGET_IP. What's the web server and CMS detected? (e.g., apache wordpress)", answers: ["apache wordpress", "apache, wordpress", "apache and wordpress"]},
+            {id: 8, section: 'Recon', q: "Check robots.txt on TARGET_IP. What's the file with the first key? (e.g., key-1-of-3.txt)", answers: ["key-1-of-3.txt", "key 1 of 3.txt", "key-1-of-3"]},
+            {id: 9, section: 'Recon', q: "You found key-1-of-3.txt! What's inside (the flag value)?", answers: ["073403c8a58a1f80d943455fb30724b9"]},
+
+            // Brute Section
+            {id: 10, section: 'Brute', q: "robots.txt also lists fsocity.dic—download it. What's next for login brute-force? (e.g., find wp login path)", answers: ["find wp login path", "find wordpress login", "locate wp-login"]},
+            {id: 11, section: 'Brute', q: "Where's the WordPress login page from nikto? (e.g., /wp-login.php)", answers: ["/wp-login.php", "/blog/wp-login.php", "wp-login.php"]},
+            {id: 12, section: 'Brute', q: "Tool to brute-force usernames on the WP login using fsocity.dic? (e.g., hydra)", answers: ["hydra", "medusa", "ncrack"]},
+            {id: 13, section: 'Brute', q: "Hydra finds a valid username. What is it? (e.g., elliot)", answers: ["elliot", "true"]},
+            {id: 14, section: 'Brute', q: "Now brute the password for Elliot using fsocity.dic. What's the tool? (e.g., wpscan)", answers: ["wpscan"]},
+            {id: 15, section: 'Brute', q: "WPScan cracks the password. What is it? (e.g., er28-0652)", answers: ["er28-0652"]},
+            {id: 16, section: 'Brute', q: "Log in as Elliot. Check Users—what role does Elliot have? (e.g., administrator)", answers: ["administrator", "admin"]},
+
+            // Exploit Section
+            {id: 17, section: 'Exploit', q: "As admin, explore WP. What can you do to test control? (Main way to get shell, e.g., edit theme files)", answers: ["edit theme files", "edit footer.php", "edit themes"]},
+            {id: 18, section: 'Exploit', q: "Download a PHP reverse shell from PentestMonkey. Edit it—change what for your listener? (e.g., ip address)", answers: ["ip address", "ip", "listener ip"]},
+            {id: 19, section: 'Exploit', q: "Upload fails due to type check. Workaround: Edit which WP file to insert shell code? (e.g., footer.php)", answers: ["footer.php", "footer"]},
+            {id: 20, section: 'Exploit', q: "Access the edited footer.php URL while nc listens on port 1234. What do you get? (e.g., shell access)", answers: ["shell access", "shell", "reverse shell"]},
+            {id: 21, section: 'Exploit', q: "In the shell, navigate to /home—what user dir is there? (e.g., robot)", answers: ["robot"]},
+            {id: 22, section: 'Exploit', q: "In /home/robot, cat password.raw-md5. What's the hash for 'robot'? (e.g., c3fcd3d76192e4007dfb496cca67e13b)", answers: ["c3fcd3d76192e4007dfb496cca67e13b"]},
+            {id: 23, section: 'Exploit', q: "Crack the MD5 hash online. What's the plaintext? (e.g., abcdefghijklmnopqrstuvwxyz)", answers: ["abcdefghijklmnopqrstuvwxyz"]},
+            {id: 24, section: 'Exploit', q: "You found key-2-of-3.txt in /home/robot! What's the flag? (e.g., 822c73956184f694993bede3eb39f959)", answers: ["822c73956184f694993bede3eb39f959"]},
+
+            // Escalate Section
+            {id: 25, section: 'Escalate', q: "su robot with the password. But need a proper tty—spawn one with what command? (e.g., python -c import pty; pty.spawn(/bin/bash))", answers: ["python -c 'import pty; pty.spawn(\"/bin/bash\")'", "python pty spawn /bin/bash", "python pty /bin/bash"]},
+            {id: 26, section: 'Escalate', q: "As robot, sudo -l fails. Find SUID binaries with what command? (e.g., find / -perm -u=s -type f 2>/dev/null)", answers: ["find / -perm -u=s -type f 2>/dev/null", "find suid", "find / -perm -4000"]},
+            {id: 27, section: 'Escalate', q: "SUID shows /usr/local/bin/nmap. Check GTFOBins—how to esc to root with it? (e.g., nmap --interactive !sh)", answers: ["nmap --interactive !sh", "nmap interactive sh"]},
+            {id: 28, section: 'Escalate', q: "As root, cd /root and cat key-3-of-3.txt. What's the final flag? (e.g., 04787ddef27c3dee1ee161b21670b4e4)", answers: ["04787ddef27c3dee1ee161b21670b4e4"]}
+        ];
+
+        // Flags
+        const flagAnswers = {
+            1: "073403c8a58a1f80d943455fb30724b9",
+            2: "822c73956184f694993bede3eb39f959",
+            3: "04787ddef27c3dee1ee161b21670b4e4"
+        };
+
+        function navigateTo(section) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(section).classList.remove('hidden');
+            window.location.hash = section;
+            if (section === 'qa') {
+                renderQuestionList(); 
+                renderQuestion();
+            }
+        }
+
+        function renderQuestionList() {
+            const list = document.getElementById('question-list');
+            list.innerHTML = questions.map((q, i) => 
+                `<li class="${answered.has(i) ? 'answered' : ''}" onclick="currentQ=${i}; renderQuestion();">
+                    <strong>${q.section}</strong> #${i+1}: ${q.q.substring(0,40)}...
+                </li>`
+            ).join('');
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQ];
+            let html = `
+                <div class="terminal p-4 mb-4">
+                    <h3 class="text-lg mb-2">${q.section} Challenge ${currentQ + 1}: ${q.q}</h3>
+                    <div id="feedback" class="feedback hidden mb-2"></div>
+                    <input id="answer-input" type="text" class="w-full bg-black border border-fs-green text-fs-green p-2 mb-2" placeholder="Your answer..." ${answered.has(currentQ) ? 'disabled' : ''}>
+                    <button onclick="checkAnswer()" class="bg-fs-green text-fs-black px-4 py-1 rounded" ${answered.has(currentQ) ? 'disabled' : ''}>Submit</button>
+                </div>
+            `;
+            document.getElementById('qa-content').innerHTML = html;
+        }
+
+        function showFeedback(isCorrect, pointsChange) {
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackEl.innerHTML = isCorrect 
+                ? `<span class="text-fs-green">Access granted! ${pointsChange > 0 ? '+' + pointsChange + ' points' : ''}. fsociety approves.</span>`
+                : `<span class="text-red-400">Denied. ${pointsChange < 0 ? pointsChange + ' points' : ''}. Keep grinding, friend.</span>`;
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function normalizeAnswer(ans) {
+            return ans.trim().toLowerCase().replace(/,/g, ' ').replace(/\s+/g, ' ').replace(/\/tcp/g, '').trim();
+        }
+
+        function checkAnswer() {
+            const input = document.getElementById('answer-input');
+            const userAns = normalizeAnswer(input.value);
+            const correctAnswers = questions[currentQ].answers.map(normalizeAnswer);
+            let isCorrect = correctAnswers.includes(userAns);
+            let pointsChange = 0;
+            if (isCorrect) {
+                if (!answered.has(currentQ)) {
+                    pointsChange = 20;
+                    score += 20;
+                    answered.add(currentQ);
+                    input.disabled = true;
+                    document.querySelector('button[onclick="checkAnswer()"]').disabled = true;
+                }
+                showFeedback(true, pointsChange);
+            } else {
+                pointsChange = -2;
+                score -= 2;
+                showFeedback(false, pointsChange);
+            }
+            updateScore();
+            renderQuestionList();
+        }
+
+        function checkWin() {
+            flags[1] = document.getElementById('flag1').value.trim();
+            flags[2] = document.getElementById('flag2').value.trim();
+            flags[3] = document.getElementById('flag3').value.trim();
+            let bonus = 0;
+            Object.keys(flags).forEach(k => {
+                if (flags[k] === flagAnswers[k]) bonus += 20;
+            });
+            score += bonus;
+            if (answered.size === questions.length && bonus === 60) {
+                document.getElementById('final-score').innerHTML = `Final Score: ${score}`;
+                document.getElementById('victory').classList.remove('hidden');
+            } else {
+                alert(`Progress: ${answered.size}/${questions.length} challenges. Keys: ${bonus/20}/3 correct. Score: ${score}`);
+            }
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('score').innerHTML = `Score: ${Math.max(0, score)}`;
+            localStorage.setItem('ctfScore', score);
+            localStorage.setItem('ctfAnswered', JSON.stringify(Array.from(answered)));
+        }
+
+        function resetGame() {
+            document.getElementById('victory').classList.add('hidden');
+            score = 100;
+            answered.clear();
+            currentQ = 0;
+            flags = {1:'',2:'',3:''};
+            document.getElementById('flag1').value = '';
+            document.getElementById('flag2').value = '';
+            document.getElementById('flag3').value = '';
+            updateScore();
+            navigateTo('welcome');
+        }
+
+        // Init
+        window.onload = () => {
+            const hash = window.location.hash.substring(1) || 'welcome';
+            navigateTo(hash);
+            // Restore state
+            const savedScore = localStorage.getItem('ctfScore');
+            const savedAnswered = localStorage.getItem('ctfAnswered');
+            if (savedScore) score = parseInt(savedScore);
+            if (savedAnswered) answered = new Set(JSON.parse(savedAnswered));
+            updateScore();
+        };
+    </script>
+</body>
+</html>
